@@ -17,7 +17,6 @@ def q(v, h, q_2):
     K = q_2 * v * h ** 2 / (1 - v + h * v) ** 2 - 2 * v * (1 - v) * (1 - h) ** 2 / (1 - v + h * v) ** 2
     return K
 
-
 def q_2(theta):
     return (1 - np.cos(theta)) / np.sin(theta) ** 2
 
