@@ -1,3 +1,5 @@
+import scipy.integrate
+import matplotlib.pyplot as plt
 from scipy.integrate import quad
 from scipy.integrate import solve_ivp
 import numpy as np
@@ -38,14 +40,17 @@ def rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
     return rrho
 
 
-def dSdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
+def dSdt(S, t, G, rho_i, r_b, n, m, A, H, Lamb):
+    r, RR, EE, MM, dMMdr, dRRdr, dEEdr = S
+
     sol_EE = E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     sol_MM = M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     sol_dEEdr = dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     sol_dMMdr = dMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     sol_dRdt = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     sol_rho = rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
-    return [sol_EE, sol_MM, sol_dEEdr, sol_dMMdr, sol_dRdt, sol_rho]
+
+    return [r, sol_EE, sol_MM, sol_dEEdr, sol_dMMdr, sol_dRdt, sol_rho]
 
 
 def dSdt2(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
@@ -56,11 +61,27 @@ def dSdt2(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
 
 Lamb = 0
 A = 1e-7
-r_b = 1e6
+r_b = 1e1
 n = 2
 m = 2
 H = 1
 G = 6.67 * 1e27
 rho_i = 1
-sol = solve_ivp(dSdt, t_span=[0, 100], y0=[1, 1, 1, 1, 1, 1, 1],
-                args=(G, rho_i, r_b, n, m, A, H, Lamb,1, 1, 1, 1, 1), method='RK45')
+args_list = (G, rho_i, r_b, n, m, A, H, Lamb)
+
+init_condt = [1, 1, 1, 1, 1, 1, 1]
+# sol = solve_ivp(dSdt, t_span=[0, 100], y0=init_condt, args=(args_list))
+t = np.linspace(0, 100, 1000)
+
+ans = scipy.integrate.odeint(dSdt, y0=init_condt, t=t, args=args_list)
+
+print(ans.shape, ans.shape[0], ans.shape[1])
+ans = ans.T
+print(ans.shape, ans.shape[0], ans.shape[1])
+print(ans)
+
+plt.figure()
+for data in ans:
+    plt.plot(data)
+#plt.ylim(0,100)
+plt.show()
