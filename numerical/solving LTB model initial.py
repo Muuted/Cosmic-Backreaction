@@ -76,12 +76,14 @@ time_tot = np.linspace(0, 10, 10)
 ans = scipy.integrate.odeint(dSdt, y0=init_condt, t=time_tot, args=args_list)
 
 print(ans.shape, ans.shape[0], ans.shape[1])
+# transpose the array because we have that the a arrays
+# are of the format [[ r0, sol0 ,...],[r1,sol1..],[r2, sol2, ...] ,... ]
+# so we transpose to have ans[0] to be the full array of r values.  
 ans = ans.T
 print(ans.shape, ans.shape[0], ans.shape[1])
 print(ans)
 
 plt.figure()
-
 plt.plot(ans[0],label='r')
 plt.plot(ans[1],label='E(r)')
 plt.plot(ans[2],label='M(r)')
