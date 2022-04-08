@@ -61,19 +61,19 @@ def dSdt2(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
 
 Lamb = 0
 A = 1e-7
-r_b = 1e1
+r_b = 5e10
 n = 2
 m = 2
 H = 1
-G = 6.67 * 1e27
-rho_i = 1
+G = 6.67e-11 # Nm**2/kg**2 = m**3/kg*s**2
+rho_i = 1 #1e-26 #kg/m^3
 args_list = (G, rho_i, r_b, n, m, A, H, Lamb)
 
 init_condt = [1, 1, 1, 1, 1, 1, 1]
 # sol = solve_ivp(dSdt, t_span=[0, 100], y0=init_condt, args=(args_list))
-t = np.linspace(0, 100, 1000)
+time_tot = np.linspace(0, 10, 10)
 
-ans = scipy.integrate.odeint(dSdt, y0=init_condt, t=t, args=args_list)
+ans = scipy.integrate.odeint(dSdt, y0=init_condt, t=time_tot, args=args_list)
 
 print(ans.shape, ans.shape[0], ans.shape[1])
 ans = ans.T
@@ -81,7 +81,15 @@ print(ans.shape, ans.shape[0], ans.shape[1])
 print(ans)
 
 plt.figure()
-for data in ans:
-    plt.plot(data)
-#plt.ylim(0,100)
+
+plt.plot(ans[0],label='r')
+plt.plot(ans[1],label='E(r)')
+plt.plot(ans[2],label='M(r)')
+plt.plot(ans[3],label='dEdr')
+plt.plot(ans[4],label='dMdr')
+plt.plot(ans[5],label='dRdt')
+plt.plot(ans[6],label='rho')
+plt.legend()
+
+
 plt.show()
