@@ -49,9 +49,7 @@ def dSdt(S, t, G, rho_i, r_b, n, m, A, H, Lamb):
     sol_dMMdr = dMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     sol_dRdt = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     sol_rho = rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
-
     return [r, sol_EE, sol_MM, sol_dEEdr, sol_dMMdr, sol_dRdt, sol_rho]
-
 
 def dSdt2(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
     sol_EE = E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
@@ -59,6 +57,7 @@ def dSdt2(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
     sol_dRRdt = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
 
 
+# values of the constants in the eq's
 Lamb = 0
 A = 1e-7
 r_b = 5e10
@@ -69,16 +68,26 @@ G = 6.67e-11 # Nm**2/kg**2 = m**3/kg*s**2
 rho_i = 1 #1e-26 #kg/m^3
 args_list = (G, rho_i, r_b, n, m, A, H, Lamb)
 
-init_condt = [1, 1, 1, 1, 1, 1, 1]
-# sol = solve_ivp(dSdt, t_span=[0, 100], y0=init_condt, args=(args_list))
-time_tot = np.linspace(0, 10, 10)
+# Initial value conditions
+r_init = 1
+R_init = 1
+E_init = 1
+M_init = 1
+dMdr_init=  1
+dRdr_init= 1
+dEdr_init = 1
+init_condt = [r_init, R_init, E_init, M_init, dMdr_init, dRdr_init, dEdr_init]
 
+# sol = solve_ivp(dSdt, t_span=[0, 100], y0=init_condt, args=(args_list))
+
+# using the odeint to find the solution to the equations.
+time_tot = np.linspace(0, 10, 10)
 ans = scipy.integrate.odeint(dSdt, y0=init_condt, t=time_tot, args=args_list)
 
 print(ans.shape, ans.shape[0], ans.shape[1])
 # transpose the array because we have that the a arrays
 # are of the format [[ r0, sol0 ,...],[r1,sol1..],[r2, sol2, ...] ,... ]
-# so we transpose to have ans[0] to be the full array of r values.  
+# so we transpose to have ans[0] to be the full array of r values.
 ans = ans.T
 print(ans.shape, ans.shape[0], ans.shape[1])
 print(ans)
