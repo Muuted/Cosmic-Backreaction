@@ -48,8 +48,8 @@ def ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
 
     return extra/sqrts
 
-def dSdt(S, t, G, rho_i, r_b, n, m, A, H, Lamb):
-    r, RR, EE, MM, dMMdr, dRRdr, dEEdr = S
+def dSdt(S, t,r, G, rho_i, r_b, n, m, A, H, Lamb):
+    RR, EE, MM = S#, dMMdr, dRRdr, dEEdr = S
 
     sol_EE = E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     sol_MM = M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)

@@ -14,7 +14,8 @@ def E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
 
 
 def M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
-    MM = 4 * np.pi * RR ** 3 * rho_i / 3 * (1 - 2 * EE / (5 * H ** 2 * RR ** 2))
+
+    MM =( 4 * np.pi * RR ** 3 * rho_i / 3) * (1 - 2 * EE / (5 * H ** 2 * RR ** 2))
     return MM
 
 
@@ -58,7 +59,7 @@ def dSdt_dRdrdt(S,t,p):
 
 def dSdt_dRdt(S,t,p):
     R = S
-    r,dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb = p
+    r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb = p
 
     ans_dRdt = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
 
@@ -88,26 +89,31 @@ EE = 1
 dMMdr = 1
 dRRdr = 1
 dEEdr = 1
-for r in range(99,100):
+for r in range(95,100):
     '''
     The initial conditions are found for each r, and used in the ODE int integration
     '''
-    ans = []
+    #RR += 1 # this matters a lot
     EE = E(r, RR,EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
+    print(EE)
     MM = M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     dEEdr = dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     dMMdr= dMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
-    args_list =[r,dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb]
-    #args_list = [r, dMMdr, dEEdr, G, rho_i, r_b, n, m, A,H,Lamb]
+
+
+    # The constants under integration
+    args_list =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb]
+    # the initial value for the function(s) that are being integrated
     init_cond = [0]
-    time_tot = np.linspace(0, 10, 10)
-    #ans = scipy.integrate.odeint(dSdt_for_dr,y0=init_cond,args=args_list)
+    #making the time of integration
+    time_tot = np.linspace(0, 10000, 10)
+    
     ans = scipy.integrate.odeint(dSdt_dRdt,
         t=time_tot,
         y0=init_cond,
         args=(args_list,)
         )
-    print(r)
+    #RR = ans[:]
 
 #ans = ans.T
 print('ans shape = ',ans.shape)
