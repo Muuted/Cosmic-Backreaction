@@ -1,53 +1,4 @@
-import scipy.integrate
-import matplotlib.pyplot as plt
-from scipy.integrate import quad
-from scipy.integrate import solve_ivp
-import numpy as np
-
-
-def E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
-    if r <= r_b:
-        EE = A * r ** 2 * ((r / r_b) ** n - 1) ** m
-    else:
-        EE = 0
-    return EE
-
-
-def M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
-
-    MM =( 4 * np.pi * RR ** 3 * rho_i / 3) * (1 - 2 * EE / (5 * H ** 2 * RR ** 2))
-    return MM
-
-
-def dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
-    dEEdr1 = 2 * A * r * ((r / r_b) ** n - 1) ** m
-    dEEdr2 = m * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)
-    return dEEdr1 + dEEdr2
-
-
-def dMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
-    dMMdr1 = 12 * np.pi * RR ** 2 * dRRdr * rho_i / 3
-    dMMdr2 = -(8 * np.pi * rho_i / 15 * H ** 2) * (EE * dRRdr + RR * dEEdr)
-    return dMMdr1 + dMMdr2
-
-
-def dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
-    dRRdt = np.sqrt(2 * MM / RR + 2 * EE + (Lamb / 3) * RR ** 2)
-    return dRRdt
-
-
-def rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
-    rrho = (1 / (4 * np.pi * G)) * dMMdr / (RR ** 2 * dRRdr)
-    return rrho
-
-def ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
-    sqrts = np.sqrt(
-        2*MM/RR +2*EE + (Lamb/3)*RR**2
-    )
-
-    extra = 2*dMMdr/RR - 4*MM*dRRdr/RR**2 +2*dEEdr + 2*Lamb*RR*dRRdr/3
-
-    return extra/sqrts
+from LTB_model_functions import *
 
 def dSdt_dRdrdt(S,t,p):
     dRdr = S
@@ -85,18 +36,18 @@ We have to have an initial R, which I will for now just set to zero
 RR = 1
 dRRdr = 1
 MM = 1
-EE = 1
-dMMdr = 1
+EE = 0
+dMMdr = 100
 dRRdr = 1
 dEEdr = 1
-'''
-for r in range(95,100):
+t= 0
+for r in range(0,1):
     
     #The initial conditions are found for each r, and used in the ODE int integration
     
     #RR += 1 # this matters a lot
     EE = E(r, RR,EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
-    print(EE)
+    #print(EE)
     MM = M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     dEEdr = dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     dMMdr= dMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
@@ -105,34 +56,28 @@ for r in range(95,100):
     # The constants under integration
     args_list =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb]
     # the initial value for the function(s) that are being integrated
-    init_cond = [0]
+    init_cond_dRdt = [0]
     #making the time of integration
-    time_tot = np.linspace(0, 10000, 10)
+    time_tot = np.linspace(t, 100,100)
+    
     
     ans = scipy.integrate.odeint(dSdt_dRdt,
         t=time_tot,
-        y0=init_cond,
+        y0=init_cond_dRdt,
         args=(args_list,)
         )
-    #RR = ans[:]
+    RR = ans[0].T #Now we have our R
 
-#ans = ans.T
-print('ans shape = ',ans.shape)
+    ans2 = scipy.integrate.odeint(dSdt_dRdrdt,
+        t=time_tot,
+        args=args_list,
+        )
+
+ans = ans.T
+print('ans shape = ',ans[0].shape)
+#print(ans[0])
 print('time shape =',time_tot.shape)
 plt.figure()
-plt.plot(time_tot,ans)
+plt.plot(time_tot.T,ans[0])
 plt.show()
 
-'''
-
-EE = []
-rr = []
-for r in range(0,round(r_b*1.2)):
-    EE.append(
-        E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
-        )
-    rr.append(r)
-
-plt.figure()
-plt.plot(rr,EE)
-plt.show()
