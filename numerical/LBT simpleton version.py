@@ -69,7 +69,7 @@ def dSdt_dRdt(S,t,p):
 # values of the constants in the eq's
 Lamb = 0
 A = 1e-7
-r_b = 5e10
+r_b = 200 #5e10
 n = 2
 m = 2
 H = 1
@@ -89,10 +89,11 @@ EE = 1
 dMMdr = 1
 dRRdr = 1
 dEEdr = 1
+'''
 for r in range(95,100):
-    '''
-    The initial conditions are found for each r, and used in the ODE int integration
-    '''
+    
+    #The initial conditions are found for each r, and used in the ODE int integration
+    
     #RR += 1 # this matters a lot
     EE = E(r, RR,EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     print(EE)
@@ -122,3 +123,16 @@ plt.figure()
 plt.plot(time_tot,ans)
 plt.show()
 
+'''
+
+EE = []
+rr = []
+for r in range(0,round(r_b*1.2)):
+    EE.append(
+        E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
+        )
+    rr.append(r)
+
+plt.figure()
+plt.plot(rr,EE)
+plt.show()
