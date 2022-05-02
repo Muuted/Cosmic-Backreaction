@@ -41,7 +41,7 @@ def rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
 
 def ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
     sqrts = np.sqrt(
-        2*MM/RR +2*EE + Lamb*RR**2/3
+        2*MM/RR +2*EE + (Lamb/3)*RR**2
     )
 
     extra = 2*dMMdr/RR - 4*MM*dRRdr/RR**2 +2*dEEdr + 2*Lamb*RR*dRRdr/3
@@ -108,7 +108,7 @@ plt.plot(ans[0], label='r')
 plt.plot(ans[1], label='E(r)')
 plt.plot(ans[2], label='M(r)')
 plt.plot(ans[3], label='dEdr')
-plt.plot(ans[4], label='dMdr')
+#plt.plot(ans[4], label='dMdr')
 plt.plot(ans[5], label='dRdt')
 plt.plot(ans[6], label='rho')
 plt.legend()
