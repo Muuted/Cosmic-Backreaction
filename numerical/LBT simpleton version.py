@@ -1,5 +1,6 @@
 from LTB_model_functions import *
 
+
 def dSdt_dRdrdt(S,t,p):
     dRdr = S
     r,dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb = p
@@ -41,7 +42,11 @@ dMMdr = 100
 dRRdr = 1
 dEEdr = 1
 t= 0
-for r in range(0,1):
+r= 0
+dr = 100
+
+num_interations = 100
+for i in range(0,num_interations):
     
     #The initial conditions are found for each r, and used in the ODE int integration
     
@@ -60,7 +65,8 @@ for r in range(0,1):
     #making the time of integration
     time_tot = np.linspace(t, 100,100)
     
-    
+    r += dr
+
     ans = scipy.integrate.odeint(dSdt_dRdt,
         t=time_tot,
         y0=init_cond_dRdt,
@@ -68,10 +74,10 @@ for r in range(0,1):
         )
     RR = ans[0].T #Now we have our R
 
-    ans2 = scipy.integrate.odeint(dSdt_dRdrdt,
+    '''ans2 = scipy.integrate.odeint(dSdt_dRdrdt,
         t=time_tot,
         args=args_list,
-        )
+        )'''
 
 ans = ans.T
 print('ans shape = ',ans[0].shape)
