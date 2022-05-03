@@ -48,3 +48,8 @@ def ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
     extra = 2*dMMdr/RR - 4*MM*dRRdr/RR**2 +2*dEEdr + 2*Lamb*RR*dRRdr/3
 
     return extra/sqrts
+
+
+def units_converter():
+
+    return 5
