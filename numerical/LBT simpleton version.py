@@ -67,6 +67,7 @@ num_interations = 1
 time_tot = np.linspace(t_start,t_end,10)#round(t_end/dt*10))
 
 
+ivp = True 
 
 for i in range(0,num_interations):
     ans = []
@@ -89,56 +90,47 @@ for i in range(0,num_interations):
     
     r += dr
     
-    ans = scipy.integrate.odeint(dSdt_dRdrdt,t=time_tot,y0=init_cond_dRdt,
-        args=(args_list_ODE,)
-        )
-    
-    '''
-    ans = solve_ivp(dSdt_dRdrdt_ivp,t_span=(t_start,t_end),
-                    y0=init_cond_dRdt ,args=args_for_ivp,
-                     method ='LSODA'
-                     #,t_eval = time_tot
-                     )'''
+    if ivp == False:
+        ans = scipy.integrate.odeint(dSdt_dRdrdt,t=time_tot,y0=init_cond_dRdt,
+            args=(args_list_ODE,)
+            )
+    if ivp == True:
+        ans = solve_ivp(dSdt_dRdrdt_ivp,t_span=(t_start,t_end),
+                        y0=init_cond_dRdt ,args=args_for_ivp,
+                        method ='LSODA'
+                        #,t_eval = time_tot
+                        )
         
 
-#print(ans.y[0].shape)
+if ivp == False:
+    ans = ans.T
+    R_vec = ans[0]
+    print('len(R)=',len(R_vec))
+    dRdr_vec = ans[1]
+    print('len(dRdr)=',len(dRdr_vec))
+    print(R_vec)
+    print('R_max /R_min=',max(R_vec)/min(R_vec), '\n',
+        'dRdr_max/dRdr_min =',max(dRdr_vec)/min(dRdr_vec))
+    print('H=',H, '\n',
+        'G=',G,'\n',
+        'rho_FLRW =',rho_FLRW
+        )
+    plt.plot(time_tot.T,R_vec,'-o',label='R(t,r)')
+    plt.plot(time_tot.T,dRdr_vec,'-o',label=r'$\frac{\partial R}{\partial r}$')
+    plt.legend()
+    plt.show()
 
-#print('RR_results =',RRR)
-ans = ans.T
-R_vec = ans[0]
-print('len(R)=',len(R_vec))
-dRdr_vec = ans[1]
-print('len(dRdr)=',len(dRdr_vec))
-print(R_vec)
-print('R_max /R_min=',max(R_vec)/min(R_vec), '\n',
-    'dRdr_max/dRdr_min =',max(dRdr_vec)/min(dRdr_vec))
-print('H=',H, '\n',
-    'G=',G,'\n',
-    'rho_FLRW =',rho_FLRW
-    )
+if ivp == True:
 
-plt.figure()
-#plt.plot(ans.t)
-#plt.plot(ans.y[0],'r')
-plt.legend()
+    plt.figure()
 
-
-plt.plot(time_tot.T,R_vec,'-o',label='R(t,r)')
-plt.plot(time_tot.T,dRdr_vec,'-o',label=r'$\frac{\partial R}{\partial r}$')
-plt.legend()
-plt.show()
-'''
-plt.figure()
-
-plt.plot(ans.y[0],'r')
-plt.legend()
+    plt.plot(ans.y[0],'r')
+    plt.legend()
 
 
 
-plt.figure()
+    plt.figure()
 
-plt.plot(ans.y[1],'r')
-plt.legend()
-plt.show()
-
-'''
+    plt.plot(ans.y[1],'r')
+    plt.legend()
+    plt.show()
