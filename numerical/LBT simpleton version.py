@@ -11,8 +11,6 @@ def dSdt_dRdrdt(S,t,p):
     return [ans_R, ans_dRdr]
 
 
-
-
 # units for conversion
 one_Mpc = 3.086e22 # m
 one_Gy = 3.156e16 #s
@@ -35,41 +33,34 @@ rho_FLRW =8.7e27 # kg/m^3 # This is the critical density Ryden in the back
 rho_FLRW = 8.7e27*one_Mpc**3/one_solar_mass # M_o/Mpc^3
 
 
-a_i = 1/1100 #initial scale factor.
+a_i = 1/1100    #initial scale factor.
+t_start= 1e3    # start time
+t_end = 14e6    # end time
+dt = 1e3        # time step
+r = r_b         # distance
+dr = 300        # change of r
 
-'''
-Making a for loop on the radius, where we will integrate with the ODEint; on time;
-for each loop
-We have to have an initial R, which I will for now just set to zero
-'''
 
-dRRdr = a_i
+dRRdr = a_i 
 MM = 1
 EE = 0
 dMMdr = 1
 dRRdr = 1
 dEEdr = 1
-t_start= 1e3
-t_end = 14e6
-dt = 1e3
-r = r_b/2
 RR = r*a_i
-dr = 100
 
 
+# A list with all the arguments that is need to feed the functions.
 args_list =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb]
 
 num_interations = 1
 time_tot = np.linspace(t_start,t_end,10)#round(t_end/dt*10))
 
-RR_results = np.zeros((num_interations,len(time_tot)))
-RRR = a = [[0 for x in range(len(time_tot))] for x in range(m)]
+
 
 for i in range(0,num_interations):
     ans = []
     #The initial conditions are found for each r, and used in the ODE int integration
-    
-    #RR += 1 # this matters a lot
     
     EE = E(args_list)
     MM = M(args_list)
@@ -77,9 +68,9 @@ for i in range(0,num_interations):
     dEEdr = dEdr(args_list)
     dMMdr= dMdr(args_list)
 
-    
     # The constants under integration
     args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb]
+
     # the initial value for the function(s) that are being integrated
     init_cond_dRdt = [a_i*r, a_i]
     
