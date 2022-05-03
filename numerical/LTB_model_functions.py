@@ -8,10 +8,32 @@ from scipy.integrate import solve_ivp
 
 import numpy as np
 
+'''
+r = List[0]
+    RR = List[1]
+    EE = List[2]
+    MM = List[3]
+    dMMdr = List[4]
+    dRRdr = List[5]
+    dEEdr = List[6]
+    G = List[7]
+    rho_FLRW = List[8]
+    r_b = List[9]
+    n = List[10]
+    m = List[11]
+    A = List[12]
+    H = List[13]
+    Lamb = List[14]
+'''
 
-
-def E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
-
+def E(List):
+    
+    r = List[0]
+    r_b = List[9]
+    n = List[10]
+    m = List[11]
+    A = List[12]
+    
     if r <= r_b:
 
         EE = A * r ** 2 * ((r / r_b) ** n - 1) ** m
@@ -24,17 +46,27 @@ def E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
 
 
 
-def M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
+def M(List):
+    
+    RR = List[1]
+    EE = List[2]
 
-
+    rho_FLRW = List[8]
+    H = List[13]
+    
     MM =( 4 * np.pi * RR ** 3 * rho_FLRW / 3) * (1 - 2 * EE / (5 * H ** 2 * RR ** 2))
 
     return MM
 
 
 
-def dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
-
+def dEdr(List):
+    r = List[0]
+    r_b = List[9]
+    n = List[10]
+    m = List[11]
+    A = List[12]
+    
     dEEdr1 = 2 * A * r * ((r / r_b) ** n - 1) ** m
 
     dEEdr2 = m * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)
@@ -43,7 +75,14 @@ def dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
 
 
 
-def dMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
+def dMdr(List):
+    
+    RR = List[1]
+    EE = List[2]
+    dRRdr = List[5]
+    dEEdr = List[6]
+    rho_FLRW = List[8]
+    H = List[13]
 
     dMMdr1 = 12 * np.pi * RR ** 2 * dRRdr * rho_FLRW / 3
 
@@ -51,33 +90,47 @@ def dMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
 
     return dMMdr1 + dMMdr2
 
-
-
-def dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
-
-    dRRdt = np.sqrt(2 * MM / RR + 2 * EE + (Lamb / 3) * RR ** 2)
-
-    return dRRdt
-
-
-
-def rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
+def rho(List):
+    
+    RR = List[1]
+    dMMdr = List[4]
+    dRRdr = List[5]
+    G = List[7]
 
     rrho = (1 / (4 * np.pi * G)) * dMMdr / (RR ** 2 * dRRdr)
 
     return rrho
 
 
+def dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
+    '''
+    RR = List[1]
+    EE = List[2]
+    MM = List[3]
+    Lamb = List[14]'''
+
+    dRRdt = np.sqrt(2 * MM / RR + 2 * EE + (Lamb / 3) * RR ** 2)
+
+    return dRRdt
+
+
 def ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
+    
+    '''
+    RR = List[1]
+    EE = List[2]
+    MM = List[3]
+    dMMdr = List[4]
+    dRRdr = List[5]
+    dEEdr = List[6]
+    Lamb = List[14]'''
 
     sqrts = np.sqrt(
-
-        2*MM/RR +2*EE + (Lamb/3)*RR**2
+        2*MM/RR +2*EE 
+        + (Lamb/3)*RR**2
     )
 
-
     extra = 2*dMMdr/RR - 4*MM*dRRdr/RR**2 +2*dEEdr + 2*Lamb*RR*dRRdr/3
-
 
     return extra/sqrts
 
