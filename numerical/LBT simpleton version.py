@@ -3,13 +3,21 @@ from LTB_model_functions import *
 
 def dSdt_dRdrdt(S,t,p):
     R, dRdr = S
-    r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb = p
+    #r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb = p
     
     ans_dRdr = ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
     ans_R = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
     
     return [ans_R, ans_dRdr]
 
+def dSdt_dRdrdt_ivp(t,S,r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
+    R, dRdr = S
+    #r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb = p
+    
+    ans_dRdr = ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
+    ans_R = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
+    
+    return [ans_R, ans_dRdr]
 
 # units for conversion
 one_Mpc = 3.086e22 # m
@@ -71,21 +79,32 @@ for i in range(0,num_interations):
     # The constants under integration
     args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb]
 
+    args_for_ivp = (r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
+    
+
     # the initial value for the function(s) that are being integrated
     init_cond_dRdt = [a_i*r, a_i]
     
     r += dr
-
+    '''
     ans = scipy.integrate.odeint(dSdt_dRdrdt,
         t=time_tot,
         y0=init_cond_dRdt,
         args=(args_list_ODE,)
         )
-    #RR_results[i] = ans[0] #Now we have our R
+    '''
+    
+    ans = solve_ivp(dSdt_dRdrdt_ivp,t_span=(t_start,t_end),
+                    y0=init_cond_dRdt ,args=args_for_ivp,
+                     method ='LSODA'
+                     #,t_eval = time_tot
+                     )
+        
 
-
+print(ans.y[0].shape)
+'''
 #print('RR_results =',RRR)
-ans = ans.T
+#ans = ans.T
 R_vec = ans[0]
 print('len(R)=',len(R_vec))
 dRdr_vec = ans[1]
@@ -96,11 +115,28 @@ print('R_max /R_min=',max(R_vec)/min(R_vec), '\n',
 print('H=',H, '\n',
     'G=',G,'\n',
     'rho_FLRW =',rho_FLRW
-    )
+    )'''
+
 plt.figure()
-plt.plot(time_tot.T,R_vec,'-o',label='R(t,r)')
-plt.plot(time_tot.T,dRdr_vec,'-o',label=r'$\frac{\partial R}{\partial r}$')
+plt.plot(ans.t)
+#plt.plot(ans.y[0],'r')
+plt.legend()
+
+
+#plt.plot(time_tot.T,R_vec,'-o',label='R(t,r)')
+#plt.plot(time_tot.T,dRdr_vec,'-o',label=r'$\frac{\partial R}{\partial r}$')
+
+
+plt.figure()
+
+plt.plot(ans.y[0],'r')
+plt.legend()
+
+
+
+plt.figure()
+
+plt.plot(ans.y[1],'r')
 plt.legend()
 plt.show()
-
 
