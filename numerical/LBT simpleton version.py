@@ -42,10 +42,10 @@ dMMdr = 100
 dRRdr = 1
 dEEdr = 1
 t= 0
-r= 0
+r= r_b
 dr = 100
 
-num_interations = 100
+num_interations = 1
 for i in range(0,num_interations):
     
     #The initial conditions are found for each r, and used in the ODE int integration
