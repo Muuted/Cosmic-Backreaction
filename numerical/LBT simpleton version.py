@@ -3,33 +3,43 @@ from LTB_model_functions import *
 
 def dSdt_dRdrdt(S,t,p):
     R, dRdr = S
-    r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb = p
+    r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb = p
 
-    ans_dRdr = ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
-    ans_R = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
+    ans_dRdr = ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
+    ans_R = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
     
     return [ans_dRdr, ans_R]
 
 def dSdt_dRdt(S,t,p):
     R= S
-    r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb = p
+    r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb = p
 
-    ans_dRdt = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
+    ans_dRdt = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G,rho_FLRW , r_b, n, m, A, H, Lamb)
 
     return ans_dRdt
 
 
+# units for conversion
+one_Mpc = 3.086e22 # m
+one_Gy = 3.156e16 #s
+one_solar_mass = 1.989e30 #kg
 # values of the constants in the eq's
 Lamb = 0
 A = 1e-7
 r_b = 5e10
 n = 2
 m = 2
-H = 70e3 # m/s/Mpc
-G = 6.67e-11  # Nm**2/kg**2 = m**3/kg*s**2
-rho_i =  1e-26 #kg/m^3
-a_i = 1/1100
-args_list = (G, rho_i, r_b, n, m, A, H, Lamb)
+H = 68 # km/s/Mpc -> Mpc/Gyr
+H = 68*1e3*one_Gy/one_Mpc # Mpc/Gy
+
+G = 6.67e-11  #  m^3/kg/s^2
+G = 6.67e-11*one_solar_mass*one_Gy/(one_Mpc)**3
+
+rho_FLRW =8.7e27 # kg/m^3
+rho_FLRW = 8.7e27*one_Mpc**2/one_solar_mass # M_o/Mpc^3
+
+print(H,G,rho_FLRW)
+a_i = 1/1100 #initial scale factor.
 
 '''
 Making a for loop on the radius, where we will integrate with the ODEint; on time;
@@ -58,16 +68,16 @@ for i in range(0,num_interations):
     #The initial conditions are found for each r, and used in the ODE int integration
     
     #RR += 1 # this matters a lot
-    rho_i = rho(r, RR,EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
-    EE = E(r, RR,EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
+    
+    EE = E(r, RR,EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
     #print(EE)
-    MM = M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
-    dEEdr = dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
-    dMMdr= dMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb)
+    MM = M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
+    dEEdr = dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
+    dMMdr= dMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
 
 
     # The constants under integration
-    args_list =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb]
+    args_list =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb]
     # the initial value for the function(s) that are being integrated
     init_cond_dRdt = [a_i*r, a_i]
     #making the time of integration

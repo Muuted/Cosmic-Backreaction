@@ -10,6 +10,7 @@ def E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_i, r_b, n, m, A, H, Lamb):
         EE = A * r ** 2 * ((r / r_b) ** n - 1) ** m
     else:
         EE = 0
+        
     return EE
 
 
@@ -74,9 +75,9 @@ A = 1e-7
 r_b = 5e10
 n = 2
 m = 2
-H = 1
-G = 6.67e-11  # Nm**2/kg**2 = m**3/kg*s**2
-rho_i = 1  # 1e-26 #kg/m^3
+H = 68 # km/s/Mpc
+G = 6.67e-11  # Nm^22/kg^2 = m^3/kg/s^2
+rho_i =8.7e27 # kg/m^3
 args_list = (G, rho_i, r_b, n, m, A, H, Lamb)
 
 # Initial value conditions
