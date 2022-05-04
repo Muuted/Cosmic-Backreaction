@@ -45,8 +45,10 @@ rho_FLRW = 1.5e-7 #M_o/Mpc^3 # 8.7e27*one_Mpc**3/one_solar_mass # M_o/Mpc^3
 # right above the Galactic untis
 
 a_i = 1/1100    #initial scale factor.
-t_start= 1e3    # start time
+t_start= 0    # start time
 t_end = 14e6    # end time
+num_steps = 10000 # number of steps between t_start and t_end
+num_interations = 1 #number of r's
 dt = 1e3        # time step
 r = r_b         # distance
 dr = 300        # change of r
@@ -64,11 +66,11 @@ RR = r*a_i
 # A list with all the arguments that is need to feed the functions.
 args_list =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb]
 
-num_interations = 1
-time_tot = np.linspace(t_start,t_end,10)#round(t_end/dt*10))
+
+time_tot = np.linspace(t_start,t_end,num_steps)#round(t_end/dt*10))
 
 
-ivp = False
+ivp = False 
 
 for i in range(0,num_interations):
     ans = []
@@ -116,19 +118,25 @@ if ivp == False:
         'G=',G,'\n',
         'rho_FLRW =',rho_FLRW
         )
-    plt.plot(time_tot.T,R_vec,'-o',label='R(t,r)')
-    plt.plot(time_tot.T,dRdr_vec,'-o',label=r'$\frac{\partial R}{\partial r}$')
+    plt.figure()
+    plt.plot(time_tot.T,R_vec,'-',label='R(t,r)')
+    plt.legend()
+
+    plt.figure()
+    plt.plot(time_tot.T,dRdr_vec,'-',label=r'$\frac{\partial R}{\partial r}$')
     plt.legend()
     
 
 if ivp == True:
 
     plt.figure()
+
     plt.plot(ans.y[0],'r',label='R')
     plt.legend()
 
     plt.figure()
     plt.plot(ans.y[1],'r',label=r'$\frac{\partial R}{\partial r}$')
+
     plt.legend()
 
 
