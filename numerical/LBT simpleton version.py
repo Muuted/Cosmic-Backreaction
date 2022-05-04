@@ -125,14 +125,10 @@ if ivp == False:
 if ivp == True:
 
     plt.figure()
-
     plt.plot(ans.y[0],'r')
     plt.legend()
 
-
-
     plt.figure()
-
     plt.plot(ans.y[1],'r')
     plt.legend()
     plt.show()
