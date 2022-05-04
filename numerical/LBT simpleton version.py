@@ -68,7 +68,7 @@ num_interations = 1
 time_tot = np.linspace(t_start,t_end,10)#round(t_end/dt*10))
 
 
-ivp = True 
+ivp = False
 
 for i in range(0,num_interations):
     ans = []
@@ -90,7 +90,6 @@ for i in range(0,num_interations):
     init_cond_dRdt = [a_i*r, a_i]
     
     r += dr
-    
     
     if ivp == False:
         ans = scipy.integrate.odeint(dSdt_dRdrdt,t=time_tot,y0=init_cond_dRdt,
@@ -120,19 +119,18 @@ if ivp == False:
     plt.plot(time_tot.T,R_vec,'-o',label='R(t,r)')
     plt.plot(time_tot.T,dRdr_vec,'-o',label=r'$\frac{\partial R}{\partial r}$')
     plt.legend()
-    plt.show()
+    
 
 if ivp == True:
 
     plt.figure()
-
-    plt.plot(ans.y[0],'r')
+    plt.plot(ans.y[0],'r',label='R')
     plt.legend()
-
-
 
     plt.figure()
-
-    plt.plot(ans.y[1],'r')
+    plt.plot(ans.y[1],'r',label=r'$\frac{\partial R}{\partial r}$')
     plt.legend()
-    plt.show()
+
+
+
+plt.show()
