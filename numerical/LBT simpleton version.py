@@ -46,8 +46,8 @@ t_start = t_start/one_Gy # start time in Gy
 
 # Normalizing the time vector.
 # So is ends at one, our time
-#t_start = t_start/t_end
-#t_end = t_end/t_end
+t_start = t_start/t_end
+t_end = t_end/t_end
 
 num_steps = 10000 # number of steps between t_start and t_end
 num_interations = 1 #number of r's
@@ -112,7 +112,6 @@ print('H=',H_0, '\n',
     )
 
 rho_list = []
-
 for i in range(0,len(R_vec)):
 
     RR = R_vec[i]
@@ -123,8 +122,11 @@ for i in range(0,len(R_vec)):
         func_rho( args_list_ODE )/rho_FLRW
     )
 
+
 plt.figure()
-plt.plot(time_tot,rho_list,label=r'$\rho (t) / \rho_{FLRW}$')
+plt.plot(time_tot[1:],rho_list[1:],label=r'$\rho (t) / \rho_{FLRW}$')
+plt.xlim(-0.00001, 0.0050)
+plt.ylim(-0.1e-83 ,1.5e-83)
 plt.legend()
 
 
