@@ -103,7 +103,7 @@ def rho(List):
     return rrho
 
 
-def dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
+def dRdt(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
     '''
     RR = List[1]
     EE = List[2]
@@ -115,7 +115,7 @@ def dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
     return dRRdt
 
 
-def ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
+def ddRdrdt(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
     
     '''
     RR = List[1]
@@ -124,12 +124,10 @@ def ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, La
     dMMdr = List[4]
     dRRdr = List[5]
     dEEdr = List[6]
-    Lamb = List[14]'''
-
-    sqrts = np.sqrt(
-        2*MM/RR +2*EE 
-        + (Lamb/3)*RR**2
-    )
+    Lamb = List[14]
+    '''
+    
+    sqrts = np.sqrt(    2*MM/RR +2*EE + (Lamb/3)*RR**2  )
 
     extra = 2*dMMdr/RR - 4*MM*dRRdr/RR**2 +2*dEEdr + 2*Lamb*RR*dRRdr/3
 
@@ -139,7 +137,7 @@ def ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, La
 
 def dSdt_dRdrdt(S,t,p):
     R, dRdr = S
-    #r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb = p
+    r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb = p
     
     ans_dRdr = ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
     ans_R = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
@@ -157,16 +155,22 @@ def dSdt_dRdrdt_ivp(t,S,r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n,
 
 
 
-'''
-def units_converter(number,start_units,end_unitsnu
+# For the de Sitter model universe, for comparison with, our model of the universe. 
 
-    one_Mpc = 3.086e22 # m
-    one_Gy = 3.156e16 #s
-    one_solar_mass = 1.989e30 #kg
-    
+def func_FLRW_R_dRdr(t_vec,r_func,H_0):
 
+    # R = a(t)*r
+    # a(t) = (t/t_0)^(3/2)
+    t_0 = 2/(3*H_0)
 
-    one_Mpc = 3.086e22 # m
-    one_Gy = 3.156e16 #s
-    one_solar_mass = 1.989e30 #kg
-    '''
+    List = [[],[]]
+
+    for i in range(0,len(t_vec)):
+
+        a_FLRW = (t_vec[i]/t_0)**(3/2)
+        R_FLRW = a_FLRW*r_func
+
+        List[0].append(R_FLRW)
+        List[1].append(a_FLRW)
+
+    return List
