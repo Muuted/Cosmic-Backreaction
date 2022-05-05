@@ -2,27 +2,10 @@ from LTB_model_functions import *
 #import scipy
 #from scipy.integrate import solve_ivp
 
-def dSdt_dRdrdt(S,t,p):
-    R, dRdr = S
-    #r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb = p
-    
-    ans_dRdr = ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
-    ans_R = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
-    
-    return [ans_R, ans_dRdr]
-
-def dSdt_dRdrdt_ivp(t,S,r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
-    R, dRdr = S
-    #r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb = p
-    
-    ans_dRdr = ddRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
-    ans_R = dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb)
-    
-    return [ans_R, ans_dRdr]
-
 # units for conversion
 one_Mpc = 3.086e22 # m
-one_Gy = 3.156e16 #s
+one_Gy = 3.156e16 # s
+one_Gy = 3-156e16/60*60*24*365 # years
 one_solar_mass = 1.989e30 #kg
 
 # values of the constants in the eq's
@@ -40,9 +23,10 @@ G = 6.67e-11*one_solar_mass*one_Gy**2/(one_Mpc**3) # Mpc^3/M_o*Gy^2
 
 rho_FLRW =8.7e27 # kg/m^3 # This is the critical density Ryden in the back
 rho_FLRW = 8.7e27*one_Mpc**3/one_solar_mass # M_o/Mpc^3
-rho_FLRW = 1.5e-7
-# The unit for rho_FLRW is fond on the website:
+
+# The unit for rho_FLRW is fond on the website: 
 # http://astroweb.case.edu/ssm/astroconstants.html
+#   #rho_FLRW = 1.5e-7
 # right above the Galactic untis
 
 a_i = 1/1100    #initial scale factor.
@@ -70,8 +54,6 @@ args_list =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, La
 
 time_tot = np.linspace(t_start,t_end,num_steps)#round(t_end/dt*10))
 
-
-ivp = False 
 
 for i in range(0,num_interations):
     ans = []
@@ -121,12 +103,12 @@ print('H=',H, '\n',
     )
 plt.figure()
 plt.plot(time_tot.T,R_vec,label=r'$R(t,r)_{odeint}$')
-plt.plot(ans_ivp.t,ans_ivp.y[0],'--',label=r'$R(t,r)_{ivp}')
+plt.plot(ans_ivp.t,ans_ivp.y[0],'--',label=r'$R(t,r)_{ivp}$')
 plt.legend()
 
 plt.figure()
-plt.plot(time_tot.T,dRdr_vec,label=r'$\frac{\partial R}{\partial r}_{odeint}$')
-plt.plot(ans_ivp.t,ans_ivp.y[1],'--',label=r'$\frac{\partial R}{\partial r}_{ivp}$')
+plt.plot(time_tot.T,dRdr_vec,label=r'$\left(\frac{\partial R}{\partial r}\right)_{odeint}$')
+plt.plot(ans_ivp.t,ans_ivp.y[1],'--',label=r'$ \left(\frac{\partial R}{\partial r} \right)_{ivp}$')
 plt.legend()
 
 
