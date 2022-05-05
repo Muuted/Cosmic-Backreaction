@@ -112,6 +112,7 @@ print('H=',H_0, '\n',
     )
 
 rho_list = []
+rho_list_v2 = []
 for i in range(0,len(R_vec)):
 
     RR = R_vec[i]
@@ -122,38 +123,55 @@ for i in range(0,len(R_vec)):
         func_rho( args_list_ODE )/rho_FLRW
     )
 
+    EE = 0
+    dEEdr = 0
+    args_list_ODE_v2 =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
+
+    rho_list_v2.append(
+        func_rho( args_list_ODE_v2 )/rho_FLRW
+    )
+
+
 
 plt.figure()
-plt.plot(time_tot[1:],rho_list[1:],label=r'$\rho (t) / \rho_{FLRW}$')
+plt.plot(time_tot,rho_list,label=r'$\rho (t) / \rho_{FLRW}$')
+plt.plot(time_tot,rho_list_v2,'--',label=r'$\rho (t) / \rho_{FLRW}$ _ v2')
+plt.xlim(-0.00001, 0.0050)
+plt.ylim(-0.1e-83 ,1.5e-83)
+plt.xlabel('Gy')
+plt.ylabel(r'$\rho$')
+plt.legend()
+"""
+plt.figure()
+plt.plot(time_tot,rho_list_v2,label=r'$\rho (t) / \rho_{FLRW}$ _ v2')
 plt.xlim(-0.00001, 0.0050)
 plt.ylim(-0.1e-83 ,1.5e-83)
 plt.legend()
-
-
+"""
 plt.figure()
 plt.subplot(2,2,1)
 plt.plot(time_tot.T,R_vec,'k',label=r'$R(t,r)_{odeint}$')
 plt.plot(ans_ivp.t,ans_ivp.y[0],'--r',label=r'$R(t,r)_{ivp}$')
-plt.xlabel('time')
+plt.xlabel('Gy')
 plt.ylabel('R')
 plt.legend()
 
 plt.subplot(2,2,2)
 plt.plot(time_tot.T,dRdr_vec,'k',label=r'$\left(\frac{\partial R}{\partial r}\right)_{odeint}$')
 plt.plot(ans_ivp.t,ans_ivp.y[1],'--r',label=r'$ \left(\frac{\partial R}{\partial r} \right)_{ivp}$')
-plt.xlabel('time')
+plt.xlabel('Gy')
 plt.ylabel('dRdr')
 plt.legend()
 
 plt.subplot(2,2,3)
 plt.plot(time_tot, FLRW_ans[0],label=r'$R_{FLRW}$')
-plt.xlabel('time')
+plt.xlabel('Gy')
 plt.ylabel('R')
 plt.legend()
 
 plt.subplot(2,2,4)
 plt.plot(time_tot, FLRW_ans[1],label=r'$a_{FLRW}$')
-plt.xlabel('time')
+plt.xlabel('Gy')
 plt.ylabel('a - dRdr')
 plt.legend()
 
