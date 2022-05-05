@@ -8,7 +8,7 @@ from LTB_model_functions import *
 # units for conversion
 one_Mpc = 3.086e22 # m
 one_Gy = 3.156e16 # s
-one_Gy = 3-156e16/60*60*24*365 # years
+one_Gy = 3.156e16/60*60*24*365 # years
 one_solar_mass = 1.989e30 #kg
 
 
@@ -36,8 +36,19 @@ rho_FLRW = 8.7e27*one_Mpc**3/one_solar_mass # M_o/Mpc^3
 
 
 a_i = 1/1100    #initial scale factor.
-t_start= 0    # start time
-t_end = 14e6    # end time
+t_end = 14e9    # end time (our time) in years
+t_end = t_end/one_Gy # end time in Gy
+
+t_start= 370e3   # start time years  found on -> https://en.wikipedia.org/wiki/Chronology_of_the_universe
+                 # under: The Early Universe
+t_start = t_start/one_Gy # start time in Gy
+
+
+# Normalizing the time vector.
+# So is ends at one, our time
+#t_start = t_start/t_end
+#t_end = t_end/t_end
+
 num_steps = 10000 # number of steps between t_start and t_end
 num_interations = 1 #number of r's
 dt = 1e3        # time step
@@ -59,8 +70,8 @@ args_list =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, 
 
 time_tot = np.linspace(t_start,t_end,num_steps)#round(t_end/dt*10))
 
-for i in range(0,num_interations):
 
+for i in range(0,num_interations):
     ans = []
     #The initial conditions are found for each r, and used in the ODE int integration
     EE = E(args_list)
@@ -76,15 +87,14 @@ for i in range(0,num_interations):
     # the initial value for the function(s) that are being integrated
     init_cond_dRdt = [a_i*r, a_i]
 
-    ans_odeint = scipy.integrate.odeint(dSdt_dRdrdt,t=time_tot,y0=init_cond_dRdt,
-        args=(args_list_ODE,)
-        )
-
+    ans_odeint = scipy.integrate.odeint(dSdt_dRdrdt,t=time_tot,
+                                y0=init_cond_dRdt,args=(args_list_ODE,)
+       )
 
     ans_ivp = solve_ivp(dSdt_dRdrdt_ivp,t_span=(t_start,t_end),
-                    y0=init_cond_dRdt ,args=args_for_ivp,
-                    method ='LSODA'
-                    )
+                      y0=init_cond_dRdt ,args=args_for_ivp,
+                 method ='RK45'
+                 )
 
 
 
@@ -94,34 +104,55 @@ FLRW_ans = func_FLRW_R_dRdr(time_tot, r, H_0)
 ans_odeint = ans_odeint.T
 R_vec = ans_odeint[0]
 dRdr_vec = ans_odeint[1]
-'''
-print('len(R)=',len(R_vec))
-print('len(dRdr)=',len(dRdr_vec))
 
-print('R_max /R_min=',max(R_vec)/min(R_vec), '\n',
-    'dRdr_max/dRdr_min =',max(dRdr_vec)/min(dRdr_vec))
-'''
 print('H=',H_0, '\n',
     'G=',G,'\n',
-    'rho_FLRW =',rho_FLRW
+    'rho_FLRW =',rho_FLRW,'\n',
+    'min/max of time',min(time_tot),max(time_tot)
+    )
+
+rho_list = []
+
+for i in range(0,len(R_vec)):
+
+    RR = R_vec[i]
+    dRRdr = dRdr_vec[i]
+    args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
+
+    rho_list.append(
+        func_rho( args_list_ODE )/rho_FLRW
     )
 
 plt.figure()
+plt.plot(time_tot,rho_list,label=r'$\rho (t) / \rho_{FLRW}$')
+plt.legend()
+
+
+plt.figure()
+plt.subplot(2,2,1)
 plt.plot(time_tot.T,R_vec,'k',label=r'$R(t,r)_{odeint}$')
 plt.plot(ans_ivp.t,ans_ivp.y[0],'--r',label=r'$R(t,r)_{ivp}$')
-#plt.plot(time_tot, FLRW_ans[0],label=r'$R_{FLRW}$')
+plt.xlabel('time')
+plt.ylabel('R')
 plt.legend()
 
-
-plt.figure()
+plt.subplot(2,2,2)
 plt.plot(time_tot.T,dRdr_vec,'k',label=r'$\left(\frac{\partial R}{\partial r}\right)_{odeint}$')
 plt.plot(ans_ivp.t,ans_ivp.y[1],'--r',label=r'$ \left(\frac{\partial R}{\partial r} \right)_{ivp}$')
+plt.xlabel('time')
+plt.ylabel('dRdr')
 plt.legend()
 
+plt.subplot(2,2,3)
+plt.plot(time_tot, FLRW_ans[0],label=r'$R_{FLRW}$')
+plt.xlabel('time')
+plt.ylabel('R')
+plt.legend()
 
-plt.figure()
-#plt.plot(time_tot, FLRW_ans[0],label=r'$R_{FLRW}$')
+plt.subplot(2,2,4)
 plt.plot(time_tot, FLRW_ans[1],label=r'$a_{FLRW}$')
+plt.xlabel('time')
+plt.ylabel('a - dRdr')
 plt.legend()
 
 plt.show()
