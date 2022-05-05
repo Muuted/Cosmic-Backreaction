@@ -56,18 +56,17 @@ r = r_b         # distance
 dr = 300        # change of r
 
 
+RR = r*a_i
 dRRdr = a_i 
-MM = 1
 EE = 0
 dMMdr = 1
-dRRdr = 1
-dEEdr = 1
-RR = r*a_i
-
+dEEdr = 0
+args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
+MM = (4*np.pi/3)*RR**2*func_rho(args_list)*(1-2*EE/(5*H_0**2))
 
 # A list with all the arguments that is need to feed the functions.
-args_list =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
 
+args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
 time_tot = np.linspace(t_start,t_end,num_steps)#round(t_end/dt*10))
 
 
@@ -87,14 +86,15 @@ for i in range(0,num_interations):
     # the initial value for the function(s) that are being integrated
     init_cond_dRdt = [a_i*r, a_i]
 
-    ans_odeint = scipy.integrate.odeint(dSdt_dRdrdt,t=time_tot,
-                                y0=init_cond_dRdt,args=(args_list_ODE,)
+    ans_odeint = scipy.integrate.odeint(
+            dSdt_dRdrdt,t=time_tot,
+            y0=init_cond_dRdt,args=(args_list_ODE,)
        )
 
-    ans_ivp = solve_ivp(dSdt_dRdrdt_ivp,t_span=(t_start,t_end),
-                      y0=init_cond_dRdt ,args=args_for_ivp,
-                 method ='RK45'
-                 )
+    ans_ivp = solve_ivp(
+            dSdt_dRdrdt_ivp,t_span=(t_start,t_end),
+            y0=init_cond_dRdt ,args=args_for_ivp,method ='RK45'
+        )
 
 
 
@@ -136,8 +136,8 @@ for i in range(0,len(R_vec)):
 plt.figure()
 plt.plot(time_tot,rho_list,label=r'$\rho (t) / \rho_{FLRW}$')
 plt.plot(time_tot,rho_list_v2,'--',label=r'$\rho (t) / \rho_{FLRW}$ _ v2')
-plt.xlim(-0.00001, 0.0050)
-plt.ylim(-0.1e-83 ,1.5e-83)
+#plt.xlim(-0.00001, 0.0050)
+#plt.ylim(-0.1e-83 ,1.5e-83)
 plt.xlabel('Gy')
 plt.ylabel(r'$\rho$')
 plt.legend()
