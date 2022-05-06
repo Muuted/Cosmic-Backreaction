@@ -52,7 +52,7 @@ t_end = t_end/t_end
 num_steps = 10000 # number of steps between t_start and t_end
 num_interations = 1 #number of r's
 dt = 1e3        # time step
-r = r_b         # distance
+r = 0.1         # distance
 dr = 300        # change of r
 
 
@@ -62,7 +62,7 @@ EE = 0
 dMMdr = 1
 dEEdr = 0
 args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
-MM = (4*np.pi/3)*RR**2*func_rho(args_list)*(1-2*EE/(5*H_0**2))
+MM = (4*np.pi/3)*r**3*rho_FLRW*(1-2*EE/(5*H_0**2))
 
 # A list with all the arguments that is need to feed the functions.
 
@@ -136,8 +136,8 @@ for i in range(0,len(R_vec)):
 plt.figure()
 plt.plot(time_tot,rho_list,label=r'$\rho (t) / \rho_{FLRW}$')
 plt.plot(time_tot,rho_list_v2,'--',label=r'$\rho (t) / \rho_{FLRW}$ _ v2')
-#plt.xlim(-0.00001, 0.0050)
-#plt.ylim(-0.1e-83 ,1.5e-83)
+plt.xlim(-0.00001, 0.0050)
+plt.ylim(-0.1e-83 ,1.5e-83)
 plt.xlabel('Gy')
 plt.ylabel(r'$\rho$')
 plt.legend()
