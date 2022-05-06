@@ -14,7 +14,7 @@ one_solar_mass = 1.989e30 #kg
 
 # values of the constants in the eq's
 Lamb = 0
-A = 1e7
+A = 1e-7
 r_b = 5e10
 n = 2
 m = 2
