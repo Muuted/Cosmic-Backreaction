@@ -179,23 +179,29 @@ plt.legend()
 
 plt.show()"""
 
-time_vec, a_ES, rho, rho_ES = Einstein_de_sitter()
+a_ES, rho, rho_ES = Einstein_de_sitter(time_vec=time_tot)
 ans_a_ES = rho_ES
-fig_a = go.Figure()
+t_0 = 14e9 # years
+t_0 = t_0/one_Gy # Gigayears
+t_i = t_0 * a_i**(3/2)
+num_of_steps = 100
+time_vec = np.linspace(t_i,t_0, num_of_steps)
 
+
+fig_a = go.Figure()
 fig_a.add_trace(
     go.Scatter(
             x=time_vec, y=ans_a_ES,#/max(ans_a_ES),
             name="a(t) Einstein"
     )
 )
-'''fig_a.add_trace(
+fig_a.add_trace(
     go.Scatter(
         x=time_tot,
         y=R_vec/max(R_vec),
         name = "LTB R/r"
     )
-)'''
+)
 fig_a.update_layout( title="a(t)",
         xaxis={'title': 'time [Gy]'},
         yaxis={
