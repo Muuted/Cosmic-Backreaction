@@ -1,5 +1,5 @@
 from LTB_model_functions import *
-
+from Einstein_de_sitter_functions import *
 #import scipy
 #from scipy.integrate import solve_ivp
 
@@ -8,7 +8,8 @@ from LTB_model_functions import *
 # units for conversion
 one_Mpc = 3.086e22 # m
 one_Gy = 3.156e16 # s
-one_Gy = 3.156e16/60*60*24*365 # years
+one_year_in_sec = 60*60*24*365 # s
+one_Gy = 3.156e16/one_year_in_sec # years
 one_solar_mass = 1.989e30 #kg
 
 
@@ -62,7 +63,7 @@ EE = 0
 dMMdr = 1
 dEEdr = 0
 args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
-MM = (4*np.pi/3)*r**3*rho_FLRW*(1-2*EE/(5*H_0**2))
+MM = 1#(4*np.pi/3)*r**3*rho_FLRW*(1-2*EE/(5*H_0**2))
 
 # A list with all the arguments that is need to feed the functions.
 
@@ -148,7 +149,8 @@ plt.xlim(-0.00001, 0.0050)
 plt.ylim(-0.1e-83 ,1.5e-83)
 plt.legend()
 """
-plt.figure()
+
+"""plt.figure()
 plt.subplot(2,2,1)
 plt.plot(time_tot.T,R_vec,'k',label=r'$R(t,r)_{odeint}$')
 plt.plot(ans_ivp.t,ans_ivp.y[0],'--r',label=r'$R(t,r)_{ivp}$')
@@ -175,4 +177,51 @@ plt.xlabel('Gy')
 plt.ylabel('a - dRdr')
 plt.legend()
 
-plt.show()
+plt.show()"""
+
+time_vec, ans_a_ES, rho = Einstein_de_sitter()
+fig_a = go.Figure()
+
+
+fig_a.add_trace(
+    go.Scatter(
+            x=time_vec, y=ans_a_ES,#/max(ans_a_ES),
+            name="a(t) Einstein"
+    )
+)
+'''fig_a.add_trace(
+    go.Scatter(
+        x=time_tot,
+        y=R_vec/max(R_vec),
+        name = "LTB R/r"
+    )
+)'''
+fig_a.update_layout( title="a(t)",
+        xaxis={'title': 'time [Gy]'},
+        yaxis={
+            'title': 'a(t)', 
+            'tickformat':'e'
+        },
+        legend_title="Legend Title"
+        )
+fig_a.show()
+
+
+'''
+fig_rho = go.Figure()
+fig_rho.add_trace(
+    go.Scatter(
+    x=time_vec, y=rho
+    )
+)
+
+fig_rho.update_layout( 
+    title="rho",
+    xaxis={'title': 'time [Gy]'},
+    yaxis={'title': 'rho(t)',
+            'tickformat':'e'
+            }
+)
+
+fig_rho.show()
+'''
