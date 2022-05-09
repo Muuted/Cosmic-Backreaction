@@ -179,9 +179,9 @@ plt.legend()
 
 plt.show()"""
 
-time_vec, ans_a_ES, rho = Einstein_de_sitter()
+time_vec, a_ES, rho, rho_ES = Einstein_de_sitter()
+ans_a_ES = rho_ES
 fig_a = go.Figure()
-
 
 fig_a.add_trace(
     go.Scatter(

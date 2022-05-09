@@ -17,14 +17,7 @@ import plotly as py
 import plotly.graph_objects as go
 
 def Einstein_de_sitter():
-    # units for conversion
-    one_Mpc = 3.086e22 # m
-    one_Gy = 3.156e16 # s
-    one_Gy = one_Gy/(60*60*24*365) # years
-    print('Gy in years =',one_Gy)
-    one_solar_mass = 1.989e30 #kg
-
-
+  
     def func_a_Ein_Sitter(a,G):
 
         const = np.sqrt(8*np.pi*G/3)
@@ -58,7 +51,7 @@ def Einstein_de_sitter():
 
 
     # initial conditions 
-    a_i = 1/1100
+    a_i = 1# 1/1100
     rho_i = 3*H_0**2/(8*np.pi*G)
 
     init_cond = [a_i, rho_i]
@@ -68,20 +61,20 @@ def Einstein_de_sitter():
     t_i = t_0 * a_i**(3/2)
 
     
-    num_of_steps = 10000
+    num_of_steps = 100
     time_vec = np.linspace(t_i,t_0, num_of_steps)
 
     ans_a_ES = scipy.integrate.odeint(func=dSdt_a_ES,
                                         y0=init_cond, t=time_vec, args=(G,)
                                         )
 
-
     
     ans_a_ES = ans_a_ES.T
 
+    print(ans_a_ES.shape)
     a_ES = ans_a_ES[0].T
     rho_ES = ans_a_ES[1].T
-    
+    print(rho_ES)
 
 
     # finding rho
@@ -91,14 +84,16 @@ def Einstein_de_sitter():
         rho.append(func_rho_Ein_Sitter(a_de_sitter))
 
 
-    print(max(rho_ES)/min(rho_ES))
-    print(max(a_ES)/min(a_ES))
-
-    plt.figure()
-    plt.plot(time_vec,rho_ES)
-    plt.show()
     list = [time_vec, a_ES, rho, rho_ES]
     return list
 
-time_vec, ans_a_ES, rho = Einstein_de_sitter()
+time_vec, a_ES, rho,rho_ES = Einstein_de_sitter()
 
+
+print('rho_max/rho_min=',max(rho_ES)/min(rho_ES))
+print('a_max/a_min=',max(a_ES)/min(a_ES))
+
+plt.figure()
+#plt.plot(time_vec,rho_ES)
+plt.plot(time_vec,a_ES)
+plt.show()
