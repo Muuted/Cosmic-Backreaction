@@ -2,53 +2,9 @@ from LTB_model_functions import *
 from Einstein_de_sitter_functions import *
 #import scipy
 #from scipy.integrate import solve_ivp
+from The_constants import *
+Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0 = func_constants()
 
-
-
-# units for conversion
-one_Mpc = 3.086e22 # m
-one_Gy = 3.156e16 # s
-one_year_in_sec = 60*60*24*365 # s
-one_Gy = 3.156e16/one_year_in_sec # years
-one_solar_mass = 1.989e30 #kg
-
-
-# values of the constants in the eq's
-Lamb = 0
-A = 1e-7
-r_b = 5e10
-n = 2
-m = 2
-
-H_0 = 68 # km/s/Mpc -> Mpc/Gyr
-H_0 = 68*1e3*one_Gy/one_Mpc # Mpc/Gy
-
-G = 6.67e-11  #  m^3/kg/s^2
-G = 6.67e-11*one_solar_mass*one_Gy**2/(one_Mpc**3) # Mpc^3/M_o*Gy^2
-
-rho_FLRW =8.7e27 # kg/m^3 # This is the critical density Ryden in the back
-rho_FLRW = 8.7e27*one_Mpc**3/one_solar_mass # M_o/Mpc^3
-
-
-# The unit for rho_FLRW is fond on the website: 
-# http://astroweb.case.edu/ssm/astroconstants.html
-#   #rho_FLRW = 1.5e-7
-# right above the Galactic untis
-
-
-a_i = 1/1100    #initial scale factor.
-t_end = 14e9    # end time (our time) in years
-t_end = t_end/one_Gy # end time in Gy
-
-t_start= 370e3   # start time years  found on -> https://en.wikipedia.org/wiki/Chronology_of_the_universe
-                 # under: The Early Universe
-t_start = t_start/one_Gy # start time in Gy
-
-
-# Normalizing the time vector.
-# So is ends at one, our time
-t_start = t_start/t_end
-t_end = t_end/t_end
 
 num_steps = 10000 # number of steps between t_start and t_end
 num_interations = 1 #number of r's

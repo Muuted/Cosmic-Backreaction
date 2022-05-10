@@ -4,12 +4,11 @@ import matplotlib.pyplot as plt
 from scipy.integrate import quad
 from scipy.integrate import solve_ivp
 import numpy as np
-from constants import *
-
+from The_constants import *
 import plotly as py
 import plotly.graph_objects as go
 
-def Einstein_de_sitter():#time_vec):
+def Einstein_de_sitter(num_of_steps):#time_vec):
   
     def func_a_Ein_Sitter(a,G):
 
@@ -43,20 +42,9 @@ def Einstein_de_sitter():#time_vec):
 
         return rho_of_t
 
+    # ----------------------------- importing the constants--------------------------------
+    Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0 = func_constants()
 
-    # initial conditions 
-    a_i =  1/1100
-    rho_i = 3*H_0**2/(8*np.pi*G)
-
-    init_cond = [a_i, rho_i]
-
-    t_0 = 14e9 # years
-    t_0 = t_0/one_Gy # Gigayears
-    t_0 = 2/(3*H_0)
-    t_i = t_0 * a_i**(3/2)
-    
-
-    num_of_steps = 100
     time_vec = np.linspace(t_i,t_0, num_of_steps)
 
     ans_a_ES = scipy.integrate.odeint(func=dSdt_a_ES,
@@ -70,7 +58,6 @@ def Einstein_de_sitter():#time_vec):
 
     # finding rho
     rho = np.zeros(len(a_ES))
-    #rho = []
     for i in range(len(a_ES)):
         a_de_sitter = a_ES[i]
         rho[i]=func_rho_Ein_Sitter(a_de_sitter)
