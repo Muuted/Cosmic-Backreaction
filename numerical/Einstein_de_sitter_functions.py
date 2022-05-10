@@ -14,7 +14,7 @@ from constants import *
 import plotly as py
 import plotly.graph_objects as go
 
-def Einstein_de_sitter(time_vec):
+def Einstein_de_sitter():#time_vec):
   
     def func_a_Ein_Sitter(a,G):
 
@@ -59,7 +59,7 @@ def Einstein_de_sitter(time_vec):
     t_i = t_0 * a_i**(3/2)
 
     num_of_steps = 100
-    #time_vec = np.linspace(t_i,t_0, num_of_steps)
+    time_vec = np.linspace(t_i,t_0, num_of_steps)
 
     ans_a_ES = scipy.integrate.odeint(func=dSdt_a_ES,
                                         y0=init_cond, t=time_vec, args=(G,)
@@ -78,18 +78,17 @@ def Einstein_de_sitter(time_vec):
         rho[i]=func_rho_Ein_Sitter(a_de_sitter)
 
     print('time shape=',time_vec.shape)
-    list = [a_ES, rho, rho_ES]
+    list = [a_ES, rho, rho_ES, time_vec]
     return list
-"""
+
 lit = Einstein_de_sitter()
 
 
 a_ES = lit[0]
 rho = lit[1]
 rho_ES = lit[2]
-t_i = lit[3]
-t_0 = lit[4]
-num_of_steps = lit[5]
+time_vec = lit[3]
+
 t_0 = 14e9 # years
 t_0 = t_0/one_Gy # Gigayears
 t_i = t_0 * a_i**(3/2)
@@ -105,4 +104,4 @@ print('a_max/a_min=',max(a_ES)/min(a_ES))
 plt.figure()
 plt.plot(time_vec,rho_ES)
 plt.plot(time_vec,a_ES)
-plt.show()"""
+plt.show()
