@@ -3,8 +3,10 @@ from Einstein_de_sitter_functions import *
 #import scipy
 #from scipy.integrate import solve_ivp
 from The_constants import *
-Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0 = func_constants()
+import plotly as py
+import plotly.graph_objects as go
 
+Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0, c = func_constants()
 
 num_steps = 10000 # number of steps between t_start and t_end
 num_interations = 1 #number of r's
@@ -18,13 +20,14 @@ dRRdr = a_i
 EE = 0
 dMMdr = 1
 dEEdr = 0
-args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
+args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb]
 MM = 1#(4*np.pi/3)*r**3*rho_FLRW*(1-2*EE/(5*H_0**2))
 
 # A list with all the arguments that is need to feed the functions.
+args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb]
 
-args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
-time_tot = np.linspace(t_start,t_end,num_steps)#round(t_end/dt*10))
+# Our time vector for the integration
+time_tot = np.linspace(t_i,t_0,num_steps)
 
 
 for i in range(0,num_interations):
@@ -36,9 +39,9 @@ for i in range(0,num_interations):
     dMMdr= dMdr(args_list)
 
     # The constants under integration
-    args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
+    args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb]
 
-    args_for_ivp = (r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb)
+    args_for_ivp = (r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb)
     
     # the initial value for the function(s) that are being integrated
     init_cond_dRdt = [a_i*r, a_i]
@@ -49,8 +52,8 @@ for i in range(0,num_interations):
        )
 
     ans_ivp = solve_ivp(
-            dSdt_dRdrdt_ivp,t_span=(t_start,t_end),
-            y0=init_cond_dRdt ,args=args_for_ivp,method ='RK45'
+            dSdt_dRdrdt_ivp,t_span=(t_i,t_0),
+            y0=init_cond_dRdt ,args=args_for_ivp, method ='RK45'
         )
 
 
@@ -64,7 +67,7 @@ dRdr_vec = ans_odeint[1]
 
 print('H=',H_0, '\n',
     'G=',G,'\n',
-    'rho_FLRW =',rho_FLRW,'\n',
+    'rho_FLRW =',rho_c0,'\n',
     'min/max of time',min(time_tot),max(time_tot)
     )
 
@@ -74,18 +77,18 @@ for i in range(0,len(R_vec)):
 
     RR = R_vec[i]
     dRRdr = dRdr_vec[i]
-    args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
+    args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb]
 
     rho_list.append(
-        func_rho( args_list_ODE )/rho_FLRW
+        func_rho( args_list_ODE )/rho_c0
     )
 
     EE = 0
     dEEdr = 0
-    args_list_ODE_v2 =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H_0, Lamb]
+    args_list_ODE_v2 =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb]
 
     rho_list_v2.append(
-        func_rho( args_list_ODE_v2 )/rho_FLRW
+        func_rho( args_list_ODE_v2 )/rho_c0
     )
 
 
@@ -135,20 +138,20 @@ plt.legend()
 
 plt.show()"""
 
-a_ES, rho, rho_ES = Einstein_de_sitter(time_vec=time_tot)
+a_ES, rho, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 ans_a_ES = rho_ES
-t_0 = 14e9 # years
+"""t_0 = 14e9 # years
 t_0 = t_0/one_Gy # Gigayears
 t_i = t_0 * a_i**(3/2)
-num_of_steps = 100
-time_vec = np.linspace(t_i,t_0, num_of_steps)
+num_of_steps = 100"""
+#time_vec = np.linspace(t_i,t_0, num_of_steps)
 
 
 fig_a = go.Figure()
 fig_a.add_trace(
     go.Scatter(
-            x=time_vec, y=ans_a_ES,#/max(ans_a_ES),
-            name="a(t) Einstein"
+            x=time_vec, y=a_ES,#/max(ans_a_ES),
+            name="a(t)Einstein"
     )
 )
 fig_a.add_trace(
