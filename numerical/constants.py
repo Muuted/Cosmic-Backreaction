@@ -24,7 +24,7 @@ m = 2
 H_0 = 68 # km/s/Mpc -> Mpc/Gyr
 H_0 = 68*1e3*one_Gy/one_Mpc # Mpc/Gy
 #print('H_0 = ',H_0)
-H_0 = 1/13.4 # 1/Gy
+#H_0 = 1/13.4 # 1/Gy
 #print('H_0 = ',H_0)
 
 
@@ -33,7 +33,7 @@ G = G*one_solar_mass*one_Gy**2/(one_Mpc**3) # Mpc^3/M_o*Gy^2
 
 rho_FLRW = 3*H_0**2/(8*np.pi*G) # M_0 / Mpc^3 should be the right units as G and H_0 are  
 #8.7e27 # kg/m^3 # This is the critical density Ryden in the back
-#print('rho =',rho_FLRW)
+print('rho =',rho_FLRW)
 
 #rho_FLRW = rho_FLRW*one_Mpc**3/one_solar_mass # M_o/Mpc^3
 #print('rho = ',rho_FLRW)

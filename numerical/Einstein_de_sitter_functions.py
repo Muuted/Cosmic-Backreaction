@@ -25,13 +25,14 @@ def Einstein_de_sitter():#time_vec):
 
         return drhodt
 
-    def dSdt_a_ES(S,t,G):
+    def dSdt_a_ES(S,t,G,t_0):
         a,rho = S
 
         dadt = func_a_Ein_Sitter(a, G)
 
         drhodt = func_drhodt(a,dadt)
-
+        a_dot = ((2/3)*(1/t_0**(2/3)*t**(1/3)))
+        print(dadt/a_dot)
         return [dadt, drhodt]
 
     def func_rho_Ein_Sitter(a):
@@ -44,20 +45,22 @@ def Einstein_de_sitter():#time_vec):
 
 
     # initial conditions 
-    a_i = 1# 1/1100
+    a_i =  1/1100
     rho_i = 3*H_0**2/(8*np.pi*G)
 
     init_cond = [a_i, rho_i]
 
     t_0 = 14e9 # years
     t_0 = t_0/one_Gy # Gigayears
+    t_0 = 2/(3*H_0)
     t_i = t_0 * a_i**(3/2)
+    
 
     num_of_steps = 100
     time_vec = np.linspace(t_i,t_0, num_of_steps)
 
     ans_a_ES = scipy.integrate.odeint(func=dSdt_a_ES,
-                                        y0=init_cond, t=time_vec, args=(G,)
+                                        y0=init_cond, t=time_vec, args=(G,t_0)
                                         )
     
     ans_a_ES = ans_a_ES.T
@@ -89,14 +92,17 @@ t_0 = t_0/one_Gy # Gigayears
 t_i = t_0 * a_i**(3/2)
 
 num_of_steps = 100
-time_vec = np.linspace(t_i,t_0, num_of_steps)
+#time_vec = np.linspace(t_i,t_0, num_of_steps)
 
 print('time shape=',time_vec.shape)
 print('a Es shape',a_ES.shape)
 print('rho_max/rho_min=',max(rho_ES)/min(rho_ES))
 print('a_max/a_min=',max(a_ES)/min(a_ES))
 
+for i in range(0,14):
+    a = (2/3)*(1/())
+
 plt.figure()
-plt.plot(time_vec,rho_ES)
+#plt.plot(time_vec,rho_ES)
 plt.plot(time_vec,a_ES)
 plt.show()
