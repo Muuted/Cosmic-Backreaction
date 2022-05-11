@@ -37,8 +37,6 @@ def Einstein_de_sitter(num_of_steps):#time_vec):
 
         a_dot = (2/3)/(t_0**(2/3)*t**(1/3))
         a_func = (t/t_0)**(2/3)
-        #print(a_func)
-        #print(dadt/a_dot)
 
         return [dadt, drhodt]
 
@@ -74,7 +72,7 @@ def Einstein_de_sitter(num_of_steps):#time_vec):
         a_de_sitter = a_ES[i]
         rho[i]=func_rho_Ein_Sitter(a_de_sitter)
 
-    print('time shape=',time_vec.shape)
+    #print('time shape=',time_vec.shape)
     list = [a_ES, rho, rho_ES, time_vec]
 
     return list

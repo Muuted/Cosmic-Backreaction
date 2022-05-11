@@ -11,7 +11,7 @@ Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0, c = func_constants()
 num_steps = 10000 # number of steps between t_start and t_end
 num_interations = 1 #number of r's
 dt = 1e3        # time step
-r = r_b         # distance
+r = 10         # distance
 dr = 300        # change of r
 
 
@@ -22,7 +22,6 @@ RR = r*a_i
 dRRdr = a_i
 MM = (4*np.pi*G)/(c**4)*rho_c0*r
 dMMdr = (4*np.pi*G)/(c**4)*rho_c0 # because its  dM/dr for the initial conditions 
-
 
 
 # A list with all the arguments that is need to feed the functions.
@@ -55,6 +54,7 @@ for i in range(0,num_interations):
 #FLRW_ans = func_FLRW_R_dRdr(time_tot, r, H_0)
 
 
+
 # The results from our odeint  above
 ans_odeint = ans_odeint.T
 
@@ -69,24 +69,34 @@ a_ES, rho, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 ans_a_ES = rho_ES
 
 plt.figure()
-plt.subplot(2,2,1)
-plt.plot(time_tot,ans_RR)
-plt.title('RR')
+plt.subplot(2,3,1)
+plt.plot(time_tot,ans_RR/r)
+plt.title('R/r')
 
+plt.subplot(2,3,2)
+plt.plot(time_vec,a_ES)
+plt.title('a(t) Ein de Sitter')
 
-plt.subplot(2,2,2)
+plt.subplot(2,3,3)
+plt.plot(time_tot,ans_RR/r,label='R(t,r)/r')
+plt.plot(time_vec,a_ES,label='a(t) EdS')
+plt.title('R vs a EdS')
+plt.legend()
+
+plt.subplot(2,3,4)
 plt.plot(time_tot,ans_dRdr)
 plt.title('dRdr')
 
 
-plt.subplot(2,2,3)
+plt.subplot(2,3,5)
 plt.plot(time_tot,ans_M)
 plt.title('M')
 
 
-plt.subplot(2,2,4)
+plt.subplot(2,3,6)
 plt.plot(time_tot,ans_rho)
 plt.title('rho')
+
 
 plt.show()
 """
