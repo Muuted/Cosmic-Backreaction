@@ -78,8 +78,9 @@ def Einstein_de_sitter(num_of_steps):#time_vec):
     list = [a_ES, rho, rho_ES, time_vec]
 
     return list
-
 """
+Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0, c = func_constants()
+
 num_of_steps = 10000
 
 lit = Einstein_de_sitter(num_of_steps=num_of_steps)
@@ -88,7 +89,6 @@ a_ES = lit[0]
 rho = lit[1]
 rho_ES = lit[2]
 time_vec = lit[3]
-
 
 
 print('time shape=',time_vec.shape)

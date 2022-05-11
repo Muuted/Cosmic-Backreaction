@@ -25,16 +25,17 @@ r = List[0]
     A = List[12]
     H = List[13]
     Lamb = List[14]
+    c = List[15]
 '''
 
-def E(List):
-    
+def func_E(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+    """
     r = List[0]
     r_b = List[9]
     n = List[10]
     m = List[11]
     A = List[12]
-    
+    """
     if r <= r_b:
 
         EE = A * r ** 2 * ((r / r_b) ** n - 1) ** m
@@ -46,7 +47,87 @@ def E(List):
     return EE
 
 
+def func_dEdr(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+    """r = List[0]
+    r_b = List[9]
+    n = List[10]
+    m = List[11]
+    A = List[12]"""
+    
+    dEEdr1 = 2 * A * r * ((r / r_b) ** n - 1) ** m
 
+    dEEdr2 = m * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)
+
+    dEEdr = dEEdr1 + dEEdr2
+    return dEEdr
+
+
+def func_rho(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+    """RR = List[1]
+    dMMdr = List[4]
+    dRRdr = List[5]
+    G = List[7]"""
+    
+    kappa = (8*np.pi*G)/(c**4)
+
+    rho = (2/kappa)*(dMMdr/(RR**2*dRRdr))
+
+    return rho
+
+def func_dMMdr(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+
+    const = (4*np.pi*G)/(c**4)
+
+    dMMdr = const * RR**2 * dRRdr
+
+    return dMMdr
+
+
+def func_dRdt(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+    '''
+    RR = List[1]
+    EE = List[2]
+    MM = List[3]
+    Lamb = List[14]'''
+
+    dRRdt = np.sqrt(2 * MM / RR + 2 * EE + (Lamb / 3) * RR ** 2)
+
+    return dRRdt
+
+
+def func_dRdrdt(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+    
+    '''
+    RR = List[1]
+    EE = List[2]
+    MM = List[3]
+    dMMdr = List[4]
+    dRRdr = List[5]
+    dEEdr = List[6]
+    Lamb = List[14]
+    '''
+    
+    sqrts = np.sqrt(    2*MM/RR +2*EE + (Lamb/3)*RR**2  )
+
+    extra = 2*dMMdr/RR - 4*MM*dRRdr/RR**2 +2*dEEdr + 2*Lamb*RR*dRRdr/3
+
+    return extra/sqrts
+
+
+def func_LTB_dSdt(S,t,p):
+    RR, dRRdr, MM, rho = S
+    r, dMMdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c = p
+
+    dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c)
+    dRdt = func_dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb, c)
+    dMdr = func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb, c)
+    rho = func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb, c)
+
+    return_list = [ dRdrdt, dRdt, dMdr, rho ]
+    return  return_list
+
+
+"""
 def M(List):
     
     RR = List[1]
@@ -58,23 +139,6 @@ def M(List):
     MM =( 4 * np.pi * RR ** 3 * rho_FLRW / 3) * (1 - 2 * EE / (5 * H ** 2 * RR ** 2))
 
     return MM
-
-
-
-def dEdr(List):
-    r = List[0]
-    r_b = List[9]
-    n = List[10]
-    m = List[11]
-    A = List[12]
-    
-    dEEdr1 = 2 * A * r * ((r / r_b) ** n - 1) ** m
-
-    dEEdr2 = m * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)
-
-    return dEEdr1 + dEEdr2
-
-
 
 def dMdr(List):
     
@@ -100,38 +164,12 @@ def func_rho(List):
 
     rrho = (1 / (4 * np.pi * G)) * dMMdr / (RR ** 2 * dRRdr)
 
+
     return rrho
+    """
 
 
-def dRdt(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
-    '''
-    RR = List[1]
-    EE = List[2]
-    MM = List[3]
-    Lamb = List[14]'''
 
-    dRRdt = np.sqrt(2 * MM / RR + 2 * EE + (Lamb / 3) * RR ** 2)
-
-    return dRRdt
-
-
-def ddRdrdt(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb):
-    
-    '''
-    RR = List[1]
-    EE = List[2]
-    MM = List[3]
-    dMMdr = List[4]
-    dRRdr = List[5]
-    dEEdr = List[6]
-    Lamb = List[14]
-    '''
-    
-    sqrts = np.sqrt(    2*MM/RR +2*EE + (Lamb/3)*RR**2  )
-
-    extra = 2*dMMdr/RR - 4*MM*dRRdr/RR**2 +2*dEEdr + 2*Lamb*RR*dRRdr/3
-
-    return extra/sqrts
 
 
 

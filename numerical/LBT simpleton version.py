@@ -11,20 +11,20 @@ Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0, c = func_constants()
 num_steps = 10000 # number of steps between t_start and t_end
 num_interations = 1 #number of r's
 dt = 1e3        # time step
-r = 0.1         # distance
+r = r_b         # distance
 dr = 300        # change of r
 
 
+# Initial condition for the functions
 RR = r*a_i
 dRRdr = a_i 
 EE = 0
 dMMdr = 1
 dEEdr = 0
-args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb]
-MM = 1#(4*np.pi/3)*r**3*rho_FLRW*(1-2*EE/(5*H_0**2))
+MM = 5
 
 # A list with all the arguments that is need to feed the functions.
-args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb]
+args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c]
 
 # Our time vector for the integration
 time_tot = np.linspace(t_i,t_0,num_steps)
@@ -39,9 +39,9 @@ for i in range(0,num_interations):
     dMMdr= dMdr(args_list)
 
     # The constants under integration
-    args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb]
+    args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c]
 
-    args_for_ivp = (r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb)
+    args_for_ivp = (r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c)
     
     # the initial value for the function(s) that are being integrated
     init_cond_dRdt = [a_i*r, a_i]
@@ -77,7 +77,7 @@ for i in range(0,len(R_vec)):
 
     RR = R_vec[i]
     dRRdr = dRdr_vec[i]
-    args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb]
+    args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c]
 
     rho_list.append(
         func_rho( args_list_ODE )/rho_c0
@@ -85,7 +85,7 @@ for i in range(0,len(R_vec)):
 
     EE = 0
     dEEdr = 0
-    args_list_ODE_v2 =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb]
+    args_list_ODE_v2 =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c]
 
     rho_list_v2.append(
         func_rho( args_list_ODE_v2 )/rho_c0
@@ -157,7 +157,7 @@ fig_a.add_trace(
 fig_a.add_trace(
     go.Scatter(
         x=time_tot,
-        y=R_vec/max(R_vec),
+        y=R_vec/r,
         name = "LTB R/r"
     )
 )
