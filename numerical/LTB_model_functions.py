@@ -28,7 +28,7 @@ r = List[0]
     c = List[15]
 '''
 
-def func_E(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+def func_E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
     """
     r = List[0]
     r_b = List[9]
@@ -47,7 +47,7 @@ def func_E(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H
     return EE
 
 
-def func_dEdr(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+def func_dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
     """r = List[0]
     r_b = List[9]
     n = List[10]
@@ -62,19 +62,19 @@ def func_dEdr(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A
     return dEEdr
 
 
-def func_rho(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+def func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
     """RR = List[1]
     dMMdr = List[4]
     dRRdr = List[5]
     G = List[7]"""
     
-    kappa = (8*np.pi*G)/(c**4)
+    kappa = (8*np.pi*G)/(c**4)*rho_c0
 
     rho = (2/kappa)*(dMMdr/(RR**2*dRRdr))
 
     return rho
 
-def func_dMMdr(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+def func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
 
     const = (4*np.pi*G)/(c**4)
 
@@ -83,7 +83,7 @@ def func_dMMdr(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, 
     return dMMdr
 
 
-def func_dRdt(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+def func_dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
     '''
     RR = List[1]
     EE = List[2]
@@ -95,7 +95,7 @@ def func_dRdt(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A
     return dRRdt
 
 
-def func_dRdrdt(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
     
     '''
     RR = List[1]
@@ -116,14 +116,15 @@ def func_dRdrdt(r_func, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m,
 
 def func_LTB_dSdt(S,t,p):
     RR, dRRdr, MM, rho = S
-    r, dMMdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c = p
+    #r, EE,dEEdr, dMMdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c = p
+    r, EE, dEEdr, dMMdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c = p
 
-    dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c)
-    dRdt = func_dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb, c)
-    dMdr = func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb, c)
-    rho = func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb, c)
+    dRdt = func_dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
+    dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c)
+    dMMdr = func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
+    rho = func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
 
-    return_list = [ dRdrdt, dRdt, dMdr, rho ]
+    return_list = [ dRdt, dRdrdt, dMMdr, rho ]
     return  return_list
 
 
@@ -165,13 +166,7 @@ def func_rho(List):
     rrho = (1 / (4 * np.pi * G)) * dMMdr / (RR ** 2 * dRRdr)
 
 
-    return rrho
-    """
-
-
-
-
-
+    return rrho  
 
 def dSdt_dRdrdt(S,t,p):
     R, dRdr = S
@@ -192,7 +187,7 @@ def dSdt_dRdrdt_ivp(t,S,r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n,
     return [ans_R, ans_dRdr]
 
 
-
+ """
 # For the de Sitter model universe, for comparison with, our model of the universe. 
 
 def func_FLRW_R_dRdr(t_vec,r_func,H_0):

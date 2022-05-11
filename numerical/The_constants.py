@@ -9,7 +9,7 @@ def func_constants():
     
     # values of the constants in the eq's
     Lamb = 0
-    A = 1e7
+    A = 1e-7
     r_b = 5e10
     n = 2
     m = 2
@@ -46,7 +46,5 @@ def func_constants():
     const_list = [Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0,c]
     return const_list
 
-"""
+
 Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0, c= func_constants()
-print(t_0, H_0,rho_c0)
-#print(Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0)"""

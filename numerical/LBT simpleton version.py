@@ -16,15 +16,17 @@ dr = 300        # change of r
 
 
 # Initial condition for the functions
-RR = r*a_i
-dRRdr = a_i 
 EE = 0
-dMMdr = 1
 dEEdr = 0
-MM = 5
+RR = r*a_i
+dRRdr = a_i
+MM = (4*np.pi*G)/(c**4)*rho_c0*r
+dMMdr = (4*np.pi*G)/(c**4)*rho_c0 # because its  dM/dr for the initial conditions 
+
+
 
 # A list with all the arguments that is need to feed the functions.
-args_list =[r, RR, EE, 1, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c]
+args_list =[r, EE, dEEdr, dMMdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c]
 
 # Our time vector for the integration
 time_tot = np.linspace(t_i,t_0,num_steps)
@@ -33,44 +35,119 @@ time_tot = np.linspace(t_i,t_0,num_steps)
 for i in range(0,num_interations):
     ans = []
     #The initial conditions are found for each r, and used in the ODE int integration
-    EE = E(args_list)
-    MM = M(args_list)
-    dEEdr = dEdr(args_list)
-    dMMdr= dMdr(args_list)
+    init_cond_dRdt = [RR, dRRdr, MM, rho_c0 ]
 
-    # The constants under integration
-    args_list_ODE =[r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c]
+    ans_odeint = scipy.integrate.odeint(func_LTB_dSdt, 
+            y0=init_cond_dRdt, 
+            t=time_tot,
+            args=(args_list,)
+            )
 
-    args_for_ivp = (r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c)
-    
-    # the initial value for the function(s) that are being integrated
-    init_cond_dRdt = [a_i*r, a_i]
-
-    ans_odeint = scipy.integrate.odeint(
-            dSdt_dRdrdt,t=time_tot,
-            y0=init_cond_dRdt,args=(args_list_ODE,)
-       )
-
+    """
     ans_ivp = solve_ivp(
             dSdt_dRdrdt_ivp,t_span=(t_i,t_0),
             y0=init_cond_dRdt ,args=args_for_ivp, method ='RK45'
         )
+    """
 
 
 
-FLRW_ans = func_FLRW_R_dRdr(time_tot, r, H_0)
+#FLRW_ans = func_FLRW_R_dRdr(time_tot, r, H_0)
 
 
+# The results from our odeint  above
 ans_odeint = ans_odeint.T
-R_vec = ans_odeint[0]
-dRdr_vec = ans_odeint[1]
 
-print('H=',H_0, '\n',
-    'G=',G,'\n',
-    'rho_FLRW =',rho_c0,'\n',
-    'min/max of time',min(time_tot),max(time_tot)
+ans_RR = ans_odeint[0]
+ans_dRdr = ans_odeint[1]
+ans_M = ans_odeint[2]
+ans_rho = ans_odeint[3]
+
+
+# Results for the Einstein de Sitter model 
+a_ES, rho, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
+ans_a_ES = rho_ES
+
+plt.figure()
+plt.subplot(2,2,1)
+plt.plot(time_tot,ans_RR)
+plt.title('RR')
+
+
+plt.subplot(2,2,2)
+plt.plot(time_tot,ans_dRdr)
+plt.title('dRdr')
+
+
+plt.subplot(2,2,3)
+plt.plot(time_tot,ans_M)
+plt.title('M')
+
+
+plt.subplot(2,2,4)
+plt.plot(time_tot,ans_rho)
+plt.title('rho')
+
+plt.show()
+"""
+
+fig_a = go.Figure()
+fig_a.add_trace(
+    go.Scatter(
+            x=time_vec, y=a_ES,
+            name='a(t)Einstein'
     )
+)
+fig_a.add_trace(
+    go.Scatter(
+        x=time_tot,
+        y=ans_RR,
+        name = "LTB R/r"
+    )
+)
+fig_a.update_layout( title="a(t)",
+        xaxis={'title': 'time [Gy]'},
+        yaxis={
+            'title': 'a(t)', 
+            'tickformat':'e'
+        },
+        legend_title="Legend Title"
+        )
+fig_a.show()
 
+"""
+'''
+fig_rho = go.Figure()
+fig_rho.add_trace(
+    go.Scatter(
+    x=time_vec, y=rho
+    )
+)
+
+fig_rho.update_layout( 
+    title="rho",
+    xaxis={'title': 'time [Gy]'},
+    yaxis={'title': 'rho(t)',
+            'tickformat':'e'
+            }
+)
+
+fig_rho.show()
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 rho_list = []
 rho_list_v2 = []
 for i in range(0,len(R_vec)):
@@ -90,103 +167,51 @@ for i in range(0,len(R_vec)):
     rho_list_v2.append(
         func_rho( args_list_ODE_v2 )/rho_c0
     )
-
-
-
-plt.figure()
-plt.plot(time_tot,rho_list,label=r'$\rho (t) / \rho_{FLRW}$')
-plt.plot(time_tot,rho_list_v2,'--',label=r'$\rho (t) / \rho_{FLRW}$ _ v2')
-plt.xlim(-0.00001, 0.0050)
-plt.ylim(-0.1e-83 ,1.5e-83)
-plt.xlabel('Gy')
-plt.ylabel(r'$\rho$')
-plt.legend()
-"""
-plt.figure()
-plt.plot(time_tot,rho_list_v2,label=r'$\rho (t) / \rho_{FLRW}$ _ v2')
-plt.xlim(-0.00001, 0.0050)
-plt.ylim(-0.1e-83 ,1.5e-83)
-plt.legend()
 """
 
-"""plt.figure()
-plt.subplot(2,2,1)
-plt.plot(time_tot.T,R_vec,'k',label=r'$R(t,r)_{odeint}$')
-plt.plot(ans_ivp.t,ans_ivp.y[0],'--r',label=r'$R(t,r)_{ivp}$')
-plt.xlabel('Gy')
-plt.ylabel('R')
-plt.legend()
+def sdfsdf():
+    plt.figure()
+    plt.plot(time_tot,rho_list,label=r'$\rho (t) / \rho_{FLRW}$')
+    plt.plot(time_tot,rho_list_v2,'--',label=r'$\rho (t) / \rho_{FLRW}$ _ v2')
+    plt.xlim(-0.00001, 0.0050)
+    plt.ylim(-0.1e-83 ,1.5e-83)
+    plt.xlabel('Gy')
+    plt.ylabel(r'$\rho$')
+    plt.legend()
+    """
+    plt.figure()
+    plt.plot(time_tot,rho_list_v2,label=r'$\rho (t) / \rho_{FLRW}$ _ v2')
+    plt.xlim(-0.00001, 0.0050)
+    plt.ylim(-0.1e-83 ,1.5e-83)
+    plt.legend()
+    """
 
-plt.subplot(2,2,2)
-plt.plot(time_tot.T,dRdr_vec,'k',label=r'$\left(\frac{\partial R}{\partial r}\right)_{odeint}$')
-plt.plot(ans_ivp.t,ans_ivp.y[1],'--r',label=r'$ \left(\frac{\partial R}{\partial r} \right)_{ivp}$')
-plt.xlabel('Gy')
-plt.ylabel('dRdr')
-plt.legend()
+    """
+    plt.figure()
+    plt.subplot(2,2,1)
+    plt.plot(time_tot.T,R_vec,'k',label=r'$R(t,r)_{odeint}$')
+    plt.plot(ans_ivp.t,ans_ivp.y[0],'--r',label=r'$R(t,r)_{ivp}$')
+    plt.xlabel('Gy')
+    plt.ylabel('R')
+    plt.legend()
 
-plt.subplot(2,2,3)
-plt.plot(time_tot, FLRW_ans[0],label=r'$R_{FLRW}$')
-plt.xlabel('Gy')
-plt.ylabel('R')
-plt.legend()
+    plt.subplot(2,2,2)
+    plt.plot(time_tot.T,dRdr_vec,'k',label=r'$\left(\frac{\partial R}{\partial r}\right)_{odeint}$')
+    plt.plot(ans_ivp.t,ans_ivp.y[1],'--r',label=r'$ \left(\frac{\partial R}{\partial r} \right)_{ivp}$')
+    plt.xlabel('Gy')
+    plt.ylabel('dRdr')
+    plt.legend()
 
-plt.subplot(2,2,4)
-plt.plot(time_tot, FLRW_ans[1],label=r'$a_{FLRW}$')
-plt.xlabel('Gy')
-plt.ylabel('a - dRdr')
-plt.legend()
+    plt.subplot(2,2,3)
+    plt.plot(time_tot, FLRW_ans[0],label=r'$R_{FLRW}$')
+    plt.xlabel('Gy')
+    plt.ylabel('R')
+    plt.legend()
 
-plt.show()"""
+    plt.subplot(2,2,4)
+    plt.plot(time_tot, FLRW_ans[1],label=r'$a_{FLRW}$')
+    plt.xlabel('Gy')
+    plt.ylabel('a - dRdr')
+    plt.legend()
 
-a_ES, rho, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
-ans_a_ES = rho_ES
-"""t_0 = 14e9 # years
-t_0 = t_0/one_Gy # Gigayears
-t_i = t_0 * a_i**(3/2)
-num_of_steps = 100"""
-#time_vec = np.linspace(t_i,t_0, num_of_steps)
-
-
-fig_a = go.Figure()
-fig_a.add_trace(
-    go.Scatter(
-            x=time_vec, y=a_ES,#/max(ans_a_ES),
-            name="a(t)Einstein"
-    )
-)
-fig_a.add_trace(
-    go.Scatter(
-        x=time_tot,
-        y=R_vec/r,
-        name = "LTB R/r"
-    )
-)
-fig_a.update_layout( title="a(t)",
-        xaxis={'title': 'time [Gy]'},
-        yaxis={
-            'title': 'a(t)', 
-            'tickformat':'e'
-        },
-        legend_title="Legend Title"
-        )
-fig_a.show()
-
-
-'''
-fig_rho = go.Figure()
-fig_rho.add_trace(
-    go.Scatter(
-    x=time_vec, y=rho
-    )
-)
-
-fig_rho.update_layout( 
-    title="rho",
-    xaxis={'title': 'time [Gy]'},
-    yaxis={'title': 'rho(t)',
-            'tickformat':'e'
-            }
-)
-
-fig_rho.show()
-'''
+    plt.show()"""
