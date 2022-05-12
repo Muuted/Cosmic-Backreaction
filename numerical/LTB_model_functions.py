@@ -43,11 +43,14 @@ def func_E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,
 
 def func_dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
 
-    dEEdr1 = 2 * A * r * ((r / r_b) ** n - 1) ** m
+    if r <= r_b :
+        dEEdr1 = 2 * A * r * ((r / r_b) ** n - 1) ** m
 
-    dEEdr2 = m * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)
+        dEEdr2 = m * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)
 
-    dEEdr = dEEdr1 + dEEdr2
+        dEEdr = dEEdr1 + dEEdr2
+    else:
+        dEEdr = 0
     return dEEdr
 
 
