@@ -80,7 +80,7 @@ def func_dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, 
 
 
 def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
-    
+    c = 1
     sqrts = np.sqrt(
         2*MM/RR +2*EE + (Lamb/3)*RR**2 
         )
@@ -97,8 +97,8 @@ def func_LTB_dSdt(S,t,p):
 
     dRdt = func_dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
     dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c)
-    dMMdr = func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho , r_b, n, m, A, H_0, Lamb, c)
-    rho = func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho, r_b, n, m, A, H_0, Lamb, c)
+    dMMdr = func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0 , r_b, n, m, A, H_0, Lamb, c)
+    rho = func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
 
     return_list = [ dRdt, dRdrdt, dMMdr, rho ]
     return  return_list
@@ -196,6 +196,7 @@ r_b = 40
 k_max = 1.3e-7
 a_i = 1.0/1100
 G = 6.673e-11*M_sun*Gyr*Gyr/Mpc/Mpc/Mpc
+
 rho_ic = 3.0*H0*H0/(8.0*np.pi*G)/a_i**3
 H_i = np.sqrt( 8*np.pi*G*rho_ic/3.0 )
 

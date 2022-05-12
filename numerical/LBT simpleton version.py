@@ -6,12 +6,12 @@ from The_constants import *
 import plotly as py
 import plotly.graph_objects as go
 
-Lamb, A, r_b, n, m, H_0, G, rho_c0, a_i, t_i, t_0, c = func_constants()
+Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
 
 num_steps = 10000 # number of steps between t_start and t_end
 num_interations = 1 #number of r's
 dt = 1e3        # time step
-r = 10         # distance
+r = 2*r_b         # distance
 dr = 300        # change of r
 
 
@@ -20,8 +20,9 @@ EE = 0
 dEEdr = 0
 RR = r*a_i
 dRRdr = a_i
-MM = (4*np.pi*G)/(c**4)*rho_c0*r
-dMMdr = (4*np.pi*G)/(c**4)*rho_c0 # because its  dM/dr for the initial conditions 
+MM = (4*np.pi*G)/(3*c**2)*rho_i0*r**3*a_i**3
+# --------------------- hvorfor skal det var 1/c^2 og ikke 1/c^4 
+dMMdr = -1e5# (4*np.pi*G)/(3*c**2)*rho_c0*3*r**2 # because its  dM/dr for the initial conditions 
 
 
 # A list with all the arguments that is need to feed the functions.
@@ -78,8 +79,8 @@ plt.plot(time_vec,a_ES)
 plt.title('a(t) Ein de Sitter')
 
 plt.subplot(2,3,3)
-plt.plot(time_tot,ans_RR/max(ans_RR),label='R(t,r)/r')
-plt.plot(time_vec,a_ES/max(a_ES),label='a(t) EdS')
+plt.plot(time_tot,ans_RR/r,label='R(t,r)/r')
+plt.plot(time_vec,a_ES,'--',label='a(t) EdS')
 plt.title('R vs a EdS')
 plt.legend()
 
