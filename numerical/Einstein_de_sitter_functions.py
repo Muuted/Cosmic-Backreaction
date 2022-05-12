@@ -77,9 +77,8 @@ def Einstein_de_sitter(num_of_steps):#time_vec):
     list = [a_ES, rho, rho_ES, time_vec]
 
     return list
-
+"""
 Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
-
 num_of_steps = 10000
 
 lit = Einstein_de_sitter(num_of_steps=num_of_steps)
@@ -103,3 +102,4 @@ plt.legend()
 plt.title('Einstein de Sitter model function')
 #plt.show()
 
+"""

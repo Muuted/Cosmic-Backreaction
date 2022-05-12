@@ -26,7 +26,6 @@ EE = func_E(r, RR, 0, MM, dMMdr, dRRdr, 0, G, rho_c0, r_b, n, m, A, H_0, Lamb, c
 dEEdr = func_dEdr(r, RR, EE, MM, dMMdr, dRRdr, 0, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
 
 
-
 # A list with all the arguments that is need to feed the functions.
 args_list =[r, EE, dEEdr, dMMdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c]
 
