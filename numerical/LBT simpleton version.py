@@ -78,8 +78,8 @@ plt.plot(time_vec,a_ES)
 plt.title('a(t) Ein de Sitter')
 
 plt.subplot(2,3,3)
-plt.plot(time_tot,ans_RR/r,label='R(t,r)/r')
-plt.plot(time_vec,a_ES,label='a(t) EdS')
+plt.plot(time_tot,ans_RR/max(ans_RR),label='R(t,r)/r')
+plt.plot(time_vec,a_ES/max(a_ES),label='a(t) EdS')
 plt.title('R vs a EdS')
 plt.legend()
 

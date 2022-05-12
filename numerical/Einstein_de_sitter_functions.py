@@ -24,7 +24,7 @@ def Einstein_de_sitter(num_of_steps):#time_vec):
     
     def func_drhodt(a,dadt):
 
-        drhodt = -dadt/(a**4)
+        drhodt = -rho_c0*dadt/(a**4)
 
         return drhodt
 

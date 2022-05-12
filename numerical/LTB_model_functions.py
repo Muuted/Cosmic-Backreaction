@@ -97,8 +97,8 @@ def func_LTB_dSdt(S,t,p):
 
     dRdt = func_dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
     dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c)
-    dMMdr = func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0 , r_b, n, m, A, H_0, Lamb, c)
-    rho = func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
+    dMMdr = func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho , r_b, n, m, A, H_0, Lamb, c)
+    rho = func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho, r_b, n, m, A, H_0, Lamb, c)
 
     return_list = [ dRdt, dRdrdt, dMMdr, rho ]
     return  return_list
