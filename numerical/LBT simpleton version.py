@@ -73,32 +73,37 @@ ans_a_ES = rho_ES
 
 plt.figure()
 plt.subplot(2,3,1)
-plt.plot(time_tot,ans_RR/r)
-plt.title('R/r')
+plt.plot(time_tot,ans_RR/r, label='R(t,r)/r')
+#plt.title('R/r')
+plt.legend()
 
 plt.subplot(2,3,2)
-plt.plot(time_vec,a_ES)
-plt.title('a(t) Ein de Sitter')
+plt.plot(time_vec,a_ES,label='a(t) EdS')
+plt.legend()
+#plt.title('a(t) Ein de Sitter')
 
 plt.subplot(2,3,3)
 plt.plot(time_tot,ans_RR/r,label='R(t,r)/r')
 plt.plot(time_vec,a_ES,'--',label='a(t) EdS')
-plt.title('R vs a EdS')
+#plt.title('R vs a EdS')
 plt.legend()
 
 plt.subplot(2,3,4)
-plt.plot(time_tot,ans_dRdr)
-plt.title('dRdr')
+plt.plot(time_tot,ans_dRdr,label='dRdr')
+plt.legend()
+#plt.title('dRdr')
 
 
 plt.subplot(2,3,5)
-plt.plot(time_tot,ans_M)
-plt.title('M')
+plt.plot(time_tot,ans_M,label='Mass')
+plt.legend()
+#plt.title('M')
 
 
 plt.subplot(2,3,6)
-plt.plot(time_tot,ans_rho)
-plt.title('rho')
+plt.plot(time_tot,ans_rho,label='mass density')
+plt.legend()
+#plt.title('rho')
 
 
 plt.show()
