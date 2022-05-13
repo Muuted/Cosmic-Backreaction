@@ -17,7 +17,7 @@ def func_constants():
     # units for conversion
     m_pr_Mpc = 3.086e22 # m/Mpc
     one_year_in_sec = 60*60*24*365 # s
-    s_pr_Gy = 3.156e16 # s/Gyr
+    s_pr_Gy = 3.156e16 # s/Gyr  
     y_pr_Gy = 3.156e16/one_year_in_sec # years/Gyr
     kg_pr_solar_mass = 1.989e30 #kg/M_o
    
