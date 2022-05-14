@@ -36,7 +36,7 @@ time_tot = np.linspace(t_i,t_0,num_steps)
 for i in range(0,num_interations):
     ans = []
     #The initial conditions are found for each r, and used in the ODE int integration
-    init_cond_dRdt = [RR, dRRdr, MM, rho_c0 ]
+    init_cond_dRdt = [RR, dRRdr, MM, rho_c0]#, MM ]
 
     ans_odeint = scipy.integrate.odeint(func_LTB_dSdt, 
             y0=init_cond_dRdt, 
@@ -103,7 +103,6 @@ plt.subplot(2,3,6)
 plt.plot(time_tot,ans_rho,label='mass density')
 plt.legend()
 #plt.title('rho')
-
 
 plt.show()
 """

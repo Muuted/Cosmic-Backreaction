@@ -8,6 +8,7 @@ from scipy.integrate import quad
 from scipy.integrate import solve_ivp
 
 import numpy as np
+from The_constants import *
 
 '''
 r = List[0]
@@ -56,20 +57,30 @@ def func_dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, La
 
 def func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
 
-    kappa = (8*np.pi*G)/(c**2)*rho_c0
+    kappa = (8*np.pi*G)/(c**4)*rho_c0
 
     rho = (2/kappa)*(dMMdr/(RR**2*dRRdr))
 
     return rho
 
-def func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
-
+def func_M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
     
+    M_bg = (4*np.pi*G)/(3*c**2)*r**3*rho_c0
+    ana_M = M_bg*1+ dMMdr
+
+    return ana_M
+def func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
+    Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
+    """
+    our origian function 
     const = (4*np.pi*G)/(c**4)*rho_c0
-
     dMMdr = const * RR**2 * dRRdr 
+    """
+    # new function
+    M_bg = (4*np.pi*G)/(3*c**2)*r**3*rho_c0
 
-    #dMMdr = 
+    dMMdr = M_bg*((6*EE)/(5*r**2))*(c/(a_i*H_i))**2
+
     return dMMdr
 
 
@@ -102,8 +113,9 @@ def func_LTB_dSdt(S,t,p):
     dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c)
     dMMdr = func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0 , r_b, n, m, A, H_0, Lamb, c)
     rho = func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
+    #ana_MM = func_M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
 
-    return_list = [ dRdt, dRdrdt, dMMdr, rho ]
+    return_list = [ dRdt, dRdrdt, dMMdr, rho ]#, ana_MM]
     return  return_list
 
 
@@ -205,3 +217,4 @@ H_i = np.sqrt( 8*np.pi*G*rho_ic/3.0 )
 
 #print(rho_ic)
 #print(H0/H_i)
+

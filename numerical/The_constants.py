@@ -30,7 +30,7 @@ def func_constants():
 
     # constants in M_o and Mpc and Gyr
     H_0 = H_0*1e3*s_pr_Gy/m_pr_Mpc # 1/Gyr
-    print(H_0)
+    #print(H_0)
     #H_0 = 0.07158985 # Hubble sonstant 70 km/s/Mpc in unit 1/Gyr
     G = G*kg_pr_solar_mass*s_pr_Gy**2/(m_pr_Mpc**3) # Mpc^3/M_o*Gy^2
     c = c*s_pr_Gy/m_pr_Mpc # Mpc/Gyr
