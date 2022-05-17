@@ -58,7 +58,7 @@ def func_dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, La
 
 def func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
 
-    kappa = (8*np.pi)*rho_c0
+    kappa = (8*np.pi)#*rho_c0
 
     rho = (2/kappa)*(dMMdr/(RR**2*dRRdr))
 
