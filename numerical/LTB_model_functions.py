@@ -74,7 +74,7 @@ def func_dRdt(r, RR, EE, MM, G, c):
 
 def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
     
-    sqrts = 2*np.sqrt(
+    sqrts = np.sqrt(
         2*G*MM/(c**2*RR) +2*EE #+ (Lamb/3)*RR**2 
         )
 
@@ -96,7 +96,6 @@ def func_LTB_dSdt(S,t,p):
     return  return_list
 
 '''
-
 H0 = 0.07158985 # Hubble sonstant 70 km/s/Mpc in unit 1/Gyr
 t0 = 2.0/3/H0 # assume EdS background
 c = 306.60139 # speed of light in vacuum in units Mpc/Gyr
