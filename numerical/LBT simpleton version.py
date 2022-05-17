@@ -1,7 +1,5 @@
 from LTB_model_functions import *
 from Einstein_de_sitter_functions import *
-#import scipy
-#from scipy.integrate import solve_ivp
 from The_constants import *
 import plotly as py
 import plotly.graph_objects as go
@@ -13,7 +11,6 @@ num_interations = 1 #number of r's
 dt = 1e3        # time step
 r = r_b*5         # distance
 dr = 300        # change of r
-
 
 # Initial condition for the functions
 RR = r*a_i
@@ -61,34 +58,35 @@ ans_a_ES = rho_ES
 
 plt.figure()
 plt.subplot(2,3,1)
-plt.plot(time_tot,ans_RR/r, label='R(t,r)/r')
+plt.plot(time_tot,ans_RR/r, label=r'$\dfrac{R(t,r)}{r}$')
 plt.xlabel('Gyr')
 #plt.title('R/r')
 plt.legend()
 
 plt.subplot(2,3,2)
-plt.plot(time_vec,a_ES,label='a(t) EdS')
+plt.plot(time_vec,a_ES,label=r'$a_{EdS}$')
 plt.xlabel('Gyr')
 plt.legend()
 #plt.title('a(t) Ein de Sitter')
 
 plt.subplot(2,3,3)
-plt.plot(time_tot,ans_RR/r,label='R(t,r)/r')
-plt.plot(time_vec,a_ES,'--',label='a(t) EdS')
+plt.plot(time_tot,ans_RR/r,label=r'$\dfrac{R(t,r)}{r}$')
+plt.plot(time_vec,a_ES,'--',label=r'$a_{EdS}$')
 plt.xlabel('Gyr')
 #plt.title('R vs a EdS')
 plt.legend()
 
 plt.subplot(2,3,4)
-plt.plot(time_tot,ans_dRdr,label='dRdr')
+plt.plot(time_tot,ans_dRdr,label=r'$\dfrac{\partial R(t,r)}{\partial r}$')
 plt.xlabel('Gyr')
 plt.legend()
 #plt.title('dRdr')
 
 
 plt.subplot(2,3,5)
-plt.plot(time_tot,func_rho(r, ans_RR, dMMdr, ans_dRdr, rho_c0),'-o',label=r'$\rho$(t,r)')
-plt.plot(time_vec,rho,label=r'EdS $\rho$')
+plt.plot(time_tot,func_rho(r, ans_RR, dMMdr, ans_dRdr, rho_c0),'-o',label=r'$\rho_{LTB}$(t,r)')
+plt.plot(time_vec,rho,label=r'$\rho_{EdS}$')
+
 plt.xlabel('Gyr')
 plt.legend()
 #plt.title('rho')
