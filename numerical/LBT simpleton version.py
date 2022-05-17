@@ -45,14 +45,6 @@ for i in range(0,num_interations):
             args=(args_list,)
             )
 
-    """
-    ans_ivp = solve_ivp(
-            dSdt_dRdrdt_ivp,t_span=(t_i,t_0),
-            y0=init_cond_dRdt ,args=args_for_ivp, method ='RK45'
-        )
-    """
-
-
 
 #FLRW_ans = func_FLRW_R_dRdr(time_tot, r, H_0)
 
