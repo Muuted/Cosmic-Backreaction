@@ -47,10 +47,6 @@ for i in range(0,num_interations):
             )
 
 
-#FLRW_ans = func_FLRW_R_dRdr(time_tot, r, H_0)
-
-
-
 # The results from our odeint  above
 ans_odeint = ans_odeint.T
 

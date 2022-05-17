@@ -11,8 +11,6 @@ import numpy as np
 from The_constants import *
 
 
-#Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
-
 def func_E(r, r_b, n, m, A):
 
     if r <= r_b:
@@ -52,7 +50,7 @@ def func_M(r, EE, G, rho_c0,a_i,H_i, c):
     C_1 = 4*np.pi*rho_c0
     C_2 = (6*c**2/(5*a_i**2*H_i**2))
 
-    ana_M = C_1*r**3*(1 - C_2*EE)/3
+    ana_M = C_1*r**3*(1 - C_2*EE/(r**2))/3
 
     return ana_M
 
@@ -97,7 +95,7 @@ def func_LTB_dSdt(S,t,p):
     return_list = [ dRdt, dRdrdt, rho ]#, ana_MM]
     return  return_list
 
-
+'''
 
 H0 = 0.07158985 # Hubble sonstant 70 km/s/Mpc in unit 1/Gyr
 t0 = 2.0/3/H0 # assume EdS background
@@ -112,7 +110,7 @@ G = 6.673e-11*M_sun*Gyr*Gyr/Mpc/Mpc/Mpc
 
 rho_ic = 3.0*H0*H0/(8.0*np.pi*G)/a_i**3
 H_i = np.sqrt( 8*np.pi*G*rho_ic/3.0 )
-
+'''
 #print(rho_ic)
 #print(H0/H_i)
 
