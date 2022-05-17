@@ -49,13 +49,10 @@ def func_rho(r, RR, dMMdr, dRRdr, rho_c0):
 
 def func_M(r, EE, G, rho_c0,a_i,H_i, c):
     
-    #M_bg = (4*np.pi*G)/(3*c**2)*r**3*rho_c0
-    #ana_M = M_bg*1+ dMMdr
-
     C_1 = 4*np.pi*rho_c0
     C_2 = (6*c**2/(5*a_i**2*H_i**2))
 
-    ana_M = C_1*r**3*(1-C_2*EE)/3
+    ana_M = C_1*r**3*(1 - C_2*EE)/3
 
     return ana_M
 
@@ -95,9 +92,7 @@ def func_LTB_dSdt(S,t,p):
 
     dRdt = func_dRdt(r, RR, EE, MM, G, c)
     dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
-    #dMMdr = func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0 , r_b, n, m, A, H_0, Lamb, c)
     rho = func_rho(r,RR, dMMdr, dRRdr, rho_c0)
-    #ana_MM = func_M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
 
     return_list = [ dRdt, dRdrdt, rho ]#, ana_MM]
     return  return_list

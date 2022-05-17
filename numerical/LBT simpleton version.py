@@ -39,6 +39,7 @@ for i in range(0,num_interations):
     #The initial conditions are found for each r, and used in the ODE int integration
     init_cond_dRdt = [RR, dRRdr, rho_c0]#, MM ]
 
+    #print(init_cond_dRdt)
     ans_odeint = scipy.integrate.odeint(func_LTB_dSdt, 
             y0=init_cond_dRdt, 
             t=time_tot,
@@ -57,7 +58,7 @@ ans_RR = ans_odeint[0]
 ans_dRdr = ans_odeint[1]
 ans_rho = ans_odeint[2]
 
-
+print(ans_rho[0])
 # Results for the Einstein de Sitter model 
 a_ES, rho, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 ans_a_ES = rho_ES
@@ -90,14 +91,7 @@ plt.legend()
 
 
 plt.subplot(2,3,5)
-#plt.plot(time_tot,ans_M,label='M(r)')
-#plt.xlabel('Gyr')
-#plt.legend()
-#plt.title('M')
-
-
-plt.subplot(2,3,6)
-plt.plot(time_tot,ans_rho,label=r'$\rho$(t,r)')
+plt.plot(time_tot,ans_rho,'-o',label=r'$\rho$(t,r)')
 plt.xlabel('Gyr')
 plt.legend()
 #plt.title('rho')

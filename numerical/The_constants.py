@@ -9,7 +9,7 @@ def func_constants():
     
     # values of the constants in the eq's
     Lamb = 0
-    A = 1e7
+    A = 1e7  # [A] = 1/Mpc^2
     r_b = 40
     n = 2
     m = 2

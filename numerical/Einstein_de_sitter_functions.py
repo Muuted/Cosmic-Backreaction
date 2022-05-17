@@ -41,8 +41,8 @@ def Einstein_de_sitter(num_of_steps):#time_vec):
         return [dadt, drhodt]
 
     def func_rho_Ein_Sitter(a):
-
-        const = 1
+        Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
+        const = rho_c0
 
         rho_of_t = const/a**3
 
