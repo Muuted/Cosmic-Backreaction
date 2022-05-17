@@ -14,17 +14,17 @@ dt = 1e3        # time step
 r = r_b*5         # distance
 dr = 300        # change of r
 
-EE  = 0
-dEEdr  = 0
+
 # Initial condition for the functions
 RR = r*a_i
 dRRdr = a_i
-MM = (4*np.pi*G)/(3*c**2)*rho_i0*r**3*a_i**3
-# --------------------- hvorfor skal det var 1/c^2 og ikke 1/c^4 
-dMMdr = func_dMMdr(r, RR, 0, MM, 0, dRRdr, 0, G, rho_c0, r_b, n, m, A, H_i, Lamb, c)#- (4*np.pi*G)/(3*c**2)*rho_c0*3*r**2 # because its  dM/dr for the initial conditions 
 
-EE = func_E(r, RR, 0, MM, dMMdr, dRRdr, 0, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
-dEEdr = func_dEdr(r, RR, EE, MM, dMMdr, dRRdr, 0, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
+EE = func_E(r, r_b, n, m, A)
+dEEdr = func_dEdr(r, r_b, n, m, A)
+
+MM = func_M(r, EE, G, rho_c0, a_i, H_i, c)#(4*np.pi*G)/(3*c**2)*rho_i0*r**3*a_i**3
+# --------------------- hvorfor skal det var 1/c^2 og ikke 1/c^4 
+dMMdr = func_dMMdr(r, EE, dEEdr, rho_c0, H_i, a_i, c) #- (4*np.pi*G)/(3*c**2)*rho_c0*3*r**2 # because its  dM/dr for the initial conditions 
 
 
 # A list with all the arguments that is need to feed the functions.

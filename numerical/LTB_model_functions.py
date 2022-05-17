@@ -11,9 +11,9 @@ import numpy as np
 from The_constants import *
 
 
-Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
+#Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
 
-def func_E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
+def func_E(r, r_b, n, m, A):
 
     if r <= r_b:
 
@@ -26,7 +26,7 @@ def func_E(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,
     return EE
 
 
-def func_dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
+def func_dEdr(r,  r_b, n, m, A):
 
     if r <= r_b :
         dEEdr1 = 2 * A * r * ((r / r_b) ** n - 1) ** m
@@ -39,47 +39,46 @@ def func_dEdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, La
     return dEEdr
 
 
-def func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
+def func_rho(r, RR, dMMdr, dRRdr, rho_c0):
 
-    kappa = (8*np.pi)*rho_c0
+    kappa = (8*np.pi)
 
     rho = (2/kappa)*(dMMdr/(RR**2*dRRdr))
 
     return rho
 
-def func_M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
+def func_M(r, EE, G, rho_c0,a_i,H_i, c):
     
-    M_bg = (4*np.pi*G)/(3*c**2)*r**3*rho_c0
-    ana_M = M_bg*1+ dMMdr
+    #M_bg = (4*np.pi*G)/(3*c**2)*r**3*rho_c0
+    #ana_M = M_bg*1+ dMMdr
+
+    C_1 = 4*np.pi*rho_c0
+    C_2 = (6*c**2/(5*a_i**2*H_i**2))
+
+    ana_M = C_1*r**3*(1-C_2*EE)/3
 
     return ana_M
 
-def func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H, Lamb,c):
-    Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
-    """
-    our origian function 
-    const = (4*np.pi*G)/(c**4)*rho_c0
-    dMMdr = const * RR**2 * dRRdr 
-    """
-    # new function
-    #M_bg = (4*np.pi*G)/(3*c**2)*r**3*rho_c0
-    #dMMdr = M_bg*((6*EE)/(5*r**2))*(c/(a_i*H_i))**2
+def func_dMMdr(r, EE, dEEdr, rho_c0, H_i,a_i, c):
 
-    dMMdr = 4 * np.pi * rho_c0*r**2  - (24*np.pi*c**2)/(15*a_i**2*H_i**2)*(EE + r*dEEdr)
+    C_1 = 4*np.pi*rho_c0
+    C_2 = (24*np.pi*rho_c0*c**2)/(15*a_i**2*H_i**2)
+
+    dMMdr = C_1*r**2 - C_2*(EE + r* dEEdr)
+
     return dMMdr
 
 
-def func_dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
+def func_dRdt(r, RR, EE, MM, G, c):
 
     dRRdt = c*np.sqrt(
-        2 * G*MM /(c**2* RR) + 2 * EE #+ (Lamb / 3) * RR ** 2
+        2 * G*MM /(c**2* RR) + 2 * EE #+ (Lamb/3)*RR**2 
         )
-
     return dRRdt
 
 
-def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_FLRW, r_b, n, m, A, H, Lamb,c):
-    #c = 1
+def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
+    
     sqrts = 2*np.sqrt(
         2*G*MM/(c**2*RR) +2*EE #+ (Lamb/3)*RR**2 
         )
@@ -94,10 +93,10 @@ def func_LTB_dSdt(S,t,p):
     
     r, EE, dEEdr, MM,dMMdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c = p
 
-    dRdt = func_dRdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
-    dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c)
+    dRdt = func_dRdt(r, RR, EE, MM, G, c)
+    dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
     #dMMdr = func_dMMdr(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0 , r_b, n, m, A, H_0, Lamb, c)
-    rho = func_rho(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
+    rho = func_rho(r,RR, dMMdr, dRRdr, rho_c0)
     #ana_MM = func_M(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, rho_c0, r_b, n, m, A, H_0, Lamb, c)
 
     return_list = [ dRdt, dRdrdt, rho ]#, ana_MM]
