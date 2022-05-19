@@ -31,7 +31,7 @@ time_tot = np.linspace(t_i,t_0,num_steps)
 
 
 #The initial conditions are found for each r, and used in the ODE int integration
-init_cond_dRdt = [RR, dRRdr]#, rho_c0]#, MM ]
+init_cond_dRdt = [RR, dRRdr, rho_c0]#, MM ]
 
 # ----------------------------Integration start ------------------------------------------------------------
 
@@ -83,7 +83,7 @@ plt.legend()
 
 
 plt.subplot(2,3,5)
-plt.plot(time_tot,func_rho(r, ans_RR[0], dMMdr, ans_dRdr[0], rho_c0),'-o',label=r'$\rho_{LTB}$(t,r)')
+plt.plot(time_tot,func_rho(r, ans_RR, dMMdr, ans_dRdr, rho_c0),'-o',label=r'$\rho_{LTB}$(t,r)')
 plt.plot(time_vec,rho,label=r'$\rho_{EdS}$')
 
 plt.xlabel('Gyr')
