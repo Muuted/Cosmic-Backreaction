@@ -25,16 +25,11 @@ dMMdr = func_dMMdr(r, EE, dEEdr, rho_c0, H_i, a_i, c) #- (4*np.pi*G)/(3*c**2)*rh
 
 # A list with all the arguments that is need to feed the functions.
 args_list =[r, EE, dEEdr,MM, dMMdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c]
-
 # Our time vector for the integration
 time_tot = np.linspace(t_i,t_0,num_steps)
-
-
 #The initial conditions are found for each r, and used in the ODE int integration
 init_cond_dRdt = [RR, dRRdr]
-
 # ----------------------------Integration start ------------------------------------------------------------
-
 ans_odeint = scipy.integrate.odeint(func_LTB_dSdt, 
         y0=init_cond_dRdt, 
         t=time_tot,
@@ -42,7 +37,6 @@ ans_odeint = scipy.integrate.odeint(func_LTB_dSdt,
         )
 # The results from our odeint  above
 ans_odeint = ans_odeint.T
-
 # --------------------------Integration done ------------------------------------------------------------
 
 ans_RR = ans_odeint[0]
