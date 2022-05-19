@@ -67,7 +67,7 @@ def func_dMMdr(r, EE, dEEdr, rho_c0, H_i,a_i, c):
 def func_dRdt(r, RR, EE, MM, G, c):
 
     dRRdt = c*np.sqrt(
-        2 * G*MM /(c**2* RR) + 2 * EE #+ (Lamb/3)*RR**2 
+        2 * G*MM /(c**2* RR) + 2 * EE
         )
     return dRRdt
 
@@ -84,15 +84,14 @@ def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
 
 
 def func_LTB_dSdt(S,t,p):
-    RR, dRRdr, rho = S
+    RR, dRRdr = S
     
     r, EE, dEEdr, MM,dMMdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c = p
 
     dRdt = func_dRdt(r, RR, EE, MM, G, c)
     dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
-    rho = func_rho(r,RR, dMMdr, dRRdr, rho_c0)
 
-    return_list = [ dRdt, dRdrdt, rho ]#, ana_MM]
+    return_list = [ dRdt, dRdrdt]
     return  return_list
 
 '''

@@ -31,7 +31,7 @@ time_tot = np.linspace(t_i,t_0,num_steps)
 
 
 #The initial conditions are found for each r, and used in the ODE int integration
-init_cond_dRdt = [RR, dRRdr, rho_c0]#, MM ]
+init_cond_dRdt = [RR, dRRdr]
 
 # ----------------------------Integration start ------------------------------------------------------------
 
@@ -47,7 +47,7 @@ ans_odeint = ans_odeint.T
 
 ans_RR = ans_odeint[0]
 ans_dRdr = ans_odeint[1]
-ans_rho = ans_odeint[2]
+
 
 
 # Results for the Einstein de Sitter model 
