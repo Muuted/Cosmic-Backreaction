@@ -50,7 +50,8 @@ def func_M(r, EE, G, rho_c0,a_i,H_i, c):
     C_1 = 4*np.pi*rho_c0
     C_2 = (6*c**2/(5*a_i**2*H_i**2))
 
-    ana_M = C_1*r**3*(1 - C_2*EE/(r**2))/3
+    #ana_M = C_1*r**3*(1 - C_2*EE/(r**2))/3
+    ana_M = (C_1*r**3* - C_2*EE*r)/3
 
     return ana_M
 
@@ -69,6 +70,9 @@ def func_dRdt(r, RR, EE, MM, G, c):
     dRRdt = c*np.sqrt(
         2 * G*MM /(c**2* RR) + 2 * EE
         )
+    print('dRdt:',2 * G*MM /(c**2* RR) + 2 * EE)
+    print('arguments for dRdt:',RR,MM,EE)
+    
     return dRRdt
 
 
@@ -83,16 +87,17 @@ def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
     return extra/sqrts
 
 
-def func_LTB_dSdt(S,t,p):
+def func_LTB_dSdt(S,t,p):    
     RR, dRRdr = S
-    
-    r, EE, dEEdr, MM,dMMdr, G, rho_c0, r_b, n, m, A, H_0, Lamb,c = p
+    r, EE, dEEdr, MM,dMMdr, G, c = p
 
     dRdt = func_dRdt(r, RR, EE, MM, G, c)
     dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
-
-    return_list = [ dRdt, dRdrdt]
+    
+    return_list = [dRdt, dRdrdt]
+    print('inside :',dRdt, dRdrdt)
     return  return_list
+
 
 '''
 H0 = 0.07158985 # Hubble sonstant 70 km/s/Mpc in unit 1/Gyr
