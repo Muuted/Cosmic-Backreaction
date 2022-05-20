@@ -7,7 +7,6 @@ import plotly.graph_objects as go
 
 Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
 
-
 dt = 1e3        # time step
 dr = 1        # change of r
 r_i = 0.1         # distance, we start at origo 
@@ -23,10 +22,10 @@ ans_RR = [[] for x in range(num_iterations)]
 ans_dRdr = [[] for x in range(num_iterations)]
 ans_rho = [[] for x in range(num_iterations)]
 
-breakies = False
+Breakies = False
 for i in range(0,num_iterations): # This loop makes it so that we iterate over r
     # increasing r for each iteration
-    r = radi_vec[i]
+    r = 1 #radi_vec[i]
     
     # Initial condition for the functions
     RR = r*a_i
@@ -36,6 +35,10 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
     dEEdr = func_dEdr(r, r_b, n, m, A)
     MM = func_M(r, EE, G, rho_c0, a_i, H_i, c)
     dMMdr = func_dMMdr(r, EE, dEEdr, rho_c0, H_i, a_i, c) 
+
+    dRdt = func_dRdt(r, RR, EE, MM, G, c)
+    dRdrdt = func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
+    print('inner loop',dRdt,dRdrdt)
 
     #The initial conditions are found for each r, and used in the ODE int integration
     init_cond_dRdt = [RR, dRRdr]
@@ -50,14 +53,13 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
     # The results from our odeint  above
     ans_odeint = ans_odeint.T
     
-    
     ans_RR[i] = ans_odeint[0]
     ans_dRdr[i] = ans_odeint[1]
+
     for j in range(0,len(ans_RR[i])-1):
         rho_valu = func_rho(r,ans_RR[i][j],dMMdr,ans_dRdr[i][j],rho_c0)
         ans_rho[i].append(rho_valu)
         
-
         if str(rho_valu) == 'nan' or str(ans_RR[i][j])=='nan':
             print('RR = ',ans_RR[i][j],'\n'
             ,'dRdr =', ans_dRdr[i][j], '\n'
@@ -72,18 +74,15 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
     if Breakies == True:
         break
 
-'''
 
 
-r = radi_vec[0]
-#print(ans_rho[0])
 # Results for the Einstein de Sitter model 
 a_ES, rho, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 ans_a_ES = rho_ES
 
 plt.figure()
 plt.subplot(2,3,1)
-plt.plot(time_tot,ans_RR[len(ans_RR)-1]/radi_vec[len(radi_vec)-1], label=r'$\dfrac{R(t,r)}{r}$')
+plt.plot(time_tot,ans_RR[0]/r, label=r'$\dfrac{R(t,r)}{r}$')
 plt.xlabel('t [Gyr]')
 plt.legend()
 
@@ -95,21 +94,21 @@ plt.legend()
 #plt.title('a(t) Ein de Sitter')
 
 plt.subplot(2,3,3)
-plt.plot(time_tot,ans_RR[len(ans_RR)-1].T/radi_vec[len(ans_RR)-1],label=r'$\dfrac{R(t,r)}{r}$')
+plt.plot(time_tot,ans_RR[0]/r,label=r'$\dfrac{R(t,r)}{r}$')
 plt.plot(time_vec,a_ES,'--',label=r'$a_{EdS}$')
 plt.xlabel('t [Gyr]')
 #plt.title('R vs a EdS')
 plt.legend()
 
 plt.subplot(2,3,4)
-plt.plot(time_tot,ans_dRdr[len(ans_RR)-1],label=r'$\dfrac{\partial R(t,r)}{\partial r}$')
+plt.plot(time_tot,ans_dRdr[0],label=r'$\dfrac{\partial R(t,r)}{\partial r}$')
 plt.xlabel('t [Gyr]')
 plt.legend()
 #plt.title('dRdr')
 
 
 plt.subplot(2,3,5)
-plt.plot(time_tot,func_rho(r, ans_RR[len(ans_RR)-1], dMMdr, ans_dRdr[len(ans_RR)-1], rho_c0),'-o',label=r'$\rho_{LTB}$(t,r)')
+plt.plot(time_tot,func_rho(r, ans_RR[0], dMMdr, ans_dRdr[0], rho_c0),'-o',label=r'$\rho_{LTB}$(t,r)')
 plt.plot(time_vec,rho,label=r'$\rho_{EdS}$')
 
 plt.xlabel('t [Gyr]')
@@ -146,4 +145,4 @@ fig = go.Figure(data=[go.Surface(z=z, x=x, y=y)])
 #fig.update_layout(title='Mt Bruno Elevation', autosize=False,
  #                 width=500, height=500,
   #                margin=dict(l=65, r=50, b=65, t=90))
-#fig.show()'''
+#fig.show()
