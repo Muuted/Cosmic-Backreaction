@@ -38,7 +38,7 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
 
     dRdt = func_dRdt(r, RR, EE, MM, G, c)
     dRdrdt = func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
-    print('inner loop',dRdt,dRdrdt)
+    #print('inner loop',dRdt,dRdrdt)
 
     #The initial conditions are found for each r, and used in the ODE int integration
     init_cond_dRdt = [RR, dRRdr]
@@ -135,14 +135,14 @@ plt.legend()
 plt.show()
 
 
-#print(ans_rho)
+print(ans_rho)
 
 y = time_tot
 x = radi_vec
 z = ans_rho
 
 fig = go.Figure(data=[go.Surface(z=z, x=x, y=y)])
-#fig.update_layout(title='Mt Bruno Elevation', autosize=False,
- #                 width=500, height=500,
-  #                margin=dict(l=65, r=50, b=65, t=90))
-#fig.show()
+fig.update_layout(title='Mt Bruno Elevation', autosize=False,
+                    width=500, height=500,
+                   margin=dict(l=65, r=50, b=65, t=90))
+fig.show()

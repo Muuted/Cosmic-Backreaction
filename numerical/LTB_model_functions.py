@@ -51,7 +51,7 @@ def func_M(r, EE, G, rho_c0,a_i,H_i, c):
     C_2 = (6*c**2/(5*a_i**2*H_i**2))
 
     ana_M = C_1*r**3*(1 - C_2*EE/(r**2))/3
-    #ana_M = (C_1*r**3* - C_2*EE*r)/3
+    #ana_M = C_1*r**3*(1 + C_2*EE/(r**2))/3
 
     return ana_M
 
@@ -68,18 +68,20 @@ def func_dMMdr(r, EE, dEEdr, rho_c0, H_i,a_i, c):
 def func_dRdt(r, RR, EE, MM, G, c):
 
     dRRdt = c*np.sqrt(
-        2 * G*MM /(c**2* RR) + 2 * EE
+            2 * G*MM /(c**2* RR) + 2 * EE
         )
-    #print('dRdt:',2 * G*MM /(c**2* RR) + 2 * EE)
-    #print('arguments for dRdt:',RR,MM,EE)
+    #print('dRdt in func:',2 * G*MM /(c**2* RR) + 2 * EE)
+    #print('arguments for dRdt:','\n','RR=',RR,'\n','MM=',MM,'\n','EE=',EE)
+    #print('other stuff', '\n','G=',G,'\n','c=', c)
     
+
     return dRRdt
 
 
 def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
     
     sqrts = np.sqrt(
-        2*G*MM/(c**2*RR) +2*EE #+ (Lamb/3)*RR**2 
+            2*G*MM/(c**2*RR) +2*EE #+ (Lamb/3)*RR**2 
         )
 
     extra = (G)/(c)*(dMMdr/RR - MM*dRRdr/(RR**2)) + c*dEEdr #+ Lamb*RR*dRRdr/3
@@ -95,6 +97,7 @@ def func_LTB_dSdt(S,t,p):
     dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
     
     return_list = [dRdt, dRdrdt]
+    
     #print('inside :',dRdt, dRdrdt)
     return  return_list
 
