@@ -29,7 +29,7 @@ def func_dEdr(r,  r_b, n, m, A):
     if r <= r_b :
         dEEdr1 = 2 * A * r * ((r / r_b) ** n - 1) ** m
 
-        dEEdr2 = m * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)
+        dEEdr2 = m * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)/(r_b**n)
 
         dEEdr = dEEdr1 + dEEdr2
     else:
@@ -60,7 +60,7 @@ def func_dMMdr(r, EE, dEEdr, rho_c0, H_i,a_i, c):
     C_1 = 4*np.pi*rho_c0
     C_2 = (24*np.pi*rho_c0*c**2)/(15*a_i**2*H_i**2)
 
-    dMMdr = C_1*r**2 - C_2*(EE + r* dEEdr)
+    dMMdr = C_1*r**2 - C_2*(EE + r*dEEdr)
 
     return dMMdr
 

@@ -10,7 +10,7 @@ def func_constants():
     # values of the constants in the eq's
     Lamb = 0
     A = 1e-14  # [A] = 1/Mpc^2
-    r_b = 40
+    r_b = 50
     n = 2
     m = 2
 

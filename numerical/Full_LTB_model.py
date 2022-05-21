@@ -9,23 +9,28 @@ Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants
 
 dt = 1e3        # time step
 dr = 1        # change of r
-r_i = 0.1         # distance, we start at origo 
+r_i = dr         # distance, we start at origo 
 num_steps = 10000 # number of steps between t_start and t_end
 num_iterations = int(r_b/dr) #number of r's
 
 # Our time vector for the integration
 time_tot = np.linspace(t_i,t_0,num_steps)
-radi_vec = np.linspace(r_b*1.25,r_i,num_iterations)
+radi_vec = np.linspace(r_i,r_b,num_iterations)
 
 # Creating the lists for the data at different r values
 ans_RR = [[] for x in range(num_iterations)]
 ans_dRdr = [[] for x in range(num_iterations)]
 ans_rho = [[] for x in range(num_iterations)]
 
+ans_M = []
+ans_dMdr = []
+ans_dEdr = []
+ans_E = []
+
 Breakies = False
 for i in range(0,num_iterations): # This loop makes it so that we iterate over r
     # increasing r for each iteration
-    r = 1 #radi_vec[i]
+    r = radi_vec[i]
     
     # Initial condition for the functions
     RR = r*a_i
@@ -36,6 +41,14 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
     MM = func_M(r, EE, G, rho_c0, a_i, H_i, c)
     dMMdr = func_dMMdr(r, EE, dEEdr, rho_c0, H_i, a_i, c) 
 
+
+    ans_E.append(EE)
+    ans_dEdr.append(dEEdr)
+    ans_M.append(MM)
+    ans_dMdr.append(dMMdr)
+
+    if i ==0:
+        print('E=',EE,'\n','dEdr=',dEEdr,'\n','M=',MM,'\n','dMdr=',dMMdr,'\n','r=',r)
     dRdt = func_dRdt(r, RR, EE, MM, G, c)
     dRdrdt = func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
     #print('inner loop',dRdt,dRdrdt)
@@ -75,7 +88,7 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
         break
 
 
-
+"""
 # Results for the Einstein de Sitter model 
 a_ES, rho, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 ans_a_ES = rho_ES
@@ -124,18 +137,82 @@ plt.plot(radi_vec,E_vec,label=r'E(r)')
 plt.xlabel('r [Mpc]')
 plt.legend()
 
-
 """
 plt.figure()
-plt.title(r'$\rho(t,r_i)$')
+plt.subplot(2,2,1)
+plt.plot(radi_vec,ans_E,label='E(r)')
+plt.xlabel('r [Mpc]')
+plt.legend()
+
+plt.subplot(2,2,2)
+plt.plot(radi_vec,ans_dEdr,label='dEdr')
+plt.xlabel('r [Mpc]')
+plt.legend()
+
+plt.subplot(2,2,3)
+plt.plot(radi_vec,ans_M,label='M(r)')
+plt.xlabel('r [Mpc]')
+plt.legend()
+
+plt.subplot(2,2,4)
+plt.plot(radi_vec,ans_dMdr,label='dMdr')
+plt.xlabel('r [Mpc]')
+plt.legend()
+
+
+
+
+plt.figure()
+i = 0
+plt.subplot(2,3,1)
+plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
+plt.xlabel('t [Gyr]')
+
+plt.legend()
+
+i = 10
+plt.subplot(2,3,2)
+plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
 plt.xlabel('t [Gyr]')
 plt.legend()
-"""
+
+i = 20
+plt.subplot(2,3,3)
+plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
+plt.xlabel('t [Gyr]')
+plt.legend()
+
+i = 40
+plt.subplot(2,3,4)
+plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
+plt.xlabel('t [Gyr]')
+plt.legend()
+
+i = 49
+plt.subplot(2,3,5)
+plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
+plt.xlabel('t [Gyr]')
+plt.legend()
+
+plt.subplot(2,3,6)
+#plt.plot(radi_vec,func_rho(radi_vec, ans_RR[0][0], ans_dMdr[0], ans_dRdr[0][0], rho_c0),'-o',label=f'rho(t=t_i,r)')
+#plt.plot(radi_vec,ans_dMdr)
+plt.xlabel('r [Mpc]')
+plt.legend()
+
+
+
+
+
+plt.figure()
+for i in range(0,len(radi_vec),10):
+    plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
+
+#plt.xlim(0.0011870,time_tot[len(time_tot)-1])
+#plt.ylim(-2,1e14)
+plt.legend()
 
 plt.show()
-
-
-print(ans_rho)
 
 y = time_tot
 x = radi_vec
@@ -145,4 +222,5 @@ fig = go.Figure(data=[go.Surface(z=z, x=x, y=y)])
 fig.update_layout(title='Mt Bruno Elevation', autosize=False,
                     width=500, height=500,
                    margin=dict(l=65, r=50, b=65, t=90))
-fig.show()
+#fig.show()
+
