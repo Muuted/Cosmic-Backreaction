@@ -138,27 +138,43 @@ plt.xlabel('r [Mpc]')
 plt.legend()
 
 """
+
+print(np.shape(ans_RR))
+print(np.shape(np.transpose(ans_RR)))
+print(np.shape(radi_vec))
 plt.figure()
-plt.subplot(2,2,1)
+plt.subplot(2,3,1)
 plt.plot(radi_vec,ans_E,label='E(r)')
 plt.xlabel('r [Mpc]')
 plt.legend()
 
-plt.subplot(2,2,2)
-plt.plot(radi_vec,ans_dEdr,label='dEdr')
-plt.xlabel('r [Mpc]')
-plt.legend()
-
-plt.subplot(2,2,3)
+plt.subplot(2,3,2)
 plt.plot(radi_vec,ans_M,label='M(r)')
 plt.xlabel('r [Mpc]')
 plt.legend()
 
-plt.subplot(2,2,4)
+plt_RR =np.transpose(ans_RR)
+plt.subplot(2,3,3)
+plt.plot(radi_vec,plt_RR[0],label='R(r)')
+plt.xlabel('r [Mpc]')
+plt.legend()
+
+plt.subplot(2,3,4)
+plt.plot(radi_vec,ans_dEdr,label='dEdr')
+plt.xlabel('r [Mpc]')
+plt.legend()
+
+
+plt.subplot(2,3,5)
 plt.plot(radi_vec,ans_dMdr,label='dMdr')
 plt.xlabel('r [Mpc]')
 plt.legend()
 
+plt_dRdr = np.transpose(ans_dRdr)
+plt.subplot(2,3,6)
+plt.plot(radi_vec,plt_dRdr[0],label='dRdr(r)')
+plt.xlabel('r [Mpc]')
+plt.legend()
 
 
 

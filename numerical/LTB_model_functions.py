@@ -29,7 +29,7 @@ def func_dEdr(r,  r_b, n, m, A):
     if r <= r_b :
         dEEdr1 = 2 * A * r * ((r / r_b) ** n - 1) ** m
 
-        dEEdr2 = m * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)/(r_b**n)
+        dEEdr2 = (m/(r_b**n)) * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)
 
         dEEdr = dEEdr1 + dEEdr2
     else:
@@ -51,7 +51,6 @@ def func_M(r, EE, G, rho_c0,a_i,H_i, c):
     C_2 = (6*c**2/(5*a_i**2*H_i**2))
 
     ana_M = C_1*r**3*(1 - C_2*EE/(r**2))/3
-    #ana_M = C_1*r**3*(1 + C_2*EE/(r**2))/3
 
     return ana_M
 
@@ -70,10 +69,6 @@ def func_dRdt(r, RR, EE, MM, G, c):
     dRRdt = c*np.sqrt(
             2 * G*MM /(c**2* RR) + 2 * EE
         )
-    #print('dRdt in func:',2 * G*MM /(c**2* RR) + 2 * EE)
-    #print('arguments for dRdt:','\n','RR=',RR,'\n','MM=',MM,'\n','EE=',EE)
-    #print('other stuff', '\n','G=',G,'\n','c=', c)
-    
 
     return dRRdt
 
