@@ -29,30 +29,17 @@ ans_E = []
 
 Breakies = False
 for i in range(0,num_iterations): # This loop makes it so that we iterate over r
-    # increasing r for each iteration
+    # Getting the r for each iteration.
     r = radi_vec[i]
-    
-    # Initial condition for the functions
+
+    # Calculating the initial conditions
     RR = r*a_i
     dRRdr = a_i
-
     EE = func_E(r, r_b, n, m, A)
     dEEdr = func_dEdr(r, r_b, n, m, A)
     MM = func_M(r, EE, G, rho_c0, a_i, H_i, c)
     dMMdr = func_dMMdr(r, EE, dEEdr, rho_c0, H_i, a_i, c) 
-
-
-    ans_E.append(EE)
-    ans_dEdr.append(dEEdr)
-    ans_M.append(MM)
-    ans_dMdr.append(dMMdr)
-
-    if i ==0:
-        print('E=',EE,'\n','dEdr=',dEEdr,'\n','M=',MM,'\n','dMdr=',dMMdr,'\n','r=',r)
-    dRdt = func_dRdt(r, RR, EE, MM, G, c)
-    dRdrdt = func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
-    #print('inner loop',dRdt,dRdrdt)
-
+    
     #The initial conditions are found for each r, and used in the ODE int integration
     init_cond_dRdt = [RR, dRRdr]
     args_list =[r, EE, dEEdr, MM,dMMdr, G,c]
@@ -68,6 +55,12 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
     
     ans_RR[i] = ans_odeint[0]
     ans_dRdr[i] = ans_odeint[1]
+
+    
+    ans_E.append(EE)
+    ans_dEdr.append(dEEdr)
+    ans_M.append(MM)
+    ans_dMdr.append(dMMdr)
 
     for j in range(0,len(ans_RR[i])-1):
         rho_valu = func_rho(r,ans_RR[i][j],dMMdr,ans_dRdr[i][j],rho_c0)

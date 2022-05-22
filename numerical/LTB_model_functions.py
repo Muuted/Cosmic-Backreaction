@@ -85,6 +85,7 @@ def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
 
 def func_LTB_dSdt(S,t,p):    
     RR, dRRdr = S
+    
     r, EE, dEEdr, MM,dMMdr, G, c = p
 
     dRdt = func_dRdt(r, RR, EE, MM, G, c)
