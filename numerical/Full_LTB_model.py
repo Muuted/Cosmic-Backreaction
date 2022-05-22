@@ -218,8 +218,6 @@ plt.legend()
 
 
 
-
-
 plt.figure()
 for i in range(0,len(radi_vec),10):
     plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
