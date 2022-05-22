@@ -92,8 +92,6 @@ def func_LTB_dSdt(S,t,p):
     dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
     
     return_list = [dRdt, dRdrdt]
-    
-    #print('inside :',dRdt, dRdrdt)
     return  return_list
 
 
