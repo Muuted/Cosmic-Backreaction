@@ -230,6 +230,7 @@ for i in range(0,len(radi_vec),10):
     ,'-',label=f'R(t,r={radi_vec[i]})'
     )
 plt.title('Evolution of R/r at different r')
+plt.xlabel('t [Gyr]')
 plt.legend()
 
 plt.figure()
@@ -239,6 +240,21 @@ for i in range(0,len(radi_vec),10):
     ,'-',label=f'dRdr(t,r={radi_vec[i]})'
     )
 plt.title('Evolution of dRdr at different r')
+plt.legend()
+
+
+avg_R = []
+avgR = 0
+for j in range(len(ans_RR[0])):
+    for i in range(len(radi_vec)):
+        avgR += ans_RR[i][j]/(len(radi_vec)*radi_vec[i])
+    avg_R.append(avgR)
+print(len(avg_R),len(ans_RR[0]))
+
+plt.figure()
+plt.plot(time_tot,avg_R,label=r'$R_{avg}$')
+plt.title(r'Averaging all $\dfrac{R(t,r_i)}{r_i}$ gives = $R_{avg}$')
+plt.ylabel('t [Gyr]')
 plt.legend()
 
 plt.show()
