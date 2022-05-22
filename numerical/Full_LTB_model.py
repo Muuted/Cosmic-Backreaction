@@ -15,7 +15,7 @@ num_iterations = int(r_b/dr) #number of r's
 
 # Our time vector for the integration
 time_tot = np.linspace(t_i,t_0,num_steps)
-radi_vec = np.linspace(r_i,r_b,num_iterations)
+radi_vec = np.linspace(r_i,r_b*2,num_iterations)
 
 # Creating the lists for the data at different r values
 ans_RR = [[] for x in range(num_iterations)]
@@ -131,7 +131,7 @@ plt.xlabel('r [Mpc]')
 plt.legend()
 
 """
-
+"""
 print(np.shape(ans_RR))
 print(np.shape(np.transpose(ans_RR)))
 print(np.shape(radi_vec))
@@ -168,8 +168,8 @@ plt.subplot(2,3,6)
 plt.plot(radi_vec,plt_dRdr[0],label='dRdr(r)')
 plt.xlabel('r [Mpc]')
 plt.legend()
-
-
+"""
+"""
 plt.figure()
 i = 0
 plt.subplot(2,3,1)
@@ -208,14 +208,37 @@ plt.subplot(2,3,6)
 plt.xlabel('r [Mpc]')
 plt.legend()
 
+"""
+
+plt.figure()
+for i in range(0,len(radi_vec),10):
+    plt.plot(time_tot,
+    func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0)
+    ,'--',label=f'rho(t,r={radi_vec[i]})'
+    )
+
+#plt.xlim(0.0011870,time_tot[len(time_tot)-1])
+#plt.ylim(-2,1e14)
+plt.title('evolution of rho at different r')
+plt.legend()
 
 
 plt.figure()
 for i in range(0,len(radi_vec),10):
-    plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
+    plt.plot(time_tot,
+    ans_RR[i]/radi_vec[i]
+    ,'-',label=f'R(t,r={radi_vec[i]})'
+    )
+plt.title('Evolution of R/r at different r')
+plt.legend()
 
-#plt.xlim(0.0011870,time_tot[len(time_tot)-1])
-#plt.ylim(-2,1e14)
+plt.figure()
+for i in range(0,len(radi_vec),10):
+    plt.plot(time_tot,
+    ans_dRdr[i]
+    ,'-',label=f'dRdr(t,r={radi_vec[i]})'
+    )
+plt.title('Evolution of dRdr at different r')
 plt.legend()
 
 plt.show()
