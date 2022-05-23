@@ -87,10 +87,10 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
 # Results for the Einstein de Sitter model 
 a_ES, rho_EdS, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 #ans_a_ES = rho_ES
-"""
+
 plt.figure()
 plt.subplot(2,3,1)
-plt.plot(time_tot,ans_RR[0]/r, label=r'$\dfrac{R(t,r)}{r}$')
+plt.plot(time_tot,ans_RR[len(ans_RR)-1]/radi_vec[len(radi_vec)-1], label=r'$\dfrac{R(t,r)}{r}$')
 plt.xlabel('t [Gyr]')
 plt.legend()
 
@@ -102,7 +102,7 @@ plt.legend()
 #plt.title('a(t) Ein de Sitter')
 
 plt.subplot(2,3,3)
-plt.plot(time_tot,ans_RR[0]/r,label=r'$\dfrac{R(t,r)}{r}$')
+plt.plot(time_tot,ans_RR[len(ans_RR)-1]/radi_vec[len(radi_vec)-1], label=r'$\dfrac{R(t,r)}{r}$')
 plt.plot(time_vec,a_ES,'--',label=r'$a_{EdS}$')
 plt.xlabel('t [Gyr]')
 #plt.title('R vs a EdS')
@@ -117,7 +117,7 @@ plt.legend()
 
 plt.subplot(2,3,5)
 plt.plot(time_tot,func_rho(r, ans_RR[0], dMMdr, ans_dRdr[0], rho_c0),'-o',label=r'$\rho_{LTB}$(t,r)')
-plt.plot(time_vec,rho,label=r'$\rho_{EdS}$')
+plt.plot(time_vec,rho_EdS,label=r'$\rho_{EdS}$')
 
 plt.xlabel('t [Gyr]')
 plt.legend()
@@ -132,11 +132,8 @@ plt.plot(radi_vec,E_vec,label=r'E(r)')
 plt.xlabel('r [Mpc]')
 plt.legend()
 
-"""
-"""
-print(np.shape(ans_RR))
-print(np.shape(np.transpose(ans_RR)))
-print(np.shape(radi_vec))
+
+
 plt.figure()
 plt.subplot(2,3,1)
 plt.plot(radi_vec,ans_E,label='E(r)')
@@ -170,47 +167,7 @@ plt.subplot(2,3,6)
 plt.plot(radi_vec,plt_dRdr[0],label='dRdr(r)')
 plt.xlabel('r [Mpc]')
 plt.legend()
-"""
-"""
-plt.figure()
-i = 0
-plt.subplot(2,3,1)
-plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
-plt.xlabel('t [Gyr]')
 
-plt.legend()
-
-i = 10
-plt.subplot(2,3,2)
-plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
-plt.xlabel('t [Gyr]')
-plt.legend()
-
-i = 20
-plt.subplot(2,3,3)
-plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
-plt.xlabel('t [Gyr]')
-plt.legend()
-
-i = 40
-plt.subplot(2,3,4)
-plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
-plt.xlabel('t [Gyr]')
-plt.legend()
-
-i = 49
-plt.subplot(2,3,5)
-plt.plot(time_tot,func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0),'-o',label=f'rho(t,r={radi_vec[i]})')
-plt.xlabel('t [Gyr]')
-plt.legend()
-
-plt.subplot(2,3,6)
-#plt.plot(radi_vec,func_rho(radi_vec, ans_RR[0][0], ans_dMdr[0], ans_dRdr[0][0], rho_c0),'-o',label=f'rho(t=t_i,r)')
-#plt.plot(radi_vec,ans_dMdr)
-plt.xlabel('r [Mpc]')
-plt.legend()
-
-"""
 
 rho_of_r = []
 
@@ -248,7 +205,7 @@ plt.title(r'evolution of $\dfrac{\rho(t,r_i)}{\rho_{EdS}}$ ylim = non')
 plt.legend()
 
 
-"""
+
 plt.figure()
 for i in range(0,len(radi_vec),10):
     plt.plot(time_tot,
@@ -283,10 +240,9 @@ plt.plot(time_tot,avg_R,label=r'$R_{avg}$')
 plt.title(r'Averaging all $\dfrac{R(t,r_i)}{r_i}$ gives = $R_{avg}$')
 plt.ylabel('t [Gyr]')
 plt.legend()
-"""
 
 
-#plt.show()
+
 
 y = time_tot
 x = radi_vec
@@ -314,7 +270,7 @@ for i in range(0,len(radi_vec),10):
     if k >5 :
         break
 
-print(np.shape(plot_rho))
+
 plot1 = plot_rho[0]
 plot2 = plot_rho[1]
 plot3 = plot_rho[2]
@@ -352,3 +308,5 @@ fig2.update_layout(
     title=r'$\rho(t,r_i) \text{  time evolution for different starting positions}$'
     )
 fig2.show()
+
+plt.show()
