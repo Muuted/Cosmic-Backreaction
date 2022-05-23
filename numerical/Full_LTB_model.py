@@ -84,8 +84,8 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
 
 
 # Results for the Einstein de Sitter model 
-a_ES, rho, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
-ans_a_ES = rho_ES
+a_ES, rho_EdS, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
+#ans_a_ES = rho_ES
 """
 plt.figure()
 plt.subplot(2,3,1)
@@ -211,19 +211,42 @@ plt.legend()
 
 """
 
+rho_of_r = []
+
+for i in range(0,len(radi_vec)):
+    rho_of_r.append(
+        func_rho(radi_vec[i], ans_RR[i][0], ans_dMdr[i], ans_dRdr[i][0], rho_c0)
+    )
+plt.figure()
+plt.plot(radi_vec,rho_of_r)
+plt.title(r'$\rho(t_i,r)$')
+plt.xlabel('r [Mpc]')
 
 
 plt.figure()
 for i in range(0,len(radi_vec),10):
     plt.plot(time_tot,
-    func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0)
-    ,'--',label=f'rho(t,r={radi_vec[i]})'
+    func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0)/rho_EdS
+    ,'--',label=f'rho(t,r={radi_vec[i]})/rho_EdS'
     )
 
-plt.xlim(0.5,time_tot[len(time_tot)-1])
-#plt.ylim(-1e12,0.5e14)
-plt.title(r'evolution of $\rho(t,r_i)$')
+#.xlim(0.5,time_tot[len(time_tot)-1])
+plt.ylim(1-0.00015, 1.00015)
+plt.title(r'evolution of $\dfrac{\rho(t,r_i)}{\rho_{EdS}}$ ylim(1-0.00015, 1.00015)')
 plt.legend()
+
+plt.figure()
+for i in range(0,len(radi_vec),10):
+    plt.plot(time_tot,
+    func_rho(radi_vec[i], ans_RR[i], ans_dMdr[i], ans_dRdr[i], rho_c0)/rho_EdS
+    ,'--',label=f'rho(t,r={radi_vec[i]})/rho_EdS'
+    )
+
+#.xlim(0.5,time_tot[len(time_tot)-1])
+#plt.ylim(1-0.00015, 1.00015)
+plt.title(r'evolution of $\dfrac{\rho(t,r_i)}{\rho_{EdS}}$ ylim = non')
+plt.legend()
+
 
 """
 plt.figure()
