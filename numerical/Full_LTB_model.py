@@ -300,10 +300,12 @@ z = ans_rho
 
 
 plot_rho = [[],[],[],[],[]]
+r_pos_vec = []
 k = 0
 for i in range(0,len(radi_vec),10):
     if k >5 :
         break
+    r_pos_vec.append(radi_vec[i])
     for j in range(0,len(ans_RR[0])-1):
         plot_rho[k].append(
             func_rho(radi_vec[i], ans_RR[i][j], ans_dMdr[i], ans_dRdr[i][j], rho_c0)/rho_EdS[j]
@@ -322,28 +324,29 @@ plot5 = plot_rho[4]
 fig2 = go.Figure()
 fig2.add_trace(
     go.Scatter(x=time_tot,y=plot1
-    ,mode='lines',name='rho_1'
+    ,mode='lines',name=f'rho(t,r={r_pos_vec[0]})'
     )
     )
 fig2.add_trace(
     go.Scatter(x=time_tot,y=plot2
-    ,mode='lines',name='rho_1'
+    ,mode='lines',name=f'rho(t,r={r_pos_vec[1]})'
     )
 )
 fig2.add_trace(
 go.Scatter(x=time_tot,y=plot3
-,mode='lines',name='rho_3'
+,mode='lines',name=f'rho(t,r={r_pos_vec[2]})'
 )
 )
 fig2.add_trace(
 go.Scatter(x=time_tot,y=plot4
-,mode='lines',name='rho_4'
+,mode='lines',name=f'rho(t,r={r_pos_vec[3]})'
 )
 )
 fig2.add_trace(
 go.Scatter(x=time_tot,y=plot5
-,mode='lines',name='rho_5'
+,mode='lines',name=f'rho(t,r={r_pos_vec[4]})'
 )
 )
-fig2.update_layout(yaxis_range=[0.9995,1.0005])
+fig2.update_layout(yaxis_range=[0.99994,1.00004],
+                    title=r'$\rho(t,r_i) \text{  time evolution for different starting positions}$')
 fig2.show()
