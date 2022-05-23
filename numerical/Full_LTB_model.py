@@ -1,3 +1,4 @@
+from argparse import RawDescriptionHelpFormatter
 from logging import PlaceHolder
 from LTB_model_functions import *
 from Einstein_de_sitter_functions import *
@@ -81,11 +82,11 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
         break
 
 
-"""
+
 # Results for the Einstein de Sitter model 
 a_ES, rho, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 ans_a_ES = rho_ES
-
+"""
 plt.figure()
 plt.subplot(2,3,1)
 plt.plot(time_tot,ans_RR[0]/r, label=r'$\dfrac{R(t,r)}{r}$')
@@ -229,6 +230,7 @@ for i in range(0,len(radi_vec),10):
     ans_RR[i]/radi_vec[i]
     ,'-',label=f'R(t,r={radi_vec[i]})'
     )
+plt.plot(time_vec,a_ES,'--',label=f'$a_(EdS)')
 plt.title('Evolution of R/r at different r')
 plt.xlabel('t [Gyr]')
 plt.legend()
@@ -256,6 +258,8 @@ plt.plot(time_tot,avg_R,label=r'$R_{avg}$')
 plt.title(r'Averaging all $\dfrac{R(t,r_i)}{r_i}$ gives = $R_{avg}$')
 plt.ylabel('t [Gyr]')
 plt.legend()
+
+
 
 plt.show()
 
