@@ -339,14 +339,16 @@ go.Scatter(x=time_tot,y=plot3
 )
 fig2.add_trace(
 go.Scatter(x=time_tot,y=plot4
-,mode='lines',name=f'rho(t,r={r_pos_vec[3]})'
+,mode='lines+markers',name=f'rho(t,r={r_pos_vec[3]})'
 )
 )
 fig2.add_trace(
 go.Scatter(x=time_tot,y=plot5
-,mode='lines',name=f'rho(t,r={r_pos_vec[4]})'
+    ,name=f'rho(t,r={r_pos_vec[4]})',line=dict(dash='dash',color='black')
 )
 )
-fig2.update_layout(yaxis_range=[0.99994,1.00004],
-                    title=r'$\rho(t,r_i) \text{  time evolution for different starting positions}$')
+fig2.update_layout(
+    yaxis_range=[0.99994,1.00004],
+    title=r'$\rho(t,r_i) \text{  time evolution for different starting positions}$'
+    )
 fig2.show()
