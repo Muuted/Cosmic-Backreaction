@@ -211,6 +211,8 @@ plt.legend()
 
 """
 
+
+
 plt.figure()
 for i in range(0,len(radi_vec),10):
     plt.plot(time_tot,
@@ -218,12 +220,12 @@ for i in range(0,len(radi_vec),10):
     ,'--',label=f'rho(t,r={radi_vec[i]})'
     )
 
-#plt.xlim(0.0011870,time_tot[len(time_tot)-1])
-#plt.ylim(-2,1e14)
-plt.title('evolution of rho at different r')
+plt.xlim(0.5,time_tot[len(time_tot)-1])
+#plt.ylim(-1e12,0.5e14)
+plt.title(r'evolution of $\rho(t,r_i)$')
 plt.legend()
 
-
+"""
 plt.figure()
 for i in range(0,len(radi_vec),10):
     plt.plot(time_tot,
@@ -258,7 +260,7 @@ plt.plot(time_tot,avg_R,label=r'$R_{avg}$')
 plt.title(r'Averaging all $\dfrac{R(t,r_i)}{r_i}$ gives = $R_{avg}$')
 plt.ylabel('t [Gyr]')
 plt.legend()
-
+"""
 
 
 plt.show()
