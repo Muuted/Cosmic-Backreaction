@@ -4,6 +4,7 @@ from LTB_model_functions import *
 from Einstein_de_sitter_functions import *
 from The_constants import *
 import plotly as py
+import plotly.express as px
 import plotly.graph_objects as go
 
 Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
@@ -11,7 +12,7 @@ Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants
 dt = 1e3        # time step
 dr = 1        # change of r
 r_i = dr         # distance, we start at origo 
-num_steps = 10000 # number of steps between t_start and t_end
+num_steps = 1000 # number of steps between t_start and t_end
 num_iterations = int(r_b/dr) #number of r's
 
 # Our time vector for the integration
@@ -212,8 +213,7 @@ plt.legend()
 """
 
 rho_of_r = []
-print(rho_c0)
-print(rho_i0)
+
 for i in range(0,len(radi_vec)):
     rho_of_r.append(
         func_rho(radi_vec[i], ans_RR[i][0], ans_dMdr[i], ans_dRdr[i][0], rho_c0)/rho_EdS[0]
@@ -243,8 +243,7 @@ for i in range(0,len(radi_vec),10):
     ,'--',label=f'rho(t,r={radi_vec[i]})/rho_EdS'
     )
 
-#.xlim(0.5,time_tot[len(time_tot)-1])
-#plt.ylim(1-0.00015, 1.00015)
+plt.ylim(0.99995, 1.00005)
 plt.title(r'evolution of $\dfrac{\rho(t,r_i)}{\rho_{EdS}}$ ylim = non')
 plt.legend()
 
@@ -287,15 +286,64 @@ plt.legend()
 """
 
 
-plt.show()
+#plt.show()
 
 y = time_tot
 x = radi_vec
 z = ans_rho
 
-fig = go.Figure(data=[go.Surface(z=z, x=x, y=y)])
-fig.update_layout(title='Mt Bruno Elevation', autosize=False,
-                    width=500, height=500,
-                   margin=dict(l=65, r=50, b=65, t=90))
+#fig = go.Figure(data=[go.Surface(z=z, x=x, y=y)])
+#fig.update_layout(title='Mt Bruno Elevation', autosize=False,
+                 #   width=500, height=500,
+                 #  margin=dict(l=65, r=50, b=65, t=90))
 #fig.show()
 
+
+plot_rho = [[],[],[],[],[]]
+k = 0
+for i in range(0,len(radi_vec),10):
+    if k >5 :
+        break
+    for j in range(0,len(ans_RR[0])-1):
+        plot_rho[k].append(
+            func_rho(radi_vec[i], ans_RR[i][j], ans_dMdr[i], ans_dRdr[i][j], rho_c0)/rho_EdS[j]
+            )
+    k+=1
+    if k >5 :
+        break
+
+print(np.shape(plot_rho))
+plot1 = plot_rho[0]
+plot2 = plot_rho[1]
+plot3 = plot_rho[2]
+plot4 = plot_rho[3]
+plot5 = plot_rho[4]
+
+fig2 = go.Figure()
+fig2.add_trace(
+    go.Scatter(x=time_tot,y=plot1
+    ,mode='lines',name='rho_1'
+    )
+    )
+fig2.add_trace(
+    go.Scatter(x=time_tot,y=plot2
+    ,mode='lines',name='rho_1'
+    )
+)
+fig2.add_trace(
+go.Scatter(x=time_tot,y=plot3
+,mode='lines',name='rho_3'
+)
+)
+fig2.add_trace(
+go.Scatter(x=time_tot,y=plot4
+,mode='lines',name='rho_4'
+)
+)
+fig2.add_trace(
+go.Scatter(x=time_tot,y=plot5
+,mode='lines',name='rho_5'
+)
+)
+fig2.update_layout(yaxis_range=[0.9995,1.0005])
+fig2.show()
