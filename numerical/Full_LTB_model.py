@@ -212,14 +212,15 @@ plt.legend()
 """
 
 rho_of_r = []
-
+print(rho_c0)
+print(rho_i0)
 for i in range(0,len(radi_vec)):
     rho_of_r.append(
-        func_rho(radi_vec[i], ans_RR[i][0], ans_dMdr[i], ans_dRdr[i][0], rho_c0)
+        func_rho(radi_vec[i], ans_RR[i][0], ans_dMdr[i], ans_dRdr[i][0], rho_c0)/rho_EdS[0]
     )
 plt.figure()
 plt.plot(radi_vec,rho_of_r)
-plt.title(r'$\rho(t_i,r)$')
+plt.title(r'$\rho(t_i,r)$/$\rho_{EdS}[0]$')
 plt.xlabel('r [Mpc]')
 
 
@@ -231,7 +232,7 @@ for i in range(0,len(radi_vec),10):
     )
 
 #.xlim(0.5,time_tot[len(time_tot)-1])
-plt.ylim(1-0.00015, 1.00015)
+#plt.ylim(1-0.00015, 1.00015)
 plt.title(r'evolution of $\dfrac{\rho(t,r_i)}{\rho_{EdS}}$ ylim(1-0.00015, 1.00015)')
 plt.legend()
 
