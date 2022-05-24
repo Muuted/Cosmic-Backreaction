@@ -9,7 +9,7 @@ def func_constants():
     
     # values of the constants in the eq's
     Lamb = 0
-    A = 1e-14  # [A] = 1/Mpc^2
+    A = 1.3e-14  # [A] = 1/Mpc^2
     r_b = 50
     n = 2
     m = 2
@@ -25,7 +25,7 @@ def func_constants():
     # constants in normal units 
     H_0 = 70 # km/s/Mpc -> Mpc/Gyr
     G = 6.673e-11  #  m^3/kg/s^2
-    c = 3e8 # m/s speed of light
+    c = 299792458#3e8 # m/s speed of light
     
 
     # constants in M_o and Mpc and Gyr
@@ -52,4 +52,7 @@ def func_constants():
     return const_list
 
 
-#Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
+Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
+
+print(c,'\n',G*1e15,'\n',H_0,'\n',a_i,'\n',t_i,'\n',rho_c0/1e12)
+

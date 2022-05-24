@@ -105,3 +105,10 @@ plt.title('Einstein de Sitter model function')
 """
 
 
+def func_rho_Ein_Sitter(a):
+    Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
+    const = rho_c0
+
+    rho_of_t = const/a**3
+
+    return rho_of_t

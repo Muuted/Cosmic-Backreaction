@@ -47,10 +47,10 @@ def func_rho(r, RR, dMMdr, dRRdr, rho_c0):
 
 def func_M(r, EE, G, rho_c0,a_i,H_i, c):
     
-    C_1 = 4*np.pi*rho_c0
+    C_1 = 4*np.pi*rho_c0/3
     C_2 = (6*c**2/(5*a_i**2*H_i**2))
 
-    ana_M = C_1*r**3*(1 - C_2*EE/(r**2))/3
+    ana_M = C_1*r**3*(1 - C_2*EE/(r**2))
 
     return ana_M
 

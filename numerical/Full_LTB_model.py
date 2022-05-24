@@ -1,5 +1,6 @@
 from argparse import RawDescriptionHelpFormatter
 from logging import PlaceHolder
+from time import time
 from LTB_model_functions import *
 from Einstein_de_sitter_functions import *
 from The_constants import *
@@ -17,6 +18,7 @@ num_iterations = int(r_b/dr) #number of r's
 
 # Our time vector for the integration
 time_tot = np.linspace(t_i,t_0,num_steps)
+print(t_i,t_0)
 radi_vec = np.linspace(r_i,r_b*2,num_iterations)
 
 # Creating the lists for the data at different r values
@@ -86,6 +88,7 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
 
 # Results for the Einstein de Sitter model 
 a_ES, rho_EdS, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
+print(len(time_tot),len(time_vec))
 #ans_a_ES = rho_ES
 
 plt.figure()
@@ -169,14 +172,32 @@ plt.xlabel('r [Mpc]')
 plt.legend()
 
 
-rho_of_r = []
+
+rho_of_r1 = [[],[],[]]
+rho_of_r2 = []
+rho_of_r3 = []
+
+tmid =int(len(time_tot)/2)
+tend = len(time_tot)-1
 
 for i in range(0,len(radi_vec)):
-    rho_of_r.append(
+    rho_of_r1[0].append(
         func_rho(radi_vec[i], ans_RR[i][0], ans_dMdr[i], ans_dRdr[i][0], rho_c0)/rho_EdS[0]
     )
+    rho_of_r1[1].append(
+        func_rho(radi_vec[i], ans_RR[i][tmid], ans_dMdr[i], ans_dRdr[i][tmid], rho_c0)/rho_EdS[tmid]
+    )
+    rho_of_r1[2].append(
+        func_rho(radi_vec[i], ans_RR[i][tend], ans_dMdr[i], ans_dRdr[i][tend], rho_c0)/rho_EdS[tend]
+    )
+
+print(np.shape(rho_of_r1))
+
 plt.figure()
-plt.plot(radi_vec,rho_of_r)
+plt.plot(radi_vec,rho_of_r1[0],label=f'rho(r,t={time_tot[0]}')
+plt.plot(radi_vec,rho_of_r1[1],label=f'rho(r,t={time_tot[tmid]}')
+plt.plot(radi_vec,rho_of_r1[2],'--',label=f'rho(r,t={time_tot[tend]}')
+plt.legend()
 plt.title(r'$\rho(t_i,r)$/$\rho_{EdS}[0]$')
 plt.xlabel('r [Mpc]')
 
@@ -203,8 +224,8 @@ for i in range(0,len(radi_vec),10):
 plt.ylim(0.99995, 1.00005)
 plt.title(r'evolution of $\dfrac{\rho(t,r_i)}{\rho_{EdS}}$ ylim = non')
 plt.legend()
-
-
+"""
+"""
 
 plt.figure()
 for i in range(0,len(radi_vec),10):
@@ -216,7 +237,8 @@ plt.plot(time_vec,a_ES,'--',label=f'$a_(EdS)')
 plt.title('Evolution of R/r at different r')
 plt.xlabel('t [Gyr]')
 plt.legend()
-
+"""
+"""
 plt.figure()
 for i in range(0,len(radi_vec),10):
     plt.plot(time_tot,
@@ -225,8 +247,8 @@ for i in range(0,len(radi_vec),10):
     )
 plt.title('Evolution of dRdr at different r')
 plt.legend()
-
-
+"""
+"""
 avg_R = []
 avgR = 0
 for j in range(len(ans_RR[0])):
@@ -242,7 +264,7 @@ plt.ylabel('t [Gyr]')
 plt.legend()
 
 
-
+"""
 
 y = time_tot
 x = radi_vec
@@ -254,7 +276,7 @@ z = ans_rho
                  #  margin=dict(l=65, r=50, b=65, t=90))
 #fig.show()
 
-
+"""
 plot_rho = [[],[],[],[],[]]
 r_pos_vec = []
 k = 0
@@ -309,4 +331,29 @@ fig2.update_layout(
     )
 fig2.show()
 
+rhos = []
+print(len(radi_vec))
+for i in range(0,len(radi_vec)):
+    rhos.append(
+        func_rho(radi_vec[i],a_i*radi_vec[i],ans_dMdr[i],a_i,rho_c0)/func_rho_Ein_Sitter(a_i)
+    )
+print(len(rhos))
+plt.figure()
+plt.plot(radi_vec,rhos)
+
 plt.show()
+
+r = 2
+RR = r*a_i
+dRRdr = a_i
+EE = func_E(r, r_b, n, m, A)
+dEEdr = func_dEdr(r, r_b, n, m, A)
+MM = func_M(r, EE, G, rho_c0, a_i, H_i, c)
+dMMdr = func_dMMdr(r, EE, dEEdr, rho_c0, H_i, a_i, c) 
+
+print('M=',MM/1e12)
+print('dMdr=',dMMdr/1e12)
+
+
+print('RR=',ans_RR[3][0],RR,'\n','r=',radi_vec[3]/1100,'\n','t=',time_tot[len(ans_RR[0])-1])
+print('dRdr=',ans_dRdr[3][len(ans_RR[0])-1],'\n','r=',radi_vec[3],'\n','t=',time_tot[len(ans_RR[0])-1])
