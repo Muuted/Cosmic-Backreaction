@@ -29,7 +29,7 @@ def func_dEdr(r,  r_b, n, m, A):
     if r <= r_b :
         dEEdr1 = 2 * A * r * ((r / r_b) ** n - 1) ** m
 
-        dEEdr2 = (m/(r_b**n)) * n * A * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)
+        dEEdr2 = ((m* n * A )/(r_b**n)) * r ** (n + 1) * ((r / r_b) ** n - 1) ** (m - 1)
 
         dEEdr = dEEdr1 + dEEdr2
     else:
@@ -37,9 +37,9 @@ def func_dEdr(r,  r_b, n, m, A):
     return dEEdr
 
 
-def func_rho(r, RR, dMMdr, dRRdr, rho_c0):
+def func_rho(r, RR, dMMdr, dRRdr, c):
 
-    kappa = (8*np.pi)
+    kappa = (8*np.pi*G)/c**2
 
     rho = (2/kappa)*(dMMdr/(RR**2*dRRdr))
 
@@ -58,7 +58,7 @@ def func_M(r, EE, G, rho_c0,a_i,H_i, c):
 
 def func_dMMdr(r, EE, dEEdr, rho_c0, H_i,a_i, c):
     #C_1 = 4*np.pi*rho_c0
-    C_1 = 4*np.pi*rho_c0*G/c**3
+    C_1 = 4*np.pi*rho_c0*G/c**2
     #C_2 = (24*np.pi*rho_c0*c**2)/(15*a_i**2*H_i**2)
     C_2 = (24*np.pi*rho_c0*G)/(15*a_i**2*H_i**2)
 
@@ -73,7 +73,7 @@ def func_dRdt(r, RR, EE, MM, G, c):
     #        2 * G*MM /(c**2* RR) + 2 * EE
     #    )
     dRRdt = c*np.sqrt(
-        2/RR + 2 * EE
+        2*MM/RR + 2 * EE
     )
 
     return dRRdt
@@ -85,10 +85,10 @@ def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
      #       2*G*MM/(c**2*RR) +2*EE #+ (Lamb/3)*RR**2 
       #  )
     sqrts = np.sqrt(
-        2/RR +2*EE #+ (Lamb/3)*RR**2 
+        2*MM/RR +2*EE #+ (Lamb/3)*RR**2 
     )
 
-    extra = c*(dMMdr/RR - MM*dRRdr/(RR**2)) + c*dEEdr #+ Lamb*RR*dRRdr/3
+    extra = c*(dMMdr/RR - MM*dRRdr/(RR**2) + dEEdr) #+ Lamb*RR*dRRdr/3
 
     return extra/sqrts
 

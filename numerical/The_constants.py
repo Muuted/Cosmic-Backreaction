@@ -54,5 +54,5 @@ def func_constants():
 
 Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
 
-print(c,'\n',G*1e15,'\n',H_0,'\n',a_i,'\n',t_i,'\n',rho_c0/1e12)
+#print(c,'\n',G*1e15,'\n',H_0,'\n',a_i,'\n',t_i,'\n',rho_c0/1e12)
 
