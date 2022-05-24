@@ -47,17 +47,20 @@ def func_rho(r, RR, dMMdr, dRRdr, rho_c0):
 
 def func_M(r, EE, G, rho_c0,a_i,H_i, c):
     
-    C_1 = 4*np.pi*rho_c0/3
+    #C_1 = 4*np.pi*rho_c0/3
+    C_1 = 4*np.pi*rho_c0*G/(3*c**2)
     C_2 = (6*c**2/(5*a_i**2*H_i**2))
+
 
     ana_M = C_1*r**3*(1 - C_2*EE/(r**2))
 
     return ana_M
 
 def func_dMMdr(r, EE, dEEdr, rho_c0, H_i,a_i, c):
-
-    C_1 = 4*np.pi*rho_c0
-    C_2 = (24*np.pi*rho_c0*c**2)/(15*a_i**2*H_i**2)
+    #C_1 = 4*np.pi*rho_c0
+    C_1 = 4*np.pi*rho_c0*G/c**3
+    #C_2 = (24*np.pi*rho_c0*c**2)/(15*a_i**2*H_i**2)
+    C_2 = (24*np.pi*rho_c0*G)/(15*a_i**2*H_i**2)
 
     dMMdr = C_1*r**2 - C_2*(EE + r*dEEdr)
 
@@ -65,21 +68,27 @@ def func_dMMdr(r, EE, dEEdr, rho_c0, H_i,a_i, c):
 
 
 def func_dRdt(r, RR, EE, MM, G, c):
-
+    
+    #dRRdt = c*np.sqrt(
+    #        2 * G*MM /(c**2* RR) + 2 * EE
+    #    )
     dRRdt = c*np.sqrt(
-            2 * G*MM /(c**2* RR) + 2 * EE
-        )
+        2/RR + 2 * EE
+    )
 
     return dRRdt
 
 
 def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
-    
+    Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
+    #sqrts = np.sqrt(
+     #       2*G*MM/(c**2*RR) +2*EE #+ (Lamb/3)*RR**2 
+      #  )
     sqrts = np.sqrt(
-            2*G*MM/(c**2*RR) +2*EE #+ (Lamb/3)*RR**2 
-        )
+        2/RR +2*EE #+ (Lamb/3)*RR**2 
+    )
 
-    extra = (G)/(c)*(dMMdr/RR - MM*dRRdr/(RR**2)) + c*dEEdr #+ Lamb*RR*dRRdr/3
+    extra = c*(dMMdr/RR - MM*dRRdr/(RR**2)) + c*dEEdr #+ Lamb*RR*dRRdr/3
 
     return extra/sqrts
 

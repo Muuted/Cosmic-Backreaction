@@ -88,8 +88,7 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
 
 # Results for the Einstein de Sitter model 
 a_ES, rho_EdS, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
-print(len(time_tot),len(time_vec))
-#ans_a_ES = rho_ES
+
 
 plt.figure()
 plt.subplot(2,3,1)
@@ -265,7 +264,6 @@ plt.legend()
 
 
 """
-
 y = time_tot
 x = radi_vec
 z = ans_rho
