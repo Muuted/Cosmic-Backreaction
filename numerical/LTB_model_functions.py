@@ -1,4 +1,4 @@
-import scipy
+"""import scipy
 import scipy.integrate
 
 import matplotlib.pyplot as plt
@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 from scipy.integrate import quad
 
 from scipy.integrate import solve_ivp
-
+"""
 import numpy as np
-from The_constants import *
+#from The_constants import *
 
 
 def func_E(r, r_b, n, m, A):
@@ -103,7 +103,7 @@ def func_LTB_dSdt(S,t,p):
 
     dRdt = func_dRdt(RR, EE, MM, G, c)
     dRdrdt =  func_dRdrdt(RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
-    print(dRdt)
+    
     return_list = [dRdt, dRdrdt]
     return  return_list
 

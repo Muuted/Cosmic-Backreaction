@@ -11,7 +11,7 @@ Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants
 
 dr = 1        # change of r
 r_i = dr         # distance, we start at origo 
-num_steps = 10 # number of steps between t_start and t_end
+num_steps = 3 # number of steps between t_start and t_end
 num_iterations = 100#int(r_b/dr) #number of r's
 
 # Our time vector for the integration
@@ -94,10 +94,10 @@ plt.subplot(2,3,1)
 for i in range(0,len(radi_vec),int(len(radi_vec)/4)):
     plt.plot(time_tot,
     ans_RR[i]/radi_vec[i]
-    ,'-',label=f'R(t,r={radi_vec[i]})'
+    ,'-',label=f'R(t,r~{int(radi_vec[i])})'
     )
 #plt.plot(time_tot,ans_RR[len(radi_vec[0])-1]/radi_vec[len(radi_vec[0])-1],'-',label=f'R(t,r={radi_vec[len(radi_vec[0])-1]})')
-plt.plot(time_vec,a_FLRW_lim(time_tot,t_0),'--',label=f'$a_(EdS)')
+plt.plot(time_vec,a_FLRW_lim(time_tot,t_0),'--',label=r'$a_{EdS}$')
 plt.title('Evolution of R/r at different r')
 plt.xlabel('t [Gyr]')
 plt.legend()
@@ -139,13 +139,14 @@ fig2.add_trace(
     ,mode='lines',name=f'rho(t={time_tot[0]},r)'
     )
     )
-"""fig2.add_trace(
-    go.Scatter(x=radi_vec,y=rho_r[1]/rho_EdS[1]
+"""
+fig2.add_trace(
+    go.Scatter(x=radi_vec,y=rho_r[1]/rho_EdS[1]#/max(rho_r[1])
     ,mode='lines',name=f'rho(t={time_tot[1]},r)'
     )
 )
 fig2.add_trace(
-go.Scatter(x=radi_vec,y=rho_r[2]/rho_EdS[2]
+go.Scatter(x=radi_vec,y=rho_r[2]/rho_EdS[2]#/max(rho_r[2])
 ,mode='lines',name=f'rho(t={time_tot[2]},r)'
 )
 )"""
