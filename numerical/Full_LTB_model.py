@@ -88,7 +88,42 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
 a_ES, rho_EdS, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 
 
+
+
+#------------------------------------------------------------ Finding volume element -----------------------
+Volume_ele = []
+
+for j in range(0,len(time_tot)):
+    V = 0
+    j = 1
+    for i in range(0,len(radi_vec)):
+        if radi_vec[i] >= r_b:
+            break
+    
+        V_dRdr_E = ans_dRdr[i][j]/(1+2*ans_E[i])
+        V_R = ans_RR[i][j]
+
+        V += 4*np.pi*V_dRdr_E*V_R**2*radi_vec[i]**2
+
+    Volume_ele.append(V)
+
+
 plt.figure()
+plt.plot(time_tot,Volume_ele,label='Volume element')
+plt.title('Volume element sum')
+plt.xlabel('t [Gyr]')
+plt.figure()
+
+#------------------------------------------------------------ Founding volume element -----------------------
+
+
+
+
+
+
+
+
+
 
 plt.subplot(2,3,1)
 for i in range(0,len(radi_vec),int(len(radi_vec)/4)):
@@ -108,6 +143,7 @@ t = 0
 plt.plot(time_tot,ans_rho[0]/rho_EdS[0])
 plt.plot(time_tot,ans_rho[25]/rho_EdS[1])
 plt.plot(time_tot,ans_rho[49]/rho_EdS[2])
+plt.xlabel('t [Gyr]')
 
 
 
@@ -116,6 +152,7 @@ rho_r = np.transpose(ans_rho)
 plt.plot(radi_vec,rho_r[0]/rho_EdS[0],label='rho(r,t_i)')
 plt.plot(radi_vec,rho_r[1]/rho_EdS[1],label='rho(r,t_mid)')
 plt.plot(radi_vec,rho_r[2]/rho_EdS[2],label='rho(r,t_0)')
+plt.xlabel('r [Mpc]')
 plt.legend()
 
 
@@ -129,29 +166,57 @@ plt.legend()
 plt.subplot(2,3,5)
 plt.plot(radi_vec,ans_M,label='M')
 plt.legend()
+plt.xlabel('r [Mpc]')
+
 plt.subplot(2,3,6)
 plt.plot(radi_vec,ans_dMdr,label='dMdr')
 plt.legend()
+plt.xlabel('r [Mpc]')
+
+
+fig1 = go.Figure()
+fig1.add_trace(
+    go.Scatter(x=radi_vec,y=rho_r[0]/rho_EdS[0]
+    ,mode='lines',name=f'rho(t=~{int(time_tot[0])},r)'
+        )
+    )
+fig1.update_layout(
+    title=r'$\rho(t_i,r)/\rho_{EdS} $s'
+    , xaxis_title='r [Mpc]'
+)
 
 fig2 = go.Figure()
 fig2.add_trace(
     go.Scatter(x=radi_vec,y=rho_r[0]/rho_EdS[0]
-    ,mode='lines',name=f'rho(t={time_tot[0]},r)'
+    ,mode='lines',name=f'rho(t=~{int(time_tot[0])},r)'
+        )
     )
-    )
-"""
+
 fig2.add_trace(
     go.Scatter(x=radi_vec,y=rho_r[1]/rho_EdS[1]#/max(rho_r[1])
-    ,mode='lines',name=f'rho(t={time_tot[1]},r)'
+    ,mode='lines',name=f'rho(t=~{int(time_tot[1])},r)'
+        )   
     )
-)
 fig2.add_trace(
-go.Scatter(x=radi_vec,y=rho_r[2]/rho_EdS[2]#/max(rho_r[2])
-,mode='lines',name=f'rho(t={time_tot[2]},r)'
+    go.Scatter(x=radi_vec,y=rho_r[2]/rho_EdS[2]#/max(rho_r[2])
+    ,mode='lines',name=f'rho(t=~{int(time_tot[2])},r)'
+        )
+    )
+
+fig2.update_layout(
+    title=r'$\rho(t,r)/\rho_{EdS} $s'
+    , xaxis_title='r [Mpc]'
 )
-)"""
 fig2.show()
+fig1.show()
 plt.show()
+
+
+
+
+
+
+
 """
 plt.figure()
     plt.subplot(2,3,1)
