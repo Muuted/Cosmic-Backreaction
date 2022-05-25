@@ -99,7 +99,7 @@ plt.subplot(2,3,1)
     ans_RR[i]/radi_vec[i]
     ,'-',label=f'R(t,r={radi_vec[i]})'
     )"""
-plt.plot(time_tot,ans_RR[len(radi_vec[0])-1]/radi_vec[len(radi_vec[0])-1],'-',label=f'R(t,r={radi_vec[len(radi_vec[0])-1]})')
+#plt.plot(time_tot,ans_RR[len(radi_vec[0])-1]/radi_vec[len(radi_vec[0])-1],'-',label=f'R(t,r={radi_vec[len(radi_vec[0])-1]})')
 plt.plot(time_vec,a_ES,'--',label=f'$a_(EdS)')
 plt.title('Evolution of R/r at different r')
 plt.xlabel('t [Gyr]')
