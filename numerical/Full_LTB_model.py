@@ -1,5 +1,3 @@
-from argparse import RawDescriptionHelpFormatter
-from logging import PlaceHolder
 from time import time
 from LTB_model_functions import *
 from Einstein_de_sitter_functions import *
@@ -10,16 +8,15 @@ import plotly.graph_objects as go
 
 Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
 
-dt = 1e3        # time step
+
 dr = 1        # change of r
 r_i = dr         # distance, we start at origo 
-num_steps = 3 # number of steps between t_start and t_end
-num_iterations = int(r_b/dr) #number of r's
+num_steps = 10 # number of steps between t_start and t_end
+num_iterations = 100#int(r_b/dr) #number of r's
 
 # Our time vector for the integration
 time_tot = np.linspace(t_i,t_0,num_steps)
-
-radi_vec = np.linspace(r_i,r_b*2,num_iterations)
+radi_vec = np.linspace(r_i,r_b*1.2,num_iterations)
 
 # Creating the lists for the data at different r values
 ans_RR = [[] for x in range(num_iterations)]
@@ -48,13 +45,13 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
     init_cond_dRdt = [RR, dRRdr]
     args_list =[r, EE, dEEdr, MM,dMMdr, G,c]
 
-    #print(init_cond_dRdt)
     ans_odeint = scipy.integrate.odeint(func_LTB_dSdt, 
             y0=init_cond_dRdt, 
             t=time_tot,
             args=(args_list,)
             )
     # The results from our odeint  above
+
     ans_odeint = ans_odeint.T
     
     ans_RR[i] = ans_odeint[0]
@@ -70,7 +67,7 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
         rho_valu = func_rho(r,ans_RR[i][j],dMMdr,ans_dRdr[i][j],rho_c0)
         ans_rho[i].append(rho_valu)
         
-        
+
         if str(rho_valu) == 'nan' or str(ans_RR[i][j])=='nan':
             print('RR = ',ans_RR[i][j],'\n'
             ,'dRdr =', ans_dRdr[i][j], '\n'
@@ -88,19 +85,19 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
 
 
 # Results for the Einstein de Sitter model 
-a_ES, rho_EdS, rho_ES, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
+a_ES, rho_EdS, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 
 
 plt.figure()
 
 plt.subplot(2,3,1)
-"""for i in range(0,len(radi_vec),10):
+for i in range(0,len(radi_vec),int(len(radi_vec)/4)):
     plt.plot(time_tot,
     ans_RR[i]/radi_vec[i]
     ,'-',label=f'R(t,r={radi_vec[i]})'
-    )"""
+    )
 #plt.plot(time_tot,ans_RR[len(radi_vec[0])-1]/radi_vec[len(radi_vec[0])-1],'-',label=f'R(t,r={radi_vec[len(radi_vec[0])-1]})')
-plt.plot(time_vec,a_ES,'--',label=f'$a_(EdS)')
+plt.plot(time_vec,a_FLRW_lim(time_tot,t_0),'--',label=f'$a_(EdS)')
 plt.title('Evolution of R/r at different r')
 plt.xlabel('t [Gyr]')
 plt.legend()
@@ -108,17 +105,47 @@ plt.legend()
 
 plt.subplot(2,3,2)
 t = 0
-plt.plot(time_tot,ans_rho[0]/rho_EdS)
-plt.plot(time_tot,ans_rho[25]/rho_EdS)
-plt.plot(time_tot,ans_rho[49]/rho_EdS)
+plt.plot(time_tot,ans_rho[0]/rho_EdS[0])
+plt.plot(time_tot,ans_rho[25]/rho_EdS[1])
+plt.plot(time_tot,ans_rho[49]/rho_EdS[2])
 
 
-print(len(rho_EdS))
+
 plt.subplot(2,3,3)
 rho_r = np.transpose(ans_rho)
-plt.plot(radi_vec,rho_r[0]/rho_EdS[0])
-plt.plot(radi_vec,rho_r[1]/rho_EdS[1])
-plt.plot(radi_vec,rho_r[2]/rho_EdS[2])
+plt.plot(radi_vec,rho_r[0]/rho_EdS[0],label='rho(r,t_i)')
+plt.plot(radi_vec,rho_r[1]/rho_EdS[1],label='rho(r,t_mid)')
+plt.plot(radi_vec,rho_r[2]/rho_EdS[2],label='rho(r,t_0)')
+plt.legend()
+
+
+
+plt.subplot(2,3,4)
+plt.plot(time_vec,rho_EdS,label='rho_EdS')
+plt.legend()
+plt.subplot(2,3,5)
+plt.plot(radi_vec,ans_M,label='M')
+plt.legend()
+plt.subplot(2,3,6)
+plt.plot(radi_vec,ans_dMdr,label='dMdr')
+plt.legend()
+fig2 = go.Figure()
+fig2.add_trace(
+    go.Scatter(x=radi_vec,y=rho_r[0]/rho_EdS[0]
+    ,mode='lines',name=f'rho(t={time_tot[0]},r)'
+    )
+    )
+"""fig2.add_trace(
+    go.Scatter(x=radi_vec,y=rho_r[1]/rho_EdS[1]
+    ,mode='lines',name=f'rho(t={time_tot[1]},r)'
+    )
+)
+fig2.add_trace(
+go.Scatter(x=radi_vec,y=rho_r[2]/rho_EdS[2]
+,mode='lines',name=f'rho(t={time_tot[2]},r)'
+)
+)"""
+fig2.show()
 plt.show()
 """
 plt.figure()
