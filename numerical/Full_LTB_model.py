@@ -43,7 +43,7 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
     
     #The initial conditions are found for each r, and used in the ODE int integration
     init_cond_dRdt = [RR, dRRdr]
-    args_list =[r, EE, dEEdr, MM,dMMdr, G,c]
+    args_list =[EE, dEEdr, MM,dMMdr, G,c]
 
     ans_odeint = scipy.integrate.odeint(func_LTB_dSdt, 
             y0=init_cond_dRdt, 
@@ -64,7 +64,7 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
     ans_dMdr.append(dMMdr)
 
     for j in range(0,len(ans_RR[i])):
-        rho_valu = func_rho(r,ans_RR[i][j],dMMdr,ans_dRdr[i][j],rho_c0)
+        rho_valu = func_rho(ans_RR[i][j],dMMdr,ans_dRdr[i][j],rho_c0)
         ans_rho[i].append(rho_valu)
         
 
@@ -121,7 +121,10 @@ plt.legend()
 
 
 plt.subplot(2,3,4)
-plt.plot(time_vec,rho_EdS,label='rho_EdS')
+#plt.plot(time_vec,rho_EdS,label='rho_EdS')
+#plt.plot(radi_vec,ans_dRdr,label='dRdr')
+plt.plot(radi_vec,ans_RR)
+
 plt.legend()
 plt.subplot(2,3,5)
 plt.plot(radi_vec,ans_M,label='M')
@@ -129,6 +132,7 @@ plt.legend()
 plt.subplot(2,3,6)
 plt.plot(radi_vec,ans_dMdr,label='dMdr')
 plt.legend()
+
 fig2 = go.Figure()
 fig2.add_trace(
     go.Scatter(x=radi_vec,y=rho_r[0]/rho_EdS[0]
