@@ -27,20 +27,23 @@ H_1 = 1
 T = []
 Q = []
 Q_Q = []
+V_2=[]
+V_1=[]
 for theta in np.arange(0.00001, 5, 0.001):
     V = v(theta, f_2)
     H = h(theta)
     Q2 = q_2(theta)
     Q.append(q(V, H, Q2))
-
+    V_2.append(V)
+    V_1.append(1-V)
     Q_Q.append(H_1 * (1 - V + V * H))
     T.append(theta)
 
-plt.plot(T, Q, 'b')
-#plt.plot(T, Q_Q, 'r')
+plt.plot(T, V_2, 'b')
+plt.plot(T, V_1, 'g')
 plt.xlim(0, 5)
-plt.axhline(y=0, color='r', linestyle='--')
-plt.xlabel(r'$\theta$')
-plt.ylabel(r'q($\theta$)')
-plt.title(' deceleration parameter q')
+#plt.axhline(y=0, color='r', linestyle='--')
+#plt.xlabel(r'$\theta$')
+#plt.ylabel(r'q($\theta$)')
+#plt.title(' deceleration parameter q')
 plt.show()
