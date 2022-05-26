@@ -11,7 +11,7 @@ Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants
 
 dr = 1        # change of r
 r_i = dr         # distance, we start at origo 
-num_steps = 3 # number of steps between t_start and t_end
+num_steps = 10000 # number of steps between t_start and t_end
 num_iterations = 100#int(r_b/dr) #number of r's
 
 # Our time vector for the integration
@@ -87,10 +87,62 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
 # Results for the Einstein de Sitter model 
 a_ES, rho_EdS, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 
+len_time = len(time_tot)
+
+plt.figure()
+rho_r = np.transpose(ans_rho)
+plt.plot(radi_vec,rho_r[0]/rho_EdS[0],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
+plt.plot(radi_vec,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
+plt.plot(radi_vec,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
+plt.xlabel('r [Mpc]')
+plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$')
+plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time, time in Gyr.'
+         )
+plt.legend()
+
+plt.figure()
+plt.plot(radi_vec,rho_r[0]/rho_EdS[0],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
+plt.plot(radi_vec,rho_r[1]/rho_EdS[1],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[1]*1e3,2)}e-3)')
+plt.plot(radi_vec,rho_r[2]/rho_EdS[2],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[2]*1e3,2)}e-3)')
+plt.xlabel('r [Mpc]')
+plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$')
+plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr')
+plt.legend()
 
 
+
+plt.figure()
+rho_r = np.transpose(ans_rho)
+ans_RR_trans = np.transpose(ans_RR)
+
+RR_1 = ans_RR_trans[0]
+RR_2 = ans_RR_trans[int(len_time/2)]
+RR_3 = ans_RR_trans[int(len_time-1)]
+plt.plot(RR_1,rho_r[0]/rho_EdS[0],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
+plt.plot(RR_2,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
+plt.plot(RR_3,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
+plt.xlabel(r'$R(t_j,r)$ [Mpc]')
+plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$')
+plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time, time in Gyr.'
+         )
+plt.legend()
+
+
+RR_1 = ans_RR_trans[0]
+RR_2 = ans_RR_trans[0]
+RR_3 = ans_RR_trans[0]
+plt.figure()
+plt.plot(RR_1,rho_r[0]/rho_EdS[0],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
+plt.plot(RR_2,rho_r[1]/rho_EdS[1],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[1]*1e3,2)}e-3)')
+plt.plot(RR_3,rho_r[2]/rho_EdS[2],label=r'$\frac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[2]*1e3,2)}e-3)')
+plt.xlabel(r'$R(t_j,r)$ [Mpc]')
+plt.ylabel(r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$')
+plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr')
+plt.legend()
+plt.show()
 
 #------------------------------------------------------------ Finding volume element -----------------------
+"""
 Volume_ele = []
 
 for j in range(0,len(time_tot)):
@@ -113,6 +165,7 @@ plt.plot(time_tot,Volume_ele,label='Volume element')
 plt.title('Volume element sum')
 plt.xlabel('t [Gyr]')
 plt.figure()
+"""
 
 #------------------------------------------------------------ Founding volume element -----------------------
 
@@ -207,9 +260,9 @@ fig2.update_layout(
     title=r'$\rho(t,r)/\rho_{EdS} $s'
     , xaxis_title='r [Mpc]'
 )
-fig2.show()
-fig1.show()
-plt.show()
+#fig2.show()
+#fig1.show()
+#plt.show()
 
 
 

@@ -54,8 +54,8 @@ Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants
 #print('t_i=',t_i/(60*60*24*365),'\n','t_0=',t_0/(60*60*24*365))
 #print(c,'\n',G*1e15,'\n',H_0,'\n',a_i,'\n',t_i,'\n',rho_c0/1e12)
 
-
-print(H_i,H_0)
+print(t_0)
+#print(H_i,H_0)
 
 H0 = 0.07158985 # Hubble sonstant 70 km/s/Mpc in unit 1/Gyr
 t0 = 2./3/H0 # assume EdS background
@@ -70,4 +70,4 @@ G = 6.673e-11*M_sun*Gyr*Gyr/Mpc/Mpc/Mpc
 rho_ic = 3.0*H0*H0/(8.0*np.pi*G)/a_i**3
 Hi = ( 8*np.pi*G*rho_ic/3.0 )**(1/2)
 
-print(Hi,H0)
+#print(Hi,H0)
