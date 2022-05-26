@@ -115,9 +115,12 @@ plt.figure()
 rho_r = np.transpose(ans_rho)
 ans_RR_trans = np.transpose(ans_RR)
 
+
 RR_1 = ans_RR_trans[0]
 RR_2 = ans_RR_trans[int(len_time/2)]
 RR_3 = ans_RR_trans[int(len_time-1)]
+
+
 plt.plot(RR_1,rho_r[0]/rho_EdS[0],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
 plt.plot(RR_2,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
 plt.plot(RR_3,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
@@ -129,8 +132,8 @@ plt.legend()
 
 
 RR_1 = ans_RR_trans[0]
-RR_2 = ans_RR_trans[0]
-RR_3 = ans_RR_trans[0]
+RR_2 = ans_RR_trans[1]
+RR_3 = ans_RR_trans[2]
 plt.figure()
 plt.plot(RR_1,rho_r[0]/rho_EdS[0],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
 plt.plot(RR_2,rho_r[1]/rho_EdS[1],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[1]*1e3,2)}e-3)')
