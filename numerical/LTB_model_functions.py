@@ -1,4 +1,4 @@
-import scipy
+"""import scipy
 import scipy.integrate
 
 import matplotlib.pyplot as plt
@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 from scipy.integrate import quad
 
 from scipy.integrate import solve_ivp
-
+"""
 import numpy as np
-from The_constants import *
+#from The_constants import *
 
 
 def func_E(r, r_b, n, m, A):
@@ -37,7 +37,7 @@ def func_dEdr(r,  r_b, n, m, A):
     return dEEdr
 
 
-def func_rho(r, RR, dMMdr, dRRdr, c):
+def func_rho(RR, dMMdr, dRRdr, c):
 
     kappa = (8*np.pi)
     #kappa = (8*np.pi*G)/c**4
@@ -68,7 +68,7 @@ def func_dMMdr(r, EE, dEEdr, rho_c0, H_i,a_i, c):
     return dMMdr
 
 
-def func_dRdt(r, RR, EE, MM, G, c):
+def func_dRdt(RR, EE, MM, G, c):
     
     dRRdt = c*np.sqrt(
             2 * G*MM /(c**2* RR) + 2 * EE
@@ -82,8 +82,8 @@ def func_dRdt(r, RR, EE, MM, G, c):
     return dRRdt
 
 
-def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
-    Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
+def func_dRdrdt(RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
+    
     sqrts = np.sqrt(
            2*G*MM/(c**2*RR) +2*EE #+ (Lamb/3)*RR**2 
       )
@@ -99,10 +99,10 @@ def func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
 def func_LTB_dSdt(S,t,p):    
     RR, dRRdr = S
     
-    r, EE, dEEdr, MM,dMMdr, G, c = p
+    EE, dEEdr, MM, dMMdr, G, c = p
 
-    dRdt = func_dRdt(r, RR, EE, MM, G, c)
-    dRdrdt =  func_dRdrdt(r, RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
+    dRdt = func_dRdt(RR, EE, MM, G, c)
+    dRdrdt =  func_dRdrdt(RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c)
     
     return_list = [dRdt, dRdrdt]
     return  return_list
