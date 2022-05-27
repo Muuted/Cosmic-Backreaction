@@ -1,4 +1,6 @@
 from time import time
+
+from matplotlib.markers import MarkerStyle
 from LTB_model_functions import *
 from Einstein_de_sitter_functions import *
 from The_constants import *
@@ -87,13 +89,51 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
 # Results for the Einstein de Sitter model 
 a_ES, rho_EdS, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 
+
+
+k = 0
+pos_vecs = []
+i_pos = []
+for i in range(0,len(radi_vec)):
+    if k < 1 and radi_vec[i] < 10:
+        pos_vecs.append(radi_vec[i])
+        i_pos.append(i)
+        k += 1
+    if k < 2 and 20 < radi_vec[i] < 25:
+        pos_vecs.append(radi_vec[i])
+        i_pos.append(i)
+        k += 1
+    if k < 3 and 40 < radi_vec[i] < 42:
+        pos_vecs.append(radi_vec[i])
+        i_pos.append(i)
+        k += 1
+    if k < 4 and r_b*1.1 < radi_vec[i]:
+        pos_vecs.append(radi_vec[i])
+        i_pos.append(i)
+        k += 1
+
+
+
+plt.figure()
+plt.plot(time_tot,ans_RR[i_pos[0]]/radi_vec[i_pos[0]],marker='.',markersize=5,label=r'R(t,$r_1$ $\approx$ '+f'{int(pos_vecs[0])})'+r'/$~r_1$')
+plt.plot(time_tot,ans_RR[i_pos[1]]/radi_vec[i_pos[1]],marker='.',markersize=5,label=r'R(t,$r_2$ $\approx$ '+f'{int(pos_vecs[1])})'+r'/$~r_2$')
+plt.plot(time_tot,ans_RR[i_pos[2]]/radi_vec[i_pos[2]],marker='.',markersize=5,label=r'R(t,$r_3$ $\approx$ '+f'{int(pos_vecs[2])})'+r'/$~r_3$')
+plt.plot(time_tot,ans_RR[i_pos[3]]/radi_vec[i_pos[3]],marker='.',markersize=5,label=r'R(t,$r_4$ $\approx$ '+f'{int(pos_vecs[3])})'+r'/$~r_4$')
+plt.plot(time_tot,a_ES,'--k',label=r'$a_{EdS}(t)$')
+plt.title(r'Proper distance $R(t,r_j)$ at different radial positions')
+plt.xlabel('t [Gyr]')
+plt.ylabel(' R(t,r) [Mpc]')
+plt.legend()
+
+#plt.show()
+
 len_time = len(time_tot)
 
 plt.figure()
 rho_r = np.transpose(ans_rho)
-plt.plot(radi_vec,rho_r[0]/rho_EdS[0],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
-plt.plot(radi_vec,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
-plt.plot(radi_vec,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
+plt.plot(radi_vec,rho_r[0]/rho_EdS[0],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
+plt.plot(radi_vec,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
+plt.plot(radi_vec,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
 plt.xlabel('r [Mpc]')
 plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$')
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time, time in Gyr.'
@@ -101,9 +141,9 @@ plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time
 plt.legend()
 
 plt.figure()
-plt.plot(radi_vec,rho_r[0]/rho_EdS[0],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
-plt.plot(radi_vec,rho_r[1]/rho_EdS[1],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[1]*1e3,2)}e-3)')
-plt.plot(radi_vec,rho_r[2]/rho_EdS[2],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[2]*1e3,2)}e-3)')
+plt.plot(radi_vec,rho_r[0]/rho_EdS[0],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
+plt.plot(radi_vec,rho_r[1]/rho_EdS[1],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[1]*1e3,2)}e-3)')
+plt.plot(radi_vec,rho_r[2]/rho_EdS[2],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[2]*1e3,2)}e-3)')
 plt.xlabel('r [Mpc]')
 plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$')
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr')
@@ -121,23 +161,24 @@ RR_2 = ans_RR_trans[int(len_time/2)]
 RR_3 = ans_RR_trans[int(len_time-1)]
 
 
-plt.plot(RR_1,rho_r[0]/rho_EdS[0],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
-plt.plot(RR_2,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
-plt.plot(RR_3,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
+plt.plot(RR_1,rho_r[0]/rho_EdS[0],marker='.',markersize=7,label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
+plt.plot(RR_2,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],marker='.',markersize=7,label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
+plt.plot(RR_3,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],marker='.',markersize=7,label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
 plt.xlabel(r'$R(t_j,r)$ [Mpc]')
-plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$')
+plt.ylabel(r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$')
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time, time in Gyr.'
          )
-plt.legend()
-
+plt.legend(loc='upper left')
+#plt.rc('xtick',labelsize=20)
+plt.show()
 
 RR_1 = ans_RR_trans[0]
 RR_2 = ans_RR_trans[1]
 RR_3 = ans_RR_trans[2]
 plt.figure()
-plt.plot(RR_1,rho_r[0]/rho_EdS[0],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
-plt.plot(RR_2,rho_r[1]/rho_EdS[1],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[1]*1e3,2)}e-3)')
-plt.plot(RR_3,rho_r[2]/rho_EdS[2],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[2]*1e3,2)}e-3)')
+plt.plot(RR_1,rho_r[0]/rho_EdS[0],marker='.',markersize=5,label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
+plt.plot(RR_2,rho_r[1]/rho_EdS[1],marker='.',markersize=5,label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[1]*1e3,2)}e-3)')
+plt.plot(RR_3,rho_r[2]/rho_EdS[2],marker='.',markersize=5,label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[2]*1e3,2)}e-3)')
 plt.xlabel(r'$R(t_j,r)$ [Mpc]')
 plt.ylabel(r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$')
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr')
@@ -145,33 +186,36 @@ plt.legend()
 plt.show()
 
 #------------------------------------------------------------ Finding volume element -----------------------
-"""
-Volume_ele = []
 
+Volume_LTB = []
+Volume_EdS = []
 for j in range(0,len(time_tot)):
-    V = 0
-    j = 1
+    V_EdS = 0
+    V_LTB = 0
     for i in range(0,len(radi_vec)):
-        if radi_vec[i] >= r_b:
-            break
-    
         V_dRdr_E = ans_dRdr[i][j]/np.sqrt(1+2*ans_E[i])
         V_R = ans_RR[i][j]
 
-        V += 4*np.pi*V_dRdr_E*V_R**2#*radi_vec[i]**2
+        if radi_vec[i] < r_b:
+            V_LTB += 4*np.pi*V_dRdr_E*V_R**2#*radi_vec[i]**2
+        if radi_vec[i] >= r_b:
+            V_EdS += 4*np.pi*V_dRdr_E*V_R**2#*radi_vec[i]**2
+        #V_EdS += a_ES[j]*radi_vec[i]
 
-    Volume_ele.append(V)
+    Volume_LTB.append(V_LTB)
+    Volume_EdS.append(V_EdS)
 
 
 plt.figure()
-plt.plot(time_tot,Volume_ele,label='Volume element')
+plt.plot(time_tot,Volume_LTB,label='Volume_LTB')
+plt.plot(time_tot,Volume_EdS,label='Volume_EdS')
 plt.title('Volume element sum')
 plt.xlabel('t [Gyr]')
 plt.legend()
 
-plt.show()
+#plt.show()
 
-"""
+
 #------------------------------------------------------------ Founding volume element -----------------------
 
 
@@ -181,10 +225,10 @@ plt.show()
 
 
 
-
+"""
 
 plt.subplot(2,3,1)
-for i in range(0,len(radi_vec),int(len(radi_vec)/4)):
+for i in range(0,len(radi_vec),int(len(radi_vec)/5)):
     plt.plot(time_tot,
     ans_RR[i]/radi_vec[i]
     ,'-',label=f'R(t,r~{int(radi_vec[i])})'
@@ -230,8 +274,9 @@ plt.subplot(2,3,6)
 plt.plot(radi_vec,ans_dMdr,label='dMdr')
 plt.legend()
 plt.xlabel('r [Mpc]')
+"""
 
-
+"""
 fig1 = go.Figure()
 fig1.add_trace(
     go.Scatter(x=radi_vec,y=rho_r[0]/rho_EdS[0]
@@ -270,11 +315,16 @@ fig2.update_layout(
 #plt.show()
 
 
+"""
 
 
 
-
-
+#_------------------------------------------------------------------
+#_------------------------------------------------------------------
+#_-------------------Irrelevant stuff for now.----------------------
+#_------------------------------------------------------------------
+#_------------------------------------------------------------------
+#_------------------------------------------------------------------
 """
 plt.figure()
     plt.subplot(2,3,1)
@@ -302,9 +352,9 @@ plt.figure()
     plt.legend()
     #plt.title('dRdr')
 
-
+    #plt.show()
     plt.subplot(2,3,5)
-    plt.plot(time_tot,func_rho(r, ans_RR[0], dMMdr, ans_dRdr[0], rho_c0),'-o',label=r'$\rho_{LTB}$(t,r)')
+    #plt.plot(time_tot,func_rho(r, ans_RR[0], dMMdr, ans_dRdr[0], rho_c0),'-o',label=r'$\rho_{LTB}$(t,r)')
     plt.plot(time_vec,rho_EdS,label=r'$\rho_{EdS}$')
 
     plt.xlabel('t [Gyr]')
@@ -356,7 +406,7 @@ plt.figure()
     plt.xlabel('r [Mpc]')
     plt.legend()
 
-
+    #plt.show()
 
     rho_of_r1 = [[],[],[]]
     rho_of_r2 = []
@@ -364,7 +414,7 @@ plt.figure()
 
     tmid =int(len(time_tot)/2)
     tend = len(time_tot)-1
-
+    
     for i in range(0,len(radi_vec)):
         rho_of_r1[0].append(
             func_rho(radi_vec[i], ans_RR[i][0], ans_dMdr[i], ans_dRdr[i][0], rho_c0)/rho_EdS[0]
@@ -375,7 +425,7 @@ plt.figure()
         rho_of_r1[2].append(
             func_rho(radi_vec[i], ans_RR[i][tend], ans_dMdr[i], ans_dRdr[i][tend], rho_c0)/rho_EdS[tend]
         )
-
+    
     print(np.shape(rho_of_r1))
 
     plt.figure()
@@ -448,7 +498,7 @@ plt.figure()
     plt.legend()
 
 
- 
+
     y = time_tot
     x = radi_vec
     z = ans_rho
@@ -459,7 +509,7 @@ plt.figure()
                     #  margin=dict(l=65, r=50, b=65, t=90))
     #fig.show()
 
-  
+
 
     plot_rho = [[],[],[],[],[]]
     r_pos_vec = []
@@ -513,8 +563,8 @@ plt.figure()
         yaxis_range=[0.99994,1.00004],
         title=r'$\rho(t,r_i) \text{  time evolution for different starting positions}$'
         )
-    fig2.show()
-   
+    #fig2.show()
+
 
     rhos = []
     print(len(radi_vec))
@@ -545,3 +595,5 @@ plt.figure()
 
 
 """
+
+#plt.show()
