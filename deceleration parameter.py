@@ -26,7 +26,8 @@ f_2 = 0.3
 H_1 = 1
 T = []
 Q = []
-Q_Q = []
+Q_2 = []
+Q_1 = []
 V_2=[]
 V_1=[]
 for theta in np.arange(0.00001, 5, 0.001):
@@ -34,16 +35,23 @@ for theta in np.arange(0.00001, 5, 0.001):
     H = h(theta)
     Q2 = q_2(theta)
     Q.append(q(V, H, Q2))
+    Q_2.append(Q2)
+    Q_1.append(0)
     V_2.append(V)
     V_1.append(1-V)
-    Q_Q.append(H_1 * (1 - V + V * H))
+    #Q_Q.append(H_1 * (1 - V + V * H))
     T.append(theta)
+#plt.plot(T, Q, 'b',label=r'$q(\theta)$')
+#plt.plot(T, Q_2, 'b',label=r'$q_2(\theta)$')
+#plt.plot(T, Q_1, 'g',label=r'$q_1(\theta)$')
+plt.plot(T, V_1, 'g',label='Volume fraction in region 1')
+plt.plot(T, V_2, 'b',label='Volume fraction in region 2')
 
-plt.plot(T, V_2, 'b')
-plt.plot(T, V_1, 'g')
 plt.xlim(0, 5)
 #plt.axhline(y=0, color='r', linestyle='--')
-#plt.xlabel(r'$\theta$')
+plt.xlabel(r'$\theta$')
+plt.ylabel(r'v($\theta$)')
 #plt.ylabel(r'q($\theta$)')
-#plt.title(' deceleration parameter q')
+plt.legend()
+plt.title(r'Volume fraction v as a'+'\n'+r'function of development angle $\theta$')
 plt.show()
