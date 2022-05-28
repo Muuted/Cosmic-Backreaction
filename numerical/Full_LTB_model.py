@@ -1,4 +1,5 @@
 from time import time
+import matplotlib
 
 from matplotlib.markers import MarkerStyle
 from LTB_model_functions import *
@@ -94,6 +95,7 @@ a_ES, rho_EdS, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
 k = 0
 pos_vecs = []
 i_pos = []
+
 for i in range(0,len(radi_vec)):
     if k < 1 and radi_vec[i] < 10:
         pos_vecs.append(radi_vec[i])
@@ -131,9 +133,9 @@ len_time = len(time_tot)
 
 plt.figure()
 rho_r = np.transpose(ans_rho)
-plt.plot(radi_vec,rho_r[0]/rho_EdS[0],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
-plt.plot(radi_vec,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
-plt.plot(radi_vec,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
+plt.plot(radi_vec,rho_r[0]/rho_EdS[0],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
+plt.plot(radi_vec,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
+plt.plot(radi_vec,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
 plt.xlabel('r [Mpc]')
 plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$')
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time, time in Gyr.'
@@ -141,9 +143,9 @@ plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time
 plt.legend()
 
 plt.figure()
-plt.plot(radi_vec,rho_r[0]/rho_EdS[0],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
-plt.plot(radi_vec,rho_r[1]/rho_EdS[1],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[1]*1e3,2)}e-3)')
-plt.plot(radi_vec,rho_r[2]/rho_EdS[2],'-o',label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[2]*1e3,2)}e-3)')
+plt.plot(radi_vec,rho_r[0]/rho_EdS[0],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
+plt.plot(radi_vec,rho_r[1]/rho_EdS[1],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[1]*1e3,2)}e-3)')
+plt.plot(radi_vec,rho_r[2]/rho_EdS[2],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[2]*1e3,2)}e-3)')
 plt.xlabel('r [Mpc]')
 plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$')
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr')
@@ -164,12 +166,13 @@ RR_3 = ans_RR_trans[int(len_time-1)]
 plt.plot(RR_1,rho_r[0]/rho_EdS[0],marker='.',markersize=7,label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
 plt.plot(RR_2,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],marker='.',markersize=7,label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
 plt.plot(RR_3,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],marker='.',markersize=7,label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
-plt.xlabel(r'$R(t_j,r)$ [Mpc]')
-plt.ylabel(r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$')
-plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time, time in Gyr.'
+plt.xlabel(r'$R(t_j,r)$ [Mpc]',fontsize=20)
+plt.ylabel(r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$',fontsize=20)
+plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time, time in Gyr.', fontsize=15
          )
-plt.legend(loc='upper left')
-#plt.rc('xtick',labelsize=20)
+#plt.legend(loc='upper left')
+plt.legend(fontsize=15,title_fontsize=1,loc='upper left')
+#plt.rcParams['legend.fontsize']= 1
 plt.show()
 
 RR_1 = ans_RR_trans[0]
@@ -183,7 +186,7 @@ plt.xlabel(r'$R(t_j,r)$ [Mpc]')
 plt.ylabel(r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$')
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr')
 plt.legend()
-plt.show()
+#plt.show()
 
 #------------------------------------------------------------ Finding volume element -----------------------
 
