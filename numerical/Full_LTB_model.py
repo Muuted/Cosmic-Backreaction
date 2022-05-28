@@ -14,12 +14,12 @@ Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants
 
 dr = 1        # change of r
 r_i = dr         # distance, we start at origo 
-num_steps = 10000 # number of steps between t_start and t_end
+num_steps = 1000 # number of steps between t_start and t_end
 num_iterations = 100#int(r_b/dr) #number of r's
 
 # Our time vector for the integration
 time_tot = np.linspace(t_i,t_0,num_steps)
-radi_vec = np.linspace(r_i,r_b*1.2,num_iterations)
+radi_vec = np.linspace(r_i,r_b,num_iterations)
 
 # Creating the lists for the data at different r values
 ans_RR = [[] for x in range(num_iterations)]
@@ -89,6 +89,53 @@ for i in range(0,num_iterations): # This loop makes it so that we iterate over r
 
 # Results for the Einstein de Sitter model 
 a_ES, rho_EdS, time_vec = Einstein_de_sitter(num_of_steps=num_steps)
+
+
+
+#------------------------------------------------------------ Finding volume element -----------------------
+
+print(np.shape(ans_dRdr))
+print(np.shape(ans_E))
+print(np.shape(ans_RR))
+
+Volume_LTB = []
+
+Volume_EdS = []
+for j in range(0,len(time_tot)):
+    V_EdS = 0
+    V_LTB = 0
+    V_LTB_beackreac = 0
+    for i in range(0,len(radi_vec)):
+        V_dRdr_E = ans_dRdr[i][j]/np.sqrt(1+2*ans_E[i])
+        V_R = ans_RR[i][j]
+        
+        V_LTB += 4*np.pi*V_dRdr_E*V_R**2*(max(radi_vec)/(len(radi_vec)))
+
+    V_EdS = (4*np.pi/3)*(a_ES[j]*max(radi_vec))**3
+
+    Volume_LTB.append(V_LTB)
+    Volume_EdS.append(V_EdS)
+   
+
+
+#fig = go.Figure()
+#fig.add_trace(go.Scatter(x = time_tot, y=Volume_LTB))
+#fig.show()
+
+plt.figure()
+plt.plot(time_tot,Volume_LTB,label=r'$V_{LTB,\mathcal{D}}$')
+plt.plot(time_tot,Volume_EdS,label=r'$V_{EdS,\mathcal{D}}$')
+plt.title(r'Volume fraction $V_{\mathcal{D}}$ from r = 0 to '+f'r={max(radi_vec)} where '+r'$r_b$='+f'{r_b}',fontsize = 15)
+plt.xlabel('t [Gyr]',fontsize=20)
+plt.ylabel(r'$Mpc^3$',fontsize = 20)
+plt.legend(fontsize = 15)
+
+plt.show()
+
+
+#------------------------------------------------------------ Founding volume element -----------------------
+
+
 
 
 
@@ -185,42 +232,6 @@ plt.ylabel(r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$',fontsize=20)
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr',fontsize=15)
 plt.legend(fontsize= 15, loc ='lower right')
 #plt.show()
-
-#------------------------------------------------------------ Finding volume element -----------------------
-
-Volume_LTB = []
-Volume_EdS = []
-for j in range(0,len(time_tot)):
-    V_EdS = 0
-    V_LTB = 0
-    for i in range(0,len(radi_vec)):
-        V_dRdr_E = ans_dRdr[i][j]/np.sqrt(1+2*ans_E[i])
-        V_R = ans_RR[i][j]
-
-        if radi_vec[i] < r_b:
-            V_LTB += 4*np.pi*V_dRdr_E*V_R**2#*radi_vec[i]**2
-        if radi_vec[i] >= r_b:
-            V_EdS += 4*np.pi*V_dRdr_E*V_R**2#*radi_vec[i]**2
-        #V_EdS += a_ES[j]*radi_vec[i]
-
-    Volume_LTB.append(V_LTB)
-    Volume_EdS.append(V_EdS)
-
-
-plt.figure()
-plt.plot(time_tot,Volume_LTB,label='Volume_LTB')
-plt.plot(time_tot,Volume_EdS,label='Volume_EdS')
-plt.title('Volume element sum')
-plt.xlabel('t [Gyr]')
-plt.legend()
-
-plt.show()
-
-
-#------------------------------------------------------------ Founding volume element -----------------------
-
-
-
 
 
 
