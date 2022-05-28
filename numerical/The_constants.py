@@ -17,7 +17,8 @@ def func_constants():
     # values of the constants in the eq's
     Lamb = 0
     A = 1.3e-7  # [A] = 1/Mpc^2
-    #A = A*(1/(m_pr_Mpc**2))
+    #A = 1.3e-14
+    
     r_b = 50
     n = 2
     m = 2
@@ -44,6 +45,9 @@ def func_constants():
     
     rho_i0 = rho_c0/a_i**3
     H_i = np.sqrt(8*np.pi*G*rho_i0/3) # initial
+
+    # Wrong H_i
+    #H_i = np.sqrt(8*np.pi*G*rho_c0/3) # initial
 
       
     const_list = [Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c]
