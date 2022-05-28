@@ -170,10 +170,9 @@ plt.xlabel(r'$R(t_j,r)$ [Mpc]',fontsize=20)
 plt.ylabel(r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$',fontsize=20)
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time, time in Gyr.', fontsize=15
          )
-#plt.legend(loc='upper left')
 plt.legend(fontsize=15,title_fontsize=1,loc='upper left')
-#plt.rcParams['legend.fontsize']= 1
-plt.show()
+
+#plt.show()
 
 RR_1 = ans_RR_trans[0]
 RR_2 = ans_RR_trans[1]
@@ -186,7 +185,7 @@ plt.xlabel(r'$R(t_j,r)$ [Mpc]')
 plt.ylabel(r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$')
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr')
 plt.legend()
-#plt.show()
+plt.show()
 
 #------------------------------------------------------------ Finding volume element -----------------------
 
