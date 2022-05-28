@@ -184,7 +184,7 @@ plt.xlabel(r'$R(t_j,r)$ [Mpc]',fontsize=20)
 plt.ylabel(r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$',fontsize=20)
 plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr',fontsize=15)
 plt.legend(fontsize= 15, loc ='lower right')
-plt.show()
+#plt.show()
 
 #------------------------------------------------------------ Finding volume element -----------------------
 
@@ -214,7 +214,7 @@ plt.title('Volume element sum')
 plt.xlabel('t [Gyr]')
 plt.legend()
 
-#plt.show()
+plt.show()
 
 
 #------------------------------------------------------------ Founding volume element -----------------------
