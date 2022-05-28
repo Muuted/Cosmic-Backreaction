@@ -122,10 +122,10 @@ plt.plot(time_tot,ans_RR[i_pos[1]]/radi_vec[i_pos[1]],marker='.',markersize=5,la
 plt.plot(time_tot,ans_RR[i_pos[2]]/radi_vec[i_pos[2]],marker='.',markersize=5,label=r'R(t,$r_3$ $\approx$ '+f'{int(pos_vecs[2])})'+r'/$~r_3$')
 plt.plot(time_tot,ans_RR[i_pos[3]]/radi_vec[i_pos[3]],marker='.',markersize=5,label=r'R(t,$r_4$ $\approx$ '+f'{int(pos_vecs[3])})'+r'/$~r_4$')
 plt.plot(time_tot,a_ES,'--k',label=r'$a_{EdS}(t)$')
-plt.title(r'Proper distance $R(t,r_j)$ at different radial positions')
-plt.xlabel('t [Gyr]')
-plt.ylabel(' R(t,r) [Mpc]')
-plt.legend()
+plt.title(r'Proper distance $R(t,r_j)$ at different radial positions',fontsize=15)
+plt.xlabel('t [Gyr]',fontsize=20)
+plt.ylabel(' R(t,r) [Mpc]',fontsize=20)
+plt.legend(fontsize=15)
 
 #plt.show()
 
@@ -136,20 +136,19 @@ rho_r = np.transpose(ans_rho)
 plt.plot(radi_vec,rho_r[0]/rho_EdS[0],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
 plt.plot(radi_vec,rho_r[int(len_time/2)]/rho_EdS[int(len_time/2)],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time/2)],2)})')
 plt.plot(radi_vec,rho_r[int(len_time)-1]/rho_EdS[int(len_time-1)],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t $\approx$'+f'{round(time_tot[int(len_time-1)],2)})')
-plt.xlabel('r [Mpc]')
-plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$')
-plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time, time in Gyr.'
-         )
-plt.legend()
+plt.xlabel('r [Mpc]',fontsize=20)
+plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$',fontsize=20)
+plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at start, middle and end time, time in Gyr.',fontsize=15)
+plt.legend(fontsize=15,loc='lower right')
 
 plt.figure()
 plt.plot(radi_vec,rho_r[0]/rho_EdS[0],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[0]*1e4,2)}e-4)')
 plt.plot(radi_vec,rho_r[1]/rho_EdS[1],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[1]*1e3,2)}e-3)')
 plt.plot(radi_vec,rho_r[2]/rho_EdS[2],label=r'$\dfrac{\rho_{LTB}}{\rho_{EdS}}$(r,t$\approx$'+f'{round(time_tot[2]*1e3,2)}e-3)')
-plt.xlabel('r [Mpc]')
-plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$')
-plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr')
-plt.legend()
+plt.xlabel('r [Mpc]',fontsize=20)
+plt.ylabel(r'$\frac{\rho_{LTB}}{\rho_{EdS}}$',fontsize=20)
+plt.title(r'$\dfrac{\rho(t_j,r)}{\rho_{EdS}(t_j)}$ at 3 first time steps, time in Gyr',fontsize=15)
+plt.legend(fontsize=15,loc='lower right')
 
 
 
