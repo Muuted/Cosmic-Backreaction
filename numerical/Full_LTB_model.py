@@ -19,7 +19,7 @@ num_iterations = 100#int(r_b/dr) #number of r's
 
 # Our time vector for the integration
 time_tot = np.linspace(t_i,t_0,num_steps)
-radi_vec = np.linspace(r_i,r_b,num_iterations)
+radi_vec = np.linspace(r_i,r_b*5,num_iterations)
 
 # Creating the lists for the data at different r values
 ans_RR = [[] for x in range(num_iterations)]
@@ -126,8 +126,8 @@ plt.figure()
 plt.plot(time_tot,Volume_LTB,label=r'$V_{LTB,\mathcal{D}}$')
 plt.plot(time_tot,Volume_EdS,label=r'$V_{EdS,\mathcal{D}}$')
 plt.title(r'Volume fraction $V_{\mathcal{D}}$ from r = 0 to '+f'r={max(radi_vec)} where '+r'$r_b$='+f'{r_b}',fontsize = 15)
-plt.xlabel('t [Gyr]',fontsize=20)
-plt.ylabel(r'$Mpc^3$',fontsize = 20)
+plt.xlabel('t [Gyr]',fontsize=15)
+plt.ylabel(r'V [$Mpc^3$]',fontsize = 15)
 plt.legend(fontsize = 15)
 
 plt.show()
