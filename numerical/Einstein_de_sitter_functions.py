@@ -1,12 +1,12 @@
-import scipy
-import scipy.integrate
-import matplotlib.pyplot as plt
-from scipy.integrate import quad
-from scipy.integrate import solve_ivp
+#import scipy
+#import scipy.integrate
+#import matplotlib.pyplot as plt
+#from scipy.integrate import quad
+#from scipy.integrate import solve_ivp
 import numpy as np
 from The_constants import *
-import plotly as py
-import plotly.graph_objects as go
+#import plotly as py
+#import plotly.graph_objects as go
 
 def a_FLRW_lim(t,t_0):
     a_func = (t/t_0)**(2/3)

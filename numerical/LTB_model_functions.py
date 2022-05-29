@@ -1,15 +1,5 @@
-"""import scipy
-import scipy.integrate
-
-import matplotlib.pyplot as plt
-
-from scipy.integrate import quad
-
-from scipy.integrate import solve_ivp
-"""
+# ----------------------------------- LTB_model_functions.py --------------------------
 import numpy as np
-#from The_constants import *
-
 
 def func_E(r, r_b, n, m, A):
 
@@ -23,7 +13,6 @@ def func_E(r, r_b, n, m, A):
 
     return EE
 
-
 def func_dEdr(r,  r_b, n, m, A):
 
     if r <= r_b :
@@ -35,7 +24,6 @@ def func_dEdr(r,  r_b, n, m, A):
     else:
         dEEdr = 0
     return dEEdr
-
 
 def func_rho(RR, dMMdr, dRRdr, c):
 
@@ -67,7 +55,6 @@ def func_dMMdr(r, EE, dEEdr, rho_c0, H_i,a_i, c):
 
     return dMMdr
 
-
 def func_dRdt(RR, EE, MM, G, c):
     
     dRRdt = c*np.sqrt(
@@ -80,7 +67,6 @@ def func_dRdt(RR, EE, MM, G, c):
     )"""
 
     return dRRdt
-
 
 def func_dRdrdt(RR, EE, MM, dMMdr, dRRdr, dEEdr, G, c):
     
@@ -106,23 +92,3 @@ def func_LTB_dSdt(S,t,p):
     
     return_list = [dRdt, dRdrdt]
     return  return_list
-
-
-'''
-H0 = 0.07158985 # Hubble sonstant 70 km/s/Mpc in unit 1/Gyr
-t0 = 2.0/3/H0 # assume EdS background
-c = 306.60139 # speed of light in vacuum in units Mpc/Gyr
-M_sun = 1.98855e30
-Gyr = 3.15576e16
-Mpc = 3.0856778e22
-r_b = 40
-k_max = 1.3e-7
-a_i = 1.0/1100
-G = 6.673e-11*M_sun*Gyr*Gyr/Mpc/Mpc/Mpc
-
-rho_ic = 3.0*H0*H0/(8.0*np.pi*G)/a_i**3
-H_i = np.sqrt( 8*np.pi*G*rho_ic/3.0 )
-'''
-#print(rho_ic)
-#print(H0/H_i)
-
