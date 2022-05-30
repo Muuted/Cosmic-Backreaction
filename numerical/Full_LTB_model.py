@@ -82,10 +82,11 @@ for j in range(0,len(time_tot)):
     V_LTB = 0
     V_LTB_beackreac = 0
     for i in range(0,len(radi_vec)):
-        V_dRdr_E = ans_dRdr[i][j]/np.sqrt(1+2*ans_E[i])
-        V_R = ans_RR[i][j]
-        
-        V_LTB += 4*np.pi*V_dRdr_E*V_R**2*(max(radi_vec)/(len(radi_vec)))
+        if radi_vec >= 41:
+            V_dRdr_E = ans_dRdr[i][j]/np.sqrt(1+2*ans_E[i])
+            V_R = ans_RR[i][j]
+            
+            V_LTB += 4*np.pi*V_dRdr_E*V_R**2*(max(radi_vec)/(len(radi_vec)))
 
     V_EdS = (4*np.pi/3)*(a_ES[j]*max(radi_vec))**3
 
