@@ -1,12 +1,6 @@
-#import scipy
-#import scipy.integrate
-#import matplotlib.pyplot as plt
-#from scipy.integrate import quad
-#from scipy.integrate import solve_ivp
+# -------- Einstein_de_sitter_functions.py ---------------------
 import numpy as np
 from The_constants import *
-#import plotly as py
-#import plotly.graph_objects as go
 
 def a_FLRW_lim(t,t_0):
     a_func = (t/t_0)**(2/3)
@@ -43,8 +37,6 @@ def Einstein_de_sitter(num_of_steps):#time_vec):
     # ----------------------------- importing the constants--------------------------------
     Lamb, A, r_b, n, m, H_0, H_i, G, rho_c0, rho_i0, a_i, t_i, t_0,c= func_constants()
 
-    
-
     init_cond = a_i
     num_of_steps = num_of_steps # given as argument for the function 
     time_vec = np.linspace(t_i,t_0, num_of_steps)
@@ -57,8 +49,6 @@ def Einstein_de_sitter(num_of_steps):#time_vec):
 
     a_ES = ans_a_ES[0]
     
-
-
     # finding rho
     rho_EdS = []#np.zeros(len(a_ES))
     for i in range(0,len(a_ES)):
@@ -66,7 +56,6 @@ def Einstein_de_sitter(num_of_steps):#time_vec):
         #a_de_sitter = a_FLRW_lim(time_vec[i],t_0)
         rho_EdS.append(func_rho_Ein_Sitter(a_de_sitter))
 
-    #print('time shape=',time_vec.shape)
     list = [a_ES, rho_EdS, time_vec]
 
     return list
