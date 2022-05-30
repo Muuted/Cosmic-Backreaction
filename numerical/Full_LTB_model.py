@@ -88,7 +88,7 @@ for j in range(0,len(time_tot)):
             
             V_LTB += 4*np.pi*V_dRdr_E*V_R**2*(max(radi_vec)/(len(radi_vec)))
 
-    V_EdS = (4*np.pi/3)*(a_ES[j]*max(radi_vec))**3
+    V_EdS = (4*np.pi/3)*(a_ES[j]*max(41))**3
 
     Volume_LTB.append(V_LTB)
     Volume_EdS.append(V_EdS)
