@@ -19,6 +19,7 @@ num_iterations = 100#int(r_b/dr) #number of r's
 time_tot = np.linspace(t_i,t_0,num_steps)
 radi_vec = np.linspace(r_i,r_b*1.2,num_iterations)
 
+
 # Creating the lists for the data at different r values
 ans_RR = [[] for x in range(num_iterations)]
 ans_dRdr = [[] for x in range(num_iterations)]
@@ -82,13 +83,13 @@ for j in range(0,len(time_tot)):
     V_LTB = 0
     V_LTB_beackreac = 0
     for i in range(0,len(radi_vec)):
-        if radi_vec >= 41:
-            V_dRdr_E = ans_dRdr[i][j]/np.sqrt(1+2*ans_E[i])
-            V_R = ans_RR[i][j]
-            
-            V_LTB += 4*np.pi*V_dRdr_E*V_R**2*(max(radi_vec)/(len(radi_vec)))
+    
+        V_dRdr_E = ans_dRdr[i][j]/np.sqrt(1+2*ans_E[i])
+        V_R = ans_RR[i][j]
+        
+        V_LTB += 4*np.pi*V_dRdr_E*V_R**2*(max(radi_vec)/(len(radi_vec)))
 
-    V_EdS = (4*np.pi/3)*(a_ES[j]*max(41))**3
+    V_EdS = (4*np.pi/3)*(a_ES[j]*max(radi_vec))**3
 
     Volume_LTB.append(V_LTB)
     Volume_EdS.append(V_EdS)
