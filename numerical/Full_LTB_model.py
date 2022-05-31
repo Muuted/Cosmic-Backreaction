@@ -248,7 +248,7 @@ plt.plot(radi_vec,ans_dMdr,label='dMdr')
 plt.legend()
 plt.xlabel('r [Mpc]')
 
-plt.show()
+#plt.show()
 
 
 fig1 = go.Figure()
@@ -286,6 +286,19 @@ fig2.update_layout(
 )
 #fig2.show()
 #fig1.show()
+
+print(np.shape(ans_RR))
+delta_R = []
+delta_R.append(0)
+for i in range(len(radi_vec)-1):
+    delta_R.append(
+        ans_RR[i+1][len(time_tot)-1] - ans_RR[i][len(time_tot)-1]
+    )
+
+plt.figure()
+plt.plot(radi_vec,delta_R)
+
+
 plt.show()
 
 
