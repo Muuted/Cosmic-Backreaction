@@ -296,7 +296,11 @@ for i in range(len(radi_vec)-1):
     )
 
 plt.figure()
-plt.plot(radi_vec,delta_R)
+plt.plot(radi_vec,delta_R,'.',label=r'$\Delta$R(t,r)')
+plt.xlabel('r')
+plt.ylabel(r'$\Delta$R(t,r)')
+plt.legend()
+plt.title(r'$\Delta$ R(t,r) over comoving coordinates r')
 
 
 plt.show()
